@@ -1,0 +1,11 @@
+{
+  "id": "sampleExtension",
+  "version": "1.0.0",
+  "meta": {
+    "name": "Sample extension",
+    "tagline": "A short tagline that appears below the name",
+    "description": "A longer description that can **use Markdown**",
+    "authors": ["You!"],
+    "source": "https://github.com/moonlight-mod/sample-extension"
+  }
+}

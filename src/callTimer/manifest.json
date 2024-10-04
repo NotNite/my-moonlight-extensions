@@ -1,0 +1,11 @@
+{
+  "id": "callTimer",
+  "version": "1.0.0",
+  "apiLevel": 2,
+  "meta": {
+    "name": "Call Timer",
+    "tagline": "Shows how long you've been in a voice call",
+    "authors": ["NotNite"],
+    "source": "https://github.com/NotNite/my-moonlight-extensions"
+  }
+}

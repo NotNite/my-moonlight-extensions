@@ -1,0 +1,3 @@
+[submodule "moonlight"]
+	path = moonlight
+	url = https://github.com/moonlight-mod/moonlight.git

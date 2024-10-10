@@ -1,0 +1,13 @@
+{
+  "$schema": "https://moonlight-mod.github.io/manifest.schema.json",
+  "id": "imageViewer",
+  "version": "1.0.0",
+  "apiLevel": 2,
+  "dependencies": ["spacepack"],
+  "meta": {
+    "name": "Image Viewer",
+    "tagline": "Pan and zoom in image popouts, plus some other tools",
+    "authors": ["NotNite", "Cynosphere"],
+    "source": "https://github.com/NotNite/my-moonlight-extensions"
+  }
+}

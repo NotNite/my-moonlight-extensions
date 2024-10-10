@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@moonlight-mod/types':
-        specifier: ^1.2.0
-        version: 1.2.0
+        specifier: ^1.3.0
+        version: 1.3.0
     devDependencies:
       '@electron/asar':
         specifier: ^3.2.8
@@ -164,8 +164,8 @@ packages:
   '@moonlight-mod/lunast@1.0.0':
     resolution: {integrity: sha512-kJgf41K12i6/2LbXK97CNO+pNO7ADGh9N4bCQcOPwosocKMcwKHDEZUgPqeihNshY3c3AEW1LiyXjlsl24PdDw==}
 
-  '@moonlight-mod/mappings@1.0.0':
-    resolution: {integrity: sha512-n6ybbTqFxXVKvTHcIGEtCS9208an6BFnTojK56giWE/bjuqq6DvFrk/0+C3ZRDEjgohGf/DuUKc9f0qe9UH6Rg==}
+  '@moonlight-mod/mappings@1.0.2':
+    resolution: {integrity: sha512-PjIv4LFyt3j4LyGiokUmJ6a0L5JljoLXjUkixCynLLpNLd660qTcLe8f9tbhOovvD8joqejq+f5oqSo2V4/Vfg==}
     peerDependencies:
       '@moonlight-mod/lunast': ^1.0.0
       '@moonlight-mod/moonmap': ^1.0.0
@@ -173,8 +173,8 @@ packages:
   '@moonlight-mod/moonmap@1.0.2':
     resolution: {integrity: sha512-dqMFwk8o0duRfvBNYo6EwalEUWWR3bNF5V2N04ogHp4gYON6/5+XOUrTlQ9BFBDj9anZwGgVwGqnxV42Qs9pPw==}
 
-  '@moonlight-mod/types@1.2.0':
-    resolution: {integrity: sha512-XlysDTSnWD/2LrUE/t8MVOnU2shARmMnd+cyipQF6+FJ+gsOOBq43j6Lx/MqObs8MnQ1NwK8UTTuv3SCmIyMHw==}
+  '@moonlight-mod/types@1.3.0':
+    resolution: {integrity: sha512-JItxaIgdfcPcVW/Hl1yLvvOQHJf1rNMWg/KyzqFHQm4zmxKH1KNftc4SoZVtxoyZrWTSGsAwkZ+O8EftX+w/kQ==}
 
   '@types/estree-jsx@1.0.5':
     resolution: {integrity: sha512-52CcUVNFyfb1A2ALocQw/Dd1BQFNmSdkuC3BkZ6iqhdMfQz7JWOFRuJFloOzjk+6WijU56m9oKXFAXc7o3Towg==}
@@ -346,7 +346,7 @@ snapshots:
       estree-toolkit: 1.7.8
       meriyah: 6.0.2
 
-  '@moonlight-mod/mappings@1.0.0(@moonlight-mod/lunast@1.0.0)(@moonlight-mod/moonmap@1.0.2)':
+  '@moonlight-mod/mappings@1.0.2(@moonlight-mod/lunast@1.0.0)(@moonlight-mod/moonmap@1.0.2)':
     dependencies:
       '@moonlight-mod/lunast': 1.0.0
       '@moonlight-mod/moonmap': 1.0.2
@@ -356,10 +356,10 @@ snapshots:
 
   '@moonlight-mod/moonmap@1.0.2': {}
 
-  '@moonlight-mod/types@1.2.0':
+  '@moonlight-mod/types@1.3.0':
     dependencies:
       '@moonlight-mod/lunast': 1.0.0
-      '@moonlight-mod/mappings': 1.0.0(@moonlight-mod/lunast@1.0.0)(@moonlight-mod/moonmap@1.0.2)
+      '@moonlight-mod/mappings': 1.0.2(@moonlight-mod/lunast@1.0.0)(@moonlight-mod/moonmap@1.0.2)
       '@moonlight-mod/moonmap': 1.0.2
       '@types/react': 18.3.11
       csstype: 3.1.2

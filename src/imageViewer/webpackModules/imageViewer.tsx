@@ -14,6 +14,7 @@ const {
   FullscreenEnterIcon,
   ArrowAngleLeftUpIcon,
   ArrowAngleRightUpIcon,
+  WindowLaunchIcon,
 
   closeModal,
   useModalsStore
@@ -25,6 +26,9 @@ const copy = Object.entries(ClipboardUtils).find(
 )?.[1] as (text: string) => void;
 const NativeUtils = spacepack.findByCode("Data fetch unsuccessful")[0].exports
   .ZP;
+const Video = spacepack.findByCode(".Messages.VIDEO", ",onVolumeChange:")[0]
+  .exports.Z;
+const { Messages } = spacepack.require("discord/i18n").default;
 
 type Props = {
   src: string;
@@ -33,6 +37,7 @@ type Props = {
   height: number;
   children?: React.ReactNode;
   animated: boolean;
+  poster?: string;
   onClose: () => void;
 };
 
@@ -48,11 +53,19 @@ function scale(width: number, height: number) {
   return Math.min(widthScale, heightScale);
 }
 
+function close() {
+  const ModalStore = useModalsStore.getState();
+  closeModal(ModalStore.default[0].key);
+}
+
+const noop = () => {};
+
 export default function ImageViewer({
   src,
   width,
   height,
-  alt
+  alt,
+  poster
 }: Props): JSX.Element {
   const [x, setX] = React.useState(0);
   const [y, setY] = React.useState(0);
@@ -61,7 +74,11 @@ export default function ImageViewer({
   const [dragging, setDragging] = React.useState(false);
   const wrapperRef = React.createRef<HTMLDivElement>();
 
-  const filename = new URL(src).pathname.split("/").pop();
+  const filename = React.useMemo(
+    () => new URL(src).pathname.split("/").pop(),
+    [src]
+  );
+  const isVideo = React.useMemo(() => poster != null, [poster]);
 
   const handleMouseMove = React.useCallback(
     (e: MouseEvent) => {
@@ -81,8 +98,18 @@ export default function ImageViewer({
   const handleWheel = React.useCallback(
     (e: WheelEvent) => {
       e.preventDefault();
-      let newZoom = zoom - e.deltaY / 500;
-      if (newZoom < 0.1) newZoom = 0.1;
+
+      let deltaY = e.deltaY;
+
+      // clamp delta, for linear scrolling (e.g. trackpads)
+      if (deltaY > 20) {
+        deltaY = 20;
+      } else if (deltaY < -20) {
+        deltaY = -20;
+      }
+
+      let newZoom = zoom + -deltaY / 500;
+      if (newZoom < 0.02) newZoom = 0.02;
       setZoom(newZoom);
     },
     [zoom]
@@ -104,37 +131,73 @@ export default function ImageViewer({
       document.removeEventListener("mouseup", handleMouseUp);
       document.removeEventListener("wheel", handleWheel);
     };
-  }, [handleMouseDown, handleMouseMove, handleMouseUp, handleWheel]);
+  }, [
+    wrapperRef.current,
+    handleMouseDown,
+    handleMouseMove,
+    handleMouseUp,
+    handleWheel
+  ]);
+
+  const transformStyle = React.useMemo(
+    () => `scale(${zoom}) translate(${x}px, ${y}px) rotate(${rotate}deg)`,
+    [zoom, x, y, rotate]
+  );
 
   return (
     <div className="imageViewer">
-      <div className="imageViewer-container" ref={wrapperRef}>
-        <Image
-          className="imageViewer-image"
-          src={src}
-          placeholder={src}
-          alt={alt}
-          width={width}
-          height={height}
-          zoomable={true}
-          style={{
-            transform: `scale(${zoom}) translate(${x}px, ${y}px) rotate(${rotate}deg)`
-          }}
-        />
+      <div
+        className="imageViewer-container"
+        ref={wrapperRef}
+        style={{
+          transform: transformStyle
+        }}
+      >
+        {isVideo ? (
+          <Video
+            src={src}
+            width={width}
+            height={height}
+            naturalWidth={width}
+            naturalHeight={height}
+            maxWidth={width}
+            maxHeight={height}
+            poster={poster}
+            autoPlay={true}
+            renderLinkComponent={noop}
+          />
+        ) : (
+          <Image
+            className={`imageViewer-image${
+              zoom > 1 ? " imageViewer-pixelate" : ""
+            }`}
+            src={src}
+            placeholder={src}
+            alt={alt}
+            width={width}
+            height={height}
+            zoomable={true}
+          />
+        )}
       </div>
       <div className="imageViewer-toolbar">
         <HeaderBar.Icon
-          tooltip="Close"
+          tooltip={Messages.CLOSE}
           tooltipPosition="top"
           icon={XLargeIcon}
-          onClick={() => {
-            const ModalStore = useModalsStore.getState();
-            closeModal(ModalStore.default[0].key);
-          }}
+          onClick={close}
         />
 
         <HeaderBar.Divider />
 
+        <HeaderBar.Icon
+          tooltip={Messages.OPEN_IN_BROWSER}
+          tooltipPosition="top"
+          icon={WindowLaunchIcon}
+          onClick={() => {
+            window.open(src);
+          }}
+        />
         <HeaderBar.Icon
           tooltip="Copy Link"
           tooltipPosition="top"
@@ -143,14 +206,17 @@ export default function ImageViewer({
             copy(src);
           }}
         />
-        <HeaderBar.Icon
-          tooltip="Copy Image"
-          tooltipPosition="top"
-          icon={CopyIcon}
-          onClick={() => {
-            NativeUtils.copyImage(src);
-          }}
-        />
+        {/* @ts-expect-error missing typing for window.DiscordNative */}
+        {!isVideo && window.DiscordNative != null ? (
+          <HeaderBar.Icon
+            tooltip={Messages.COPY_IMAGE_MENU_ITEM}
+            tooltipPosition="top"
+            icon={CopyIcon}
+            onClick={() => {
+              NativeUtils.copyImage(src);
+            }}
+          />
+        ) : null}
 
         <HeaderBar.Divider />
 
@@ -199,8 +265,6 @@ export default function ImageViewer({
             setRotate((prevRotate) => prevRotate + 90);
           }}
         />
-
-        <HeaderBar.Divider />
 
         <div className="imageViewer-toolbar-label">
           <Text variant="text-sm/medium">{filename}</Text>

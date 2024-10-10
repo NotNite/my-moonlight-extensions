@@ -10,15 +10,6 @@ export const patches: Patch[] = [
     }
   },
 
-  // disable click anywhere to close on carousels so we can drag,
-  {
-    find: ".carouselModal,",
-    replace: {
-      match: /,onClick:./,
-      replacement: ""
-    }
-  },
-
   // media proxy cannot upscale images, prevent fetching images larger than possible
   {
     find: /\(.{1,2}\+="\?"\+.{1,2}\.stringify\(.{1,2}\)\)/,
@@ -62,38 +53,36 @@ export const styles: string[] = [
 .imageViewer {
   width: 100vw;
   height: 100vh;
+  max-height: 100vh;
   position: absolute;
 
   display: flex;
   align-items: center;
+  justify-content: center;
   flex-direction: column;
 }
 
-.imageViewer-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 1;
-  /*
-    really not a fan of the magic numbers but it pushes the toolbar
-    off screen otherwise
-  */
-  max-height: calc(100vh - 2rem);
-}
-
+.imageViewer,
 .imageViewer-image {
-  /* Block interaction so you can pan */
   pointer-events: none;
 }
 
+.imageViewer-container,
 .imageViewer-toolbar {
+  pointer-events: auto;
+}
+
+.imageViewer-toolbar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: calc(100% - 2rem);
+  padding: 1rem;
+
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  width: calc(100% - 2rem);
-  height: 2rem;
-  padding: 1rem;
 }
 
 .imageViewer-toolbar-label {
@@ -103,6 +92,10 @@ export const styles: string[] = [
   justify-content: end;
   align-items: center;
   z-index: 1;
+}
+
+[class*="modalCarouselWrapper"] {
+  cursor: auto !important;
 }
 `
 ];

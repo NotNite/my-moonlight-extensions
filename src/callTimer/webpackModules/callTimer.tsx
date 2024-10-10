@@ -4,6 +4,7 @@ import React from "@moonlight-mod/wp/react";
 let startTime: number | null = null;
 
 Dispatcher.subscribe("RTC_CONNECTION_STATE", (data) => {
+  if (data.context !== "default") return;
   startTime = data.state === "RTC_CONNECTED" ? Date.now() : null;
 });
 

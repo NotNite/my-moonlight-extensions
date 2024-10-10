@@ -94,6 +94,10 @@ export const styles: string[] = [
   z-index: 1;
 }
 
+.imageViewer-pixelate {
+  image-rendering: pixelated;
+}
+
 [class*="modalCarouselWrapper"] {
   cursor: auto !important;
 }

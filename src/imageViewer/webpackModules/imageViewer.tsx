@@ -67,10 +67,15 @@ export default function ImageViewer({
   alt,
   poster
 }: Props): JSX.Element {
+  const calculatedScale = React.useMemo(
+    () => scale(width, height),
+    [width, height]
+  );
+
   const [x, setX] = React.useState(0);
   const [y, setY] = React.useState(0);
   const [rotate, setRotate] = React.useState(0);
-  const [zoom, setZoom] = React.useState(scale(width, height));
+  const [zoom, setZoom] = React.useState(calculatedScale);
   const [dragging, setDragging] = React.useState(false);
   const wrapperRef = React.createRef<HTMLDivElement>();
 
@@ -108,11 +113,15 @@ export default function ImageViewer({
         deltaY = -20;
       }
 
-      let newZoom = zoom + -deltaY / 500;
-      if (newZoom < 0.02) newZoom = 0.02;
-      setZoom(newZoom);
+      // * zoom here to make it more smooth when scrolling in farther
+      const newZoom = zoom + (-deltaY / 100) * zoom;
+      const newZoomClamped = Math.min(
+        20,
+        Math.max(calculatedScale / 10, newZoom)
+      );
+      setZoom(newZoomClamped);
     },
-    [zoom]
+    [zoom, calculatedScale]
   );
 
   React.useEffect(() => {
@@ -227,7 +236,7 @@ export default function ImageViewer({
           onClick={() => {
             setX(0);
             setY(0);
-            setZoom(scale(width, height));
+            setZoom(calculatedScale);
           }}
         />
         <HeaderBar.Icon
@@ -275,7 +284,9 @@ export default function ImageViewer({
 
           <HeaderBar.Divider />
 
-          <Text variant="text-sm/medium">{Math.round(zoom * 100)}%</Text>
+          <Text variant="text-sm/medium">
+            {zoom < 0.1 ? (zoom * 100).toFixed(2) : Math.round(zoom * 100)}%
+          </Text>
         </div>
       </div>
     </div>

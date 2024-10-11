@@ -1,13 +1,13 @@
 {
   "$schema": "https://moonlight-mod.github.io/manifest.schema.json",
-  "id": "callTimer",
-  "version": "1.0.2",
+  "id": "devBanner",
+  "version": "1.0.0",
   "apiLevel": 2,
   "meta": {
-    "name": "Call Timer",
-    "tagline": "Shows how long you've been in a voice call",
+    "name": "Dev Banner",
+    "tagline": "Enables the Discord dev banner, which shows the build ID",
     "authors": ["NotNite"],
-    "tags": ["voice"],
+    "tags": ["development"],
     "source": "https://github.com/NotNite/my-moonlight-extensions"
   }
 }

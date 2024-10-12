@@ -9,8 +9,7 @@ export const patches: Patch[] = [
         replacement: "true"
       },
       {
-        match:
-          /.\..\.Messages\.DEV_NOTICE_STAGING\.format\({buildNumber:(.+?)}\)/,
+        match: /.\..\.Messages\.DEV_NOTICE_STAGING\.format\({buildNumber:(.+?)}\)/,
         replacement: (_, buildNumber) =>
           `window.GLOBAL_ENV.RELEASE_CHANNEL.charAt(0).toUpperCase() + window.GLOBAL_ENV.RELEASE_CHANNEL.slice(1) + " " + ${buildNumber}`
       }

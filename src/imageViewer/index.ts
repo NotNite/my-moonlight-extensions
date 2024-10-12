@@ -15,8 +15,7 @@ export const patches: Patch[] = [
     find: /\(.{1,2}\+="\?"\+.{1,2}\.stringify\(.{1,2}\)\)/,
     replace: {
       // two replacements one patch: the sequel
-      match:
-        /function( .)?\((.)\){(let{src:.,sourceWidth:.,sourceHeight:.,targetWidth:.,targetHeight:.)/g,
+      match: /function( .)?\((.)\){(let{src:.,sourceWidth:.,sourceHeight:.,targetWidth:.,targetHeight:.)/g,
       replacement: (_, name, props, orig) =>
         `function${
           name ?? ""

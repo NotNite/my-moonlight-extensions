@@ -17,11 +17,7 @@ function formatTime(elapsed: number) {
   return items.map((item) => item.toString().padStart(2, "0")).join(":");
 }
 
-export default function CallTimer({
-  children
-}: {
-  children: React.ReactNode;
-}): JSX.Element {
+export default function CallTimer({ children }: { children: React.ReactNode }): JSX.Element {
   const [time, setTime] = React.useState(formatTime(0));
 
   React.useEffect(() => {

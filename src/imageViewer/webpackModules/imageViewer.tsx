@@ -21,13 +21,11 @@ const {
 } = Components;
 const HeaderBar = spacepack.require("discord/uikit/HeaderBar").default;
 const ClipboardUtils = spacepack.require("discord/utils/ClipboardUtils");
-const copy = Object.entries(ClipboardUtils).find(
-  ([key, value]) => typeof value !== "boolean"
-)?.[1] as (text: string) => void;
-const NativeUtils = spacepack.findByCode("Data fetch unsuccessful")[0].exports
-  .ZP;
-const Video = spacepack.findByCode(".Messages.VIDEO", ",onVolumeChange:")[0]
-  .exports.Z;
+const copy = Object.entries(ClipboardUtils).find(([key, value]) => typeof value !== "boolean")?.[1] as (
+  text: string
+) => void;
+const NativeUtils = spacepack.findByCode("Data fetch unsuccessful")[0].exports.ZP;
+const Video = spacepack.findByCode(".Messages.VIDEO", ",onVolumeChange:")[0].exports.Z;
 const { Messages } = spacepack.require("discord/i18n").default;
 
 type Props = {
@@ -60,17 +58,8 @@ function close() {
 
 const noop = () => {};
 
-export default function ImageViewer({
-  src,
-  width,
-  height,
-  alt,
-  poster
-}: Props): JSX.Element {
-  const calculatedScale = React.useMemo(
-    () => scale(width, height),
-    [width, height]
-  );
+export default function ImageViewer({ src, width, height, alt, poster }: Props): JSX.Element {
+  const calculatedScale = React.useMemo(() => scale(width, height), [width, height]);
 
   const [x, setX] = React.useState(0);
   const [y, setY] = React.useState(0);
@@ -79,10 +68,7 @@ export default function ImageViewer({
   const [dragging, setDragging] = React.useState(false);
   const wrapperRef = React.createRef<HTMLDivElement>();
 
-  const filename = React.useMemo(
-    () => new URL(src).pathname.split("/").pop(),
-    [src]
-  );
+  const filename = React.useMemo(() => new URL(src).pathname.split("/").pop(), [src]);
   const isVideo = React.useMemo(() => poster != null, [poster]);
 
   const handleMouseMove = React.useCallback(
@@ -115,10 +101,7 @@ export default function ImageViewer({
 
       // * zoom here to make it more smooth when scrolling in farther
       const newZoom = zoom + (-deltaY / 100) * zoom;
-      const newZoomClamped = Math.min(
-        20,
-        Math.max(calculatedScale / 10, newZoom)
-      );
+      const newZoomClamped = Math.min(20, Math.max(calculatedScale / 10, newZoom));
       setZoom(newZoomClamped);
     },
     [zoom, calculatedScale]
@@ -140,13 +123,7 @@ export default function ImageViewer({
       document.removeEventListener("mouseup", handleMouseUp);
       document.removeEventListener("wheel", handleWheel);
     };
-  }, [
-    wrapperRef.current,
-    handleMouseDown,
-    handleMouseMove,
-    handleMouseUp,
-    handleWheel
-  ]);
+  }, [wrapperRef.current, handleMouseDown, handleMouseMove, handleMouseUp, handleWheel]);
 
   const transformStyle = React.useMemo(
     () => `scale(${zoom}) translate(${x}px, ${y}px) rotate(${rotate}deg)`,
@@ -177,9 +154,7 @@ export default function ImageViewer({
           />
         ) : (
           <Image
-            className={`imageViewer-image${
-              zoom > 1 ? " imageViewer-pixelate" : ""
-            }`}
+            className={`imageViewer-image${zoom > 1 ? " imageViewer-pixelate" : ""}`}
             src={src}
             placeholder={src}
             alt={alt}
@@ -190,12 +165,7 @@ export default function ImageViewer({
         )}
       </div>
       <div className="imageViewer-toolbar">
-        <HeaderBar.Icon
-          tooltip={Messages.CLOSE}
-          tooltipPosition="top"
-          icon={XLargeIcon}
-          onClick={close}
-        />
+        <HeaderBar.Icon tooltip={Messages.CLOSE} tooltipPosition="top" icon={XLargeIcon} onClick={close} />
 
         <HeaderBar.Divider />
 
@@ -252,9 +222,7 @@ export default function ImageViewer({
           tooltipPosition="top"
           icon={MinusIcon}
           onClick={() => {
-            setZoom((prevZoom) =>
-              Math.max(calculatedScale / 10, prevZoom - 0.1)
-            );
+            setZoom((prevZoom) => Math.max(calculatedScale / 10, prevZoom - 0.1));
           }}
         />
 
@@ -286,9 +254,7 @@ export default function ImageViewer({
 
           <HeaderBar.Divider />
 
-          <Text variant="text-sm/medium">
-            {zoom < 0.1 ? (zoom * 100).toFixed(2) : Math.round(zoom * 100)}%
-          </Text>
+          <Text variant="text-sm/medium">{zoom < 0.1 ? (zoom * 100).toFixed(2) : Math.round(zoom * 100)}%</Text>
         </div>
       </div>
     </div>

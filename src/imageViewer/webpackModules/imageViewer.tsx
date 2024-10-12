@@ -89,8 +89,8 @@ export default function ImageViewer({
     (e: MouseEvent) => {
       if (!dragging) return;
 
-      setX((prevX) => prevX + e.movementX / (zoom * 2.0));
-      setY((prevY) => prevY + e.movementY / (zoom * 2.0));
+      setX((prevX) => prevX + e.movementX / (zoom * window.devicePixelRatio));
+      setY((prevY) => prevY + e.movementY / (zoom * window.devicePixelRatio));
     },
     [dragging, zoom]
   );
@@ -117,7 +117,7 @@ export default function ImageViewer({
       const newZoom = zoom + (-deltaY / 100) * zoom;
       const newZoomClamped = Math.min(
         20,
-        Math.max(0.01, newZoom)
+        Math.max(calculatedScale / 10, newZoom)
       );
       setZoom(newZoomClamped);
     },

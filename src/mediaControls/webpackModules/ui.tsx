@@ -38,7 +38,7 @@ function MediaControlsUI() {
     const interval = setInterval(() => {
       const now = Math.floor(Date.now() / 1000) - 1;
       const diff = now - recorded;
-      if (diff < 1) return;
+      if (diff < 1 || !state?.playing) return;
       setElapsed(realElapsed + diff);
     }, 500);
 

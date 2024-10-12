@@ -89,8 +89,8 @@ export default function ImageViewer({
     (e: MouseEvent) => {
       if (!dragging) return;
 
-      setX((prevX) => prevX + e.movementX / zoom);
-      setY((prevY) => prevY + e.movementY / zoom);
+      setX((prevX) => prevX + e.movementX / (zoom * window.devicePixelRatio));
+      setY((prevY) => prevY + e.movementY / (zoom * window.devicePixelRatio));
     },
     [dragging, zoom]
   );
@@ -244,7 +244,7 @@ export default function ImageViewer({
           tooltipPosition="top"
           icon={PlusLargeIcon}
           onClick={() => {
-            setZoom((prevZoom) => prevZoom + 0.1);
+            setZoom((prevZoom) => Math.min(20.0, prevZoom + 0.1));
           }}
         />
         <HeaderBar.Icon
@@ -252,7 +252,7 @@ export default function ImageViewer({
           tooltipPosition="top"
           icon={MinusIcon}
           onClick={() => {
-            setZoom((prevZoom) => prevZoom - 0.1);
+            setZoom((prevZoom) => Math.max(0.01, prevZoom - 0.1));
           }}
         />
 

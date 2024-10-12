@@ -252,7 +252,9 @@ export default function ImageViewer({
           tooltipPosition="top"
           icon={MinusIcon}
           onClick={() => {
-            setZoom((prevZoom) => Math.max(0.01, prevZoom - 0.1));
+            setZoom((prevZoom) =>
+              Math.max(calculatedScale / 10, prevZoom - 0.1)
+            );
           }}
         />
 

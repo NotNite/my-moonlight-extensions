@@ -1,19 +1,26 @@
 import { Store } from "@moonlight-mod/wp/discord/packages/flux";
 import Dispatcher from "@moonlight-mod/wp/discord/Dispatcher";
-
 import type { MediaState, RepeatMode } from "../../types";
 import type MediaControlsBaseStore from "./base";
-import { MediaFetcherStore } from "./mediaFetcher";
+
+import createMediaFetcherStore from "./mediaFetcher";
+import createSpotifyStore from "./spotify";
 
 const logger = moonlight.getLogger("mediaControls/store");
 
+const sources = moonlight.getConfigOption<string[]>("mediaControls", "sources") ?? [];
+
 class MediaControlsStore extends Store<any> {
-  private fetchers: MediaControlsBaseStore[] = [MediaFetcherStore];
-  private currentFetcher: MediaControlsBaseStore | null = null;
+  private sources: MediaControlsBaseStore[] = [];
+  private currentSource: MediaControlsBaseStore | null = null;
 
   constructor() {
     super(Dispatcher);
-    for (const fetcher of this.fetchers) {
+
+    if (sources.includes("mediaFetcher")) this.sources.push(createMediaFetcherStore());
+    if (sources.includes("spotify")) this.sources.push(createSpotifyStore());
+
+    for (const fetcher of this.sources) {
       // @ts-expect-error TODO: mappings
       fetcher.addChangeListener(() => {
         // This is very unperformant, but it's fine for now :^)
@@ -22,12 +29,12 @@ class MediaControlsStore extends Store<any> {
     }
 
     let ticking = false;
-    setInterval(() => {
+    setInterval(async () => {
       if (ticking) return;
 
       ticking = true;
       try {
-        this.tick();
+        await this.tick();
       } catch (e) {
         logger.error("Error ticking media controls", e);
       }
@@ -35,43 +42,43 @@ class MediaControlsStore extends Store<any> {
     }, 1000);
   }
 
-  tick() {
-    for (const fetcher of this.fetchers) {
-      fetcher.tick();
+  async tick() {
+    for (const source of this.sources) {
+      await source.tick();
     }
   }
 
   getState(): MediaState | null {
-    for (const fetcher of this.fetchers) {
-      const state = fetcher.getState();
+    for (const source of this.sources) {
+      const state = source.getState();
       if (state != null) {
-        this.currentFetcher = fetcher;
+        this.currentSource = source;
         return state;
       }
     }
 
-    this.currentFetcher = null;
+    this.currentSource = null;
     return null;
   }
 
   previous() {
-    this.currentFetcher?.previous();
+    this.currentSource?.previous();
   }
 
   playPause() {
-    this.currentFetcher?.playPause();
+    this.currentSource?.playPause();
   }
 
   next() {
-    this.currentFetcher?.next();
+    this.currentSource?.next();
   }
 
   setRepeatMode(mode: RepeatMode) {
-    this.currentFetcher?.setRepeatMode(mode);
+    this.currentSource?.setRepeatMode(mode);
   }
 
   setShuffleMode(shuffle: boolean) {
-    this.currentFetcher?.setShuffleMode(shuffle);
+    this.currentSource?.setShuffleMode(shuffle);
   }
 }
 

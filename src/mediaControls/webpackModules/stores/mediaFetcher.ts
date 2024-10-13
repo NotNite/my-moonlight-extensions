@@ -1,9 +1,8 @@
 import {
   MediaFetcherRequestType,
-  MediaFetcherResponsePlaybackStatus,
   MediaFetcherResponseType,
-  MediaState,
-  RepeatMode,
+  type MediaFetcherResponsePlaybackStatus,
+  type RepeatMode,
   type MediaControlsNatives
 } from "../../types";
 import MediaControlsBaseStore from "./base";
@@ -11,7 +10,7 @@ import MediaControlsBaseStore from "./base";
 const logger = moonlight.getLogger("mediaControls/mediaFetcher");
 const natives: MediaControlsNatives = moonlight.getNatives("mediaControls");
 
-class MediaFetcherStore extends MediaControlsBaseStore {
+export class MediaControlsMediaFetcherStore extends MediaControlsBaseStore {
   private status: MediaFetcherResponsePlaybackStatus | null = null;
 
   private coverSong: [string, string] | null = null;
@@ -57,7 +56,7 @@ class MediaFetcherStore extends MediaControlsBaseStore {
     }
   }
 
-  getState(): MediaState | null {
+  getState() {
     if (this.status == null) return null;
     if (this.status.artist === "" && this.status.title === "") return null;
 
@@ -105,5 +104,6 @@ class MediaFetcherStore extends MediaControlsBaseStore {
   }
 }
 
-const mediaFetcherStore = new MediaFetcherStore();
-export { mediaFetcherStore as MediaFetcherStore };
+export default function createMediaFetcherStore() {
+  return new MediaControlsMediaFetcherStore();
+}

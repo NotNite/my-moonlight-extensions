@@ -3,11 +3,12 @@ import Dispatcher from "@moonlight-mod/wp/discord/Dispatcher";
 import type { MediaState, RepeatMode } from "../../types";
 
 export default abstract class MediaControlsBaseStore extends Store<any> {
-  constructor() {
-    super(Dispatcher);
+  constructor(...args: any[]) {
+    // @ts-expect-error Wrong types for store ctor
+    super(Dispatcher, ...args);
   }
 
-  tick() {}
+  async tick() {}
   abstract getState(): MediaState | null;
 
   abstract previous(): void;

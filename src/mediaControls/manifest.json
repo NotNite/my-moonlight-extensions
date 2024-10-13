@@ -1,17 +1,25 @@
 {
+  "$schema": "https://moonlight-mod.github.io/manifest.schema.json",
   "id": "mediaControls",
+  "version": "1.0.0",
   "apiLevel": 2,
   "meta": {
     "name": "Media Controls",
     "tagline": "Control your music from within Discord",
-    "description": "To use the system media player, you must [build the media fetcher from source](https://github.com/NotNite/my-moonlight-extensions/tree/main/src/mediaControls/media-fetcher).",
+    "description": "**Configuration required!**\nFor this extension to work, you must enable which media sources to use.\n- To use Spotify, your Spotify account must be linked to your Discord account.\n- To use the system media player, you must [build the media fetcher from source](https://github.com/NotNite/my-moonlight-extensions/tree/main/src/mediaControls/media-fetcher) and set the path to the executable.",
     "authors": ["NotNite"]
   },
   "dependencies": ["spacepack", "appPanels"],
   "settings": {
+    "sources": {
+      "displayName": "Media sources",
+      "description": "Where to grab media information from",
+      "type": "multiselect",
+      "options": ["mediaFetcher", "spotify"]
+    },
     "mediaFetcherPath": {
       "displayName": "Media fetcher path",
-      "description": "Path to the media fetcher executable on your system",
+      "description": "[Media fetcher only] Path to the media fetcher executable on your system",
       "type": "string"
     }
   }

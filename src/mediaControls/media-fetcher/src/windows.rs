@@ -80,7 +80,7 @@ impl WindowsMediaFetcher {
     }
 }
 
-#[async_trait]
+#[async_trait(?Send)]
 impl MediaFetcher for WindowsMediaFetcher {
     async fn init(&mut self) -> anyhow::Result<()> {
         let session_manager =
@@ -97,8 +97,7 @@ impl MediaFetcher for WindowsMediaFetcher {
             let new_status = {
                 let manager = manager.lock().await;
                 if let Ok(session) = manager.GetCurrentSession() {
-                    let result = self.get_status(session).await;
-                    if let Ok(result) = result {
+                    if let Ok(result) = self.get_status(session).await {
                         // Everything is playing
                         result
                     } else {

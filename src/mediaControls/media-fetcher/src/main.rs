@@ -1,7 +1,9 @@
 mod base;
 mod proto;
 
-#[cfg(windows)]
+#[cfg(target_os = "linux")]
+mod linux;
+#[cfg(target_os = "windows")]
 mod windows;
 
 async fn input_handler(fetcher: &Box<dyn base::MediaFetcher>) -> anyhow::Result<()> {
@@ -19,9 +21,14 @@ async fn main() -> anyhow::Result<()> {
     #![allow(unused_assignments)]
     let mut fetcher: Option<Box<dyn base::MediaFetcher>> = None;
 
-    #[cfg(windows)]
+    #[cfg(target_os = "windows")]
     {
         fetcher = Some(Box::new(windows::WindowsMediaFetcher::default()));
+    }
+
+    #[cfg(target_os = "linux")]
+    {
+        fetcher = Some(Box::new(linux::LinuxMediaFetcher::default()));
     }
 
     if let Some(mut fetcher) = fetcher {

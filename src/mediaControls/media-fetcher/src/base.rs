@@ -2,7 +2,7 @@ use crate::proto;
 use async_trait::async_trait;
 use tokio::io::AsyncBufReadExt;
 
-#[async_trait]
+#[async_trait(?Send)]
 pub trait MediaFetcher {
     async fn init(&mut self) -> anyhow::Result<()>;
     async fn run(&self) -> anyhow::Result<()>;

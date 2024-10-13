@@ -5,6 +5,7 @@ import * as Components from "@moonlight-mod/wp/discord/components/common/index";
 const {
   Image,
   Text,
+  TextInput,
 
   XLargeIcon,
   CopyIcon,
@@ -66,6 +67,8 @@ export default function ImageViewer({ src, width, height, alt, poster }: Props):
   const [rotate, setRotate] = React.useState(0);
   const [zoom, setZoom] = React.useState(calculatedScale);
   const [dragging, setDragging] = React.useState(false);
+  const [editingZoom, setEditingZoom] = React.useState(false);
+  const [zoomEdit, setZoomEdit] = React.useState(100);
   const wrapperRef = React.createRef<HTMLDivElement>();
 
   const filename = React.useMemo(() => new URL(src).pathname.split("/").pop(), [src]);
@@ -88,8 +91,6 @@ export default function ImageViewer({ src, width, height, alt, poster }: Props):
   }, []);
   const handleWheel = React.useCallback(
     (e: WheelEvent) => {
-      e.preventDefault();
-
       let deltaY = e.deltaY;
 
       // clamp delta, for linear scrolling (e.g. trackpads)
@@ -129,6 +130,8 @@ export default function ImageViewer({ src, width, height, alt, poster }: Props):
     () => `scale(${zoom}) translate(${x}px, ${y}px) rotate(${rotate}deg)`,
     [zoom, x, y, rotate]
   );
+
+  const zoomLabel = React.useMemo(() => (zoom < 0.1 ? (zoom * 100).toFixed(2) : Math.round(zoom * 100)), [zoom]);
 
   return (
     <div className="imageViewer">
@@ -254,7 +257,37 @@ export default function ImageViewer({ src, width, height, alt, poster }: Props):
 
           <HeaderBar.Divider />
 
-          <Text variant="text-sm/medium">{zoom < 0.1 ? (zoom * 100).toFixed(2) : Math.round(zoom * 100)}%</Text>
+          {editingZoom ? (
+            <TextInput
+              className="imageViewer-edit-zoom"
+              size={TextInput.Sizes.MINI}
+              /* @ts-expect-error not typed */
+              type="number"
+              autoFocus={true}
+              value={zoomEdit.toString()}
+              placeholder="100"
+              onChange={(value: string) => {
+                if (!Number.isNaN(value)) setZoomEdit(Number(value));
+              }}
+              onFocus={() => {
+                setZoomEdit(Number(zoomLabel));
+              }}
+              onBlur={() => {
+                setZoom(zoomEdit / 100);
+                setEditingZoom(false);
+              }}
+              onKeyDown={(event: KeyboardEvent) => {
+                if (event.key === "Enter") {
+                  setZoom(zoomEdit / 100);
+                  setEditingZoom(false);
+                }
+              }}
+            />
+          ) : (
+            <Text variant="text-sm/medium" onClick={() => setEditingZoom(true)}>
+              {zoomLabel}%
+            </Text>
+          )}
         </div>
       </div>
     </div>

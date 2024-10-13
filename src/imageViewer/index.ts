@@ -97,6 +97,14 @@ export const styles: string[] = [
   image-rendering: pixelated;
 }
 
+.imageViewer-edit-zoom {
+  max-width: 3rem;
+
+  & > input {
+    font-size: 14px !important;
+  }
+}
+
 [class*="modalCarouselWrapper"] {
   cursor: auto !important;
 }

@@ -33,6 +33,10 @@ export const styles: string[] = [
   padding: 0.5rem;
   height: 2.5rem;
   gap: 0.5rem;
+
+  /* random number to get it to line up with profile picture */
+  padding-left: 10px;
+  /* account for the progress bar */
   padding-top: 0.75rem;
 
   background: linear-gradient(
@@ -45,7 +49,7 @@ export const styles: string[] = [
   background-size: 100% 0.25rem;
 
 .mediaControls-cover {
-  height: 100%;
+  height: 32px;
 
   flex-grow: 0;
   flex-shrink: 1;
@@ -60,10 +64,6 @@ export const styles: string[] = [
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
-}
-
-.mediaControls-labels div:hover {
-  text-decoration: underline;
 }
 
 .mediaControls-interact {

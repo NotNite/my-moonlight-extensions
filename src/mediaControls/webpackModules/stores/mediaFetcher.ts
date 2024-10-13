@@ -90,6 +90,10 @@ class MediaFetcherStore extends MediaControlsBaseStore {
     if (natives == null) return;
     // there are two defined but it does the same thing
     natives.sendMediaFetcherRequest({ type: MediaFetcherRequestType.Play });
+    if (this.status != null) {
+      this.status.playing = !this.status.playing;
+      this.emitChange();
+    }
   }
 
   next() {

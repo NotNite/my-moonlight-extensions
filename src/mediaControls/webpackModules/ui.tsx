@@ -5,8 +5,12 @@ import { useStateFromStores } from "@moonlight-mod/wp/discord/packages/flux";
 import AppPanels from "@moonlight-mod/wp/appPanels_appPanels";
 import * as Components from "@moonlight-mod/wp/discord/components/common/index";
 
-const { PlayIcon, PauseIcon, ArrowSmallLeftIcon, ArrowSmallRightIcon, Text } = Components;
+const { PlayIcon, PauseIcon, ArrowSmallLeftIcon, ArrowSmallRightIcon, Text, Tooltip } = Components;
 let copy: (text: string) => void;
+let IconButton: React.ComponentType<any>;
+let NativeUtils: {
+  copyImage: (src: string) => void;
+};
 
 function MediaControlsUI() {
   if (!copy) {
@@ -15,11 +19,14 @@ function MediaControlsUI() {
     copy = Object.entries(ClipboardUtils).find(([key, value]) => typeof value !== "boolean")?.[1] as (
       text: string
     ) => void;
+    IconButton = spacepack.findByCode(".PANEL_BUTTON,")[0].exports.Z;
+    NativeUtils = spacepack.findByCode("Data fetch unsuccessful")[0].exports.ZP;
   }
 
   const state = useStateFromStores([MediaControlsStore], () => MediaControlsStore.getState());
   const [realElapsed, setRealElapsed] = React.useState(0);
   const [elapsed, setElapsed] = React.useState(0);
+  const [copied, setCopied] = React.useState(false);
 
   // Basic elapsed time calculation
   React.useEffect(() => {
@@ -55,25 +62,57 @@ function MediaControlsUI() {
         "--progress": `${(elapsed / state.duration) * 100}%`
       }}
     >
-      {state.cover != null && <img src={state.cover} className="mediaControls-cover" />}
+      {state.cover != null && (
+        <Tooltip
+          text="Copied cover art!"
+          shouldShow={copied}
+          forceOpen={copied}
+          // @ts-expect-error TODO: mappings
+          color={Tooltip.Colors.GREEN}
+        >
+          {(props: any) => (
+            <img
+              {...props}
+              src={state.cover}
+              className="mediaControls-cover"
+              onClick={() => {
+                if (NativeUtils && state.cover) {
+                  NativeUtils.copyImage(state.cover);
+                  setCopied(true);
+                  setTimeout(() => setCopied(false), 1000);
+                }
+              }}
+            />
+          )}
+        </Tooltip>
+      )}
 
       <div className="mediaControls-labels">
-        <Text variant="text-sm/bold" className="mediaControls-label" onClick={() => copy(state.title)}>
-          {state.title}
-        </Text>
-        <Text variant="text-xs/normal" className="mediaControls-label" onClick={() => copy(state.artist)}>
-          {state.artist}
-        </Text>
+        <Tooltip text={state.title} position="top">
+          {(props: any) => (
+            <Text {...props} variant="text-sm/bold" className="mediaControls-label" tooltipText={state.title}>
+              {state.title}
+            </Text>
+          )}
+        </Tooltip>
+
+        <Tooltip text={state.artist} position="top">
+          {(props: any) => (
+            <Text {...props} variant="text-xs/normal" className="mediaControls-label">
+              {state.artist}
+            </Text>
+          )}
+        </Tooltip>
       </div>
 
       <div className="mediaControls-interact">
-        <ArrowSmallLeftIcon onClick={() => MediaControlsStore.previous()} />
-        {state.playing ? (
-          <PauseIcon onClick={() => MediaControlsStore.playPause()} />
-        ) : (
-          <PlayIcon onClick={() => MediaControlsStore.playPause()} />
-        )}
-        <ArrowSmallRightIcon onClick={() => MediaControlsStore.next()} />
+        <IconButton icon={ArrowSmallLeftIcon} tooltipText="Previous" onClick={() => MediaControlsStore.previous()} />
+        <IconButton
+          icon={state.playing ? PauseIcon : PlayIcon}
+          tooltipText={state.playing ? "Pause" : "Play"}
+          onClick={() => MediaControlsStore.playPause()}
+        />
+        <IconButton icon={ArrowSmallRightIcon} tooltipText="Next" onClick={() => MediaControlsStore.next()} />
       </div>
     </div>
   );

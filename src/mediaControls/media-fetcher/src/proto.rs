@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::base::compare_floats;
 
-#[derive(Deserialize, Serialize, Default, PartialEq, Clone)]
+#[derive(Deserialize, Serialize, Default, PartialEq, Clone, Debug)]
 pub enum RepeatMode {
     #[default]
     None,
@@ -22,7 +22,7 @@ pub enum Request {
     SetShuffle { shuffle: bool },
 }
 
-#[derive(Serialize, Default, Clone)]
+#[derive(Serialize, Default, Clone, Debug)]
 pub struct PlaybackStatus {
     pub title: String,
     pub artist: String,

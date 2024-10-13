@@ -17,6 +17,12 @@
       "type": "multiselect",
       "options": ["mediaFetcher", "spotify"]
     },
+    "disableBar": {
+      "displayName": "Disable progress bar",
+      "description": "Disables the bar that shows the song duration at the top of the controls",
+      "type": "boolean",
+      "default": false
+    },
     "mediaFetcherPath": {
       "displayName": "Media fetcher path",
       "description": "[Media fetcher only] Path to the media fetcher executable on your system",

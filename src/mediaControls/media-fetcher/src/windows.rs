@@ -44,11 +44,6 @@ impl WindowsMediaFetcher {
                 / WHAT_ARE_THEY_DOING_AT_MICROSOFT;
             let duration = timeline_properties.EndTime().unwrap_or_default().Duration as f64
                 / WHAT_ARE_THEY_DOING_AT_MICROSOFT;
-            if duration == 0. {
-                // Detect the scenario the music player was closed
-                // For some reason, it still reports data, but all empty
-                return Ok(());
-            }
 
             let mut new_status = PlaybackStatus {
                 title: String::new(),
@@ -57,12 +52,23 @@ impl WindowsMediaFetcher {
                 duration,
                 playing: playback_status
                     == GlobalSystemMediaTransportControlsSessionPlaybackStatus::Playing,
-                repeat: match playback_info.AutoRepeatMode()?.Value()? {
+                repeat: match playback_info
+                    .AutoRepeatMode()
+                    .ok()
+                    .map(|x| x.Value().ok())
+                    .flatten()
+                    .unwrap_or(MediaPlaybackAutoRepeatMode::None)
+                {
                     MediaPlaybackAutoRepeatMode::List => crate::proto::RepeatMode::All,
                     MediaPlaybackAutoRepeatMode::Track => crate::proto::RepeatMode::One,
                     _ => crate::proto::RepeatMode::None,
                 },
-                shuffle: playback_info.IsShuffleActive()?.Value()?,
+                shuffle: playback_info
+                    .IsShuffleActive()
+                    .ok()
+                    .map(|x| x.Value().ok())
+                    .flatten()
+                    .unwrap_or(false),
             };
 
             if let Ok(media_properties) = session.TryGetMediaPropertiesAsync()?.await {

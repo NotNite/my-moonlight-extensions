@@ -28,6 +28,8 @@ let NativeUtils: {
   copyImage: (src: string) => void;
 };
 
+const disableBar = moonlight.getConfigOption("mediaControls", "disableBar") ?? false;
+
 function MediaControlsContextMenu() {
   const state = useStateFromStores([MediaControlsStore], () => MediaControlsStore.getState());
 
@@ -111,6 +113,7 @@ function MediaControlsUI() {
   }, [state]);
 
   React.useEffect(() => {
+    if (disableBar) return;
     setElapsed(realElapsed);
 
     // seems to drift by a bit
@@ -118,7 +121,7 @@ function MediaControlsUI() {
     const interval = setInterval(() => {
       const now = Math.floor(Date.now() / 1000) - 1;
       const diff = now - recorded;
-      if (diff < 1 || !state?.playing) return;
+      if (diff < 1 || !state?.playing || state.duration === 0) return;
       setElapsed(realElapsed + diff);
     }, 500);
 

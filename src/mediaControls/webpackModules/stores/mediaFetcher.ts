@@ -59,6 +59,7 @@ class MediaFetcherStore extends MediaControlsBaseStore {
 
   getState(): MediaState | null {
     if (this.status == null) return null;
+    if (this.status.artist === "" && this.status.title === "") return null;
 
     return {
       //title: "REALLY LONG TITLE THAT CLIPS OFF THE SCREEN kjhasdhfjhkahsdjhf]asdjhf",

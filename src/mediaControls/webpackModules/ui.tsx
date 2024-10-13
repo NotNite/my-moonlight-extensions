@@ -137,6 +137,25 @@ function MediaControlsUI() {
         // @ts-expect-error I know what I am doing
         "--progress": `${(elapsed / state.duration) * 100}%`
       }}
+      onClick={(e) => {
+        if (disableBar) return;
+
+        const rect = e.currentTarget.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        // This fires for any click anywhere on the element
+        // Only allow clicks that were near the progress bar
+        const leeway = 2;
+        const progressBarSize =
+          parseInt(window.getComputedStyle(e.currentTarget).backgroundSize.split(" ")[1].replace("px", "")) * leeway;
+        if (y > progressBarSize) return;
+
+        const percentage = x / rect.width;
+        const time = state.duration * percentage;
+
+        MediaControlsStore.seek(time);
+      }}
     >
       {state.cover != null && (
         <img

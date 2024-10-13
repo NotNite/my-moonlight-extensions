@@ -102,6 +102,15 @@ export class MediaControlsMediaFetcherStore extends MediaControlsBaseStore {
     if (natives == null) return;
     natives.sendMediaFetcherRequest({ type: MediaFetcherRequestType.SetShuffle, shuffle });
   }
+
+  seek(time: number) {
+    if (natives == null) return;
+    natives.sendMediaFetcherRequest({ type: MediaFetcherRequestType.Seek, position: time });
+    if (this.status != null) {
+      this.status.elapsed = time;
+      this.emitChange();
+    }
+  }
 }
 
 export default function createMediaFetcherStore() {

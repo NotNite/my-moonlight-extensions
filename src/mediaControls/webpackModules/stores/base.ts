@@ -16,4 +16,5 @@ export default abstract class MediaControlsBaseStore extends Store<any> {
   abstract next(): void;
   abstract setRepeatMode(mode: RepeatMode): void;
   abstract setShuffleMode(shuffle: boolean): void;
+  abstract seek(time: number): void;
 }

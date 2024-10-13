@@ -5,7 +5,8 @@ export enum MediaFetcherRequestType {
   SkipBackward = "SkipBackward",
   SkipForward = "SkipForward",
   SetRepeatMode = "SetRepeatMode",
-  SetShuffle = "SetShuffle"
+  SetShuffle = "SetShuffle",
+  Seek = "Seek"
 }
 
 export enum RepeatMode {
@@ -37,6 +38,10 @@ export type MediaFetcherRequest =
   | {
       type: MediaFetcherRequestType.SetShuffle;
       shuffle: boolean;
+    }
+  | {
+      type: MediaFetcherRequestType.Seek;
+      position: number;
     };
 
 export enum MediaFetcherResponseType {

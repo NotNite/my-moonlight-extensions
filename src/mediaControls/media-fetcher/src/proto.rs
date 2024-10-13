@@ -20,6 +20,7 @@ pub enum Request {
     SkipForward,
     SetRepeatMode { mode: RepeatMode },
     SetShuffle { shuffle: bool },
+    Seek { position: f64 },
 }
 
 #[derive(Serialize, Default, Clone, Debug)]

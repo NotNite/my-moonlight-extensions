@@ -80,6 +80,10 @@ class MediaControlsStore extends Store<any> {
   setShuffleMode(shuffle: boolean) {
     this.currentSource?.setShuffleMode(shuffle);
   }
+
+  seek(time: number) {
+    this.currentSource?.seek(time);
+  }
 }
 
 const mediaControlsStore = new MediaControlsStore();

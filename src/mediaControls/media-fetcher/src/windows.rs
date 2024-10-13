@@ -220,6 +220,14 @@ impl MediaFetcher for WindowsMediaFetcher {
                 session.TryChangeShuffleActiveAsync(shuffle)?.await?;
                 Ok(())
             }
+
+            Request::Seek { position } => {
+                let position = position * WHAT_ARE_THEY_DOING_AT_MICROSOFT;
+                session
+                    .TryChangePlaybackPositionAsync(position as i64)?
+                    .await?;
+                Ok(())
+            }
         }
     }
 }

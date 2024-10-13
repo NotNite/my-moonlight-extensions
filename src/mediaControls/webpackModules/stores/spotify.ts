@@ -94,6 +94,17 @@ export class MediaControlsSpotifyStore extends MediaControlsBaseStore {
     }
   }
 
+  seek(time: number) {
+    this.request("PUT", "/me/player/seek", {
+      query: {
+        position_ms: Math.floor(time * 1000)
+      }
+    });
+    if (this.state != null) {
+      this.state.position = time * 1000;
+    }
+  }
+
   private request(method: string, url: string, data: any = {}) {
     const socket = SpotifyStore.getActiveSocketAndDevice().socket;
     return HTTP[method.toLowerCase()]({

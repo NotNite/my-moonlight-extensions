@@ -38,6 +38,7 @@ export class MediaControlsSpotifyStore extends MediaControlsBaseStore {
 
   getState() {
     if (this.state == null) return null;
+    if (this.state.track == null) return null;
 
     return {
       title: this.state?.track?.name ?? "",

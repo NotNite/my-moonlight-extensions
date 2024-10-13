@@ -7,7 +7,7 @@ let process: child_process.ChildProcess | null = null;
 const natives: MediaControlsNatives = {
   spawnMediaFetcher(cb) {
     if (process != null) {
-      process.kill();
+      process.kill("SIGKILL");
       process = null;
     }
 

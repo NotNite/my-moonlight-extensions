@@ -15,7 +15,6 @@ class MediaFetcherStore extends MediaControlsBaseStore {
 
   private coverSong: [string, string] | null = null;
   private cover: string | null = null;
-  private waitingToSendAlbumArt: boolean | null = false;
 
   constructor() {
     super();
@@ -34,7 +33,6 @@ class MediaFetcherStore extends MediaControlsBaseStore {
             if (newTitle !== title || newArtist !== artist) {
               this.cover = null;
               this.coverSong = null;
-              this.waitingToSendAlbumArt = false;
             }
           }
 
@@ -42,19 +40,10 @@ class MediaFetcherStore extends MediaControlsBaseStore {
 
           // Only make a request for album art if we don't already have it
           // For some reason asking immediately after the engine starts explodes
-          if (this.waitingToSendAlbumArt) {
+          if (this.coverSong == null) {
+            this.coverSong = newCoverSong;
             logger.debug("Requesting album art for", this.coverSong);
             natives.sendMediaFetcherRequest({ type: MediaFetcherRequestType.GetAlbumArt });
-            this.waitingToSendAlbumArt = null;
-          } else if (this.coverSong == null) {
-            this.coverSong = newCoverSong;
-            logger.debug("Waiting to request album art for", this.coverSong);
-
-            if (this.waitingToSendAlbumArt == null) {
-              natives.sendMediaFetcherRequest({ type: MediaFetcherRequestType.GetAlbumArt });
-            } else {
-              this.waitingToSendAlbumArt = true;
-            }
           }
 
           this.emitChange();

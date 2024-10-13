@@ -32,10 +32,7 @@ export const styles: string[] = [
 
   padding: 0.5rem;
   height: 2.5rem;
-  gap: 0.5rem;
 
-  /* random number to get it to line up with profile picture */
-  padding-left: 10px;
   /* account for the progress bar */
   padding-top: 0.75rem;
 
@@ -50,6 +47,8 @@ export const styles: string[] = [
 
 .mediaControls-cover {
   height: 32px;
+  /* align to the text and pfp below */
+  padding-right: 8px;
 
   flex-grow: 0;
   flex-shrink: 1;

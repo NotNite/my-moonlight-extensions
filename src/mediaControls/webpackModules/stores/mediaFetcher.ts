@@ -34,6 +34,7 @@ class MediaFetcherStore extends MediaControlsBaseStore {
             if (newTitle !== title || newArtist !== artist) {
               this.cover = null;
               this.coverSong = null;
+              this.waitingToSendAlbumArt = false;
             }
           }
 

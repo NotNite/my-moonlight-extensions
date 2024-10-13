@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import * as esbuild from "esbuild";
 import copyStaticFiles from "esbuild-copy-static-files";
 import fs from "fs";
@@ -47,11 +48,7 @@ function makeConfig(ext, name) {
     name: "buildLog",
     setup(build) {
       build.onEnd(() => {
-        console.log(
-          `[${timeFormatter.format(
-            new Date()
-          )}] [${ext}/${name}] build finished`
-        );
+        console.log(`[${timeFormatter.format(new Date())}] [${ext}/${name}] build finished`);
       });
     }
   };
@@ -85,11 +82,7 @@ function makeConfig(ext, name) {
 const exts = fs.readdirSync("./src");
 
 const config = exts
-  .map((x) => [
-    makeConfig(x, "index"),
-    makeConfig(x, "node"),
-    makeConfig(x, "host")
-  ])
+  .map((x) => [makeConfig(x, "index"), makeConfig(x, "node"), makeConfig(x, "host")])
   .flat()
   .filter((c) => c !== null);
 

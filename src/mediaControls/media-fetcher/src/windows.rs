@@ -1,16 +1,18 @@
-use std::io::Cursor;
-
 use crate::{
     base::{send_response, MediaFetcher},
-    proto::{Request, SongStatus},
+    proto::{PlaybackStatus, Request},
 };
 use async_trait::async_trait;
 use base64::Engine;
+use std::io::Cursor;
 use windows::{
-    Media::Control::{
-        GlobalSystemMediaTransportControlsSession,
-        GlobalSystemMediaTransportControlsSessionManager,
-        GlobalSystemMediaTransportControlsSessionPlaybackStatus,
+    Media::{
+        Control::{
+            GlobalSystemMediaTransportControlsSession,
+            GlobalSystemMediaTransportControlsSessionManager,
+            GlobalSystemMediaTransportControlsSessionPlaybackStatus,
+        },
+        MediaPlaybackAutoRepeatMode,
     },
     Storage::Streams::DataReader,
 };
@@ -27,7 +29,7 @@ impl WindowsMediaFetcher {
         &self,
         session: GlobalSystemMediaTransportControlsSession,
     ) -> anyhow::Result<()> {
-        let mut status = SongStatus::default();
+        let mut status = PlaybackStatus::default();
 
         loop {
             let timeline_properties = session.GetTimelineProperties()?;
@@ -48,11 +50,19 @@ impl WindowsMediaFetcher {
                 return Ok(());
             }
 
-            let mut new_status = SongStatus {
+            let mut new_status = PlaybackStatus {
                 title: String::new(),
                 artist: String::new(),
                 elapsed,
                 duration,
+                playing: playback_status
+                    == GlobalSystemMediaTransportControlsSessionPlaybackStatus::Playing,
+                repeat: match playback_info.AutoRepeatMode()?.Value()? {
+                    MediaPlaybackAutoRepeatMode::List => crate::proto::RepeatMode::All,
+                    MediaPlaybackAutoRepeatMode::Track => crate::proto::RepeatMode::One,
+                    _ => crate::proto::RepeatMode::None,
+                },
+                shuffle: playback_info.IsShuffleActive()?.Value()?,
             };
 
             if let Ok(media_properties) = session.TryGetMediaPropertiesAsync()?.await {
@@ -68,12 +78,8 @@ impl WindowsMediaFetcher {
 
             // Timeline properties don't update immediately
             if new_status != status {
-                status = new_status;
-                send_response(crate::proto::Response::PlaybackStatus {
-                    song: Some(status.clone()),
-                    playing: playback_status
-                        == GlobalSystemMediaTransportControlsSessionPlaybackStatus::Playing,
-                })?;
+                status = new_status.clone();
+                send_response(crate::proto::Response::PlaybackStatus(new_status))?;
             }
 
             tokio::time::sleep(std::time::Duration::from_secs(1)).await;
@@ -104,10 +110,9 @@ impl MediaFetcher for WindowsMediaFetcher {
             }
 
             if !sent_failure {
-                send_response(crate::proto::Response::PlaybackStatus {
-                    song: None,
-                    playing: false,
-                })?;
+                send_response(crate::proto::Response::PlaybackStatus(
+                    PlaybackStatus::default(),
+                ))?;
                 sent_failure = true;
             }
 
@@ -171,6 +176,24 @@ impl MediaFetcher for WindowsMediaFetcher {
                     _ => unreachable!(),
                 }
 
+                Ok(())
+            }
+
+            Request::SetRepeatMode { mode } => {
+                let session = self.session_manager.as_ref().unwrap().GetCurrentSession()?;
+                session
+                    .TryChangeAutoRepeatModeAsync(match mode {
+                        crate::proto::RepeatMode::None => MediaPlaybackAutoRepeatMode::None,
+                        crate::proto::RepeatMode::All => MediaPlaybackAutoRepeatMode::List,
+                        crate::proto::RepeatMode::One => MediaPlaybackAutoRepeatMode::Track,
+                    })?
+                    .await?;
+                Ok(())
+            }
+
+            Request::SetShuffle { shuffle } => {
+                let session = self.session_manager.as_ref().unwrap().GetCurrentSession()?;
+                session.TryChangeShuffleActiveAsync(shuffle)?.await?;
                 Ok(())
             }
         }

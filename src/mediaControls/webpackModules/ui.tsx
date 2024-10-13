@@ -4,13 +4,87 @@ import { MediaControlsStore } from "@moonlight-mod/wp/mediaControls_stores";
 import { useStateFromStores } from "@moonlight-mod/wp/discord/packages/flux";
 import AppPanels from "@moonlight-mod/wp/appPanels_appPanels";
 import * as Components from "@moonlight-mod/wp/discord/components/common/index";
+import { RepeatMode } from "../types";
 
-const { PlayIcon, PauseIcon, ArrowSmallLeftIcon, ArrowSmallRightIcon, Text, Tooltip } = Components;
+const {
+  PlayIcon,
+  PauseIcon,
+  ArrowSmallLeftIcon,
+  ArrowSmallRightIcon,
+
+  Text,
+  Tooltip,
+
+  Menu,
+  MenuItem,
+  MenuGroup,
+  MenuRadioItem,
+  MenuCheckboxItem
+} = Components;
+const ContextMenuActionCreators = spacepack.require("discord/actions/ContextMenuActionCreators");
 let copy: (text: string) => void;
 let IconButton: React.ComponentType<any>;
 let NativeUtils: {
   copyImage: (src: string) => void;
 };
+
+function MediaControlsContextMenu() {
+  const state = useStateFromStores([MediaControlsStore], () => MediaControlsStore.getState());
+
+  return (
+    <div>
+      <Menu navId="media-controls" onClose={ContextMenuActionCreators.closeContextMenu}>
+        <MenuGroup>
+          <MenuItem id="media-controls-repeat" label="Repeat">
+            <MenuRadioItem
+              id="media-controls-repeat-none"
+              label="None"
+              checked={state?.repeat === RepeatMode.None}
+              action={() => {
+                MediaControlsStore.setRepeatMode(RepeatMode.None);
+              }}
+            />
+
+            <MenuRadioItem
+              id="media-controls-repeat-all"
+              label="All"
+              checked={state?.repeat === RepeatMode.All}
+              action={() => {
+                MediaControlsStore.setRepeatMode(RepeatMode.All);
+              }}
+            />
+
+            <MenuRadioItem
+              id="media-controls-repeat-one"
+              label="One"
+              checked={state?.repeat === RepeatMode.One}
+              action={() => {
+                MediaControlsStore.setRepeatMode(RepeatMode.One);
+              }}
+            />
+          </MenuItem>
+
+          <MenuCheckboxItem
+            id="media-controls-shuffle"
+            label="Shuffle"
+            checked={state?.shuffle}
+            action={() => MediaControlsStore.setShuffleMode(!state?.shuffle)}
+          />
+
+          <MenuItem
+            id="media-controls-copy-cover"
+            label="Copy Cover"
+            action={() => {
+              if (state?.cover != null) {
+                NativeUtils.copyImage(state.cover);
+              }
+            }}
+          />
+        </MenuGroup>
+      </Menu>
+    </div>
+  );
+}
 
 function MediaControlsUI() {
   if (!copy) {
@@ -26,7 +100,6 @@ function MediaControlsUI() {
   const state = useStateFromStores([MediaControlsStore], () => MediaControlsStore.getState());
   const [realElapsed, setRealElapsed] = React.useState(0);
   const [elapsed, setElapsed] = React.useState(0);
-  const [copied, setCopied] = React.useState(false);
 
   // Basic elapsed time calculation
   React.useEffect(() => {
@@ -63,28 +136,14 @@ function MediaControlsUI() {
       }}
     >
       {state.cover != null && (
-        <Tooltip
-          text="Copied cover art!"
-          shouldShow={copied}
-          forceOpen={copied}
-          // @ts-expect-error TODO: mappings
-          color={Tooltip.Colors.GREEN}
-        >
-          {(props: any) => (
-            <img
-              {...props}
-              src={state.cover}
-              className="mediaControls-cover"
-              onClick={() => {
-                if (NativeUtils && state.cover) {
-                  NativeUtils.copyImage(state.cover);
-                  setCopied(true);
-                  setTimeout(() => setCopied(false), 1000);
-                }
-              }}
-            />
-          )}
-        </Tooltip>
+        <img
+          src={state.cover}
+          className="mediaControls-cover"
+          onContextMenu={(e) => {
+            e.preventDefault();
+            ContextMenuActionCreators.openContextMenu(e, () => <MediaControlsContextMenu />);
+          }}
+        />
       )}
 
       <div className="mediaControls-labels">

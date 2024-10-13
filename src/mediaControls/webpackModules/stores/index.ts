@@ -1,7 +1,7 @@
 import { Store } from "@moonlight-mod/wp/discord/packages/flux";
 import Dispatcher from "@moonlight-mod/wp/discord/Dispatcher";
 
-import type { MediaState } from "../../types";
+import type { MediaState, RepeatMode } from "../../types";
 import type MediaControlsBaseStore from "./base";
 import { MediaFetcherStore } from "./mediaFetcher";
 
@@ -64,6 +64,14 @@ class MediaControlsStore extends Store<any> {
 
   next() {
     this.currentFetcher?.next();
+  }
+
+  setRepeatMode(mode: RepeatMode) {
+    this.currentFetcher?.setRepeatMode(mode);
+  }
+
+  setShuffleMode(shuffle: boolean) {
+    this.currentFetcher?.setShuffleMode(shuffle);
   }
 }
 

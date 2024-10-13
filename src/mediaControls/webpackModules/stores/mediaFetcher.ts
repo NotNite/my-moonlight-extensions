@@ -3,6 +3,7 @@ import {
   MediaFetcherResponsePlaybackStatus,
   MediaFetcherResponseType,
   MediaState,
+  RepeatMode,
   type MediaControlsNatives
 } from "../../types";
 import MediaControlsBaseStore from "./base";
@@ -24,7 +25,7 @@ class MediaFetcherStore extends MediaControlsBaseStore {
         logger.silly("Received media fetcher response", data);
 
         if (data.type === MediaFetcherResponseType.PlaybackStatus) {
-          const newCoverSong = [data?.song?.title ?? "", data?.song?.artist ?? ""] as [string, string];
+          const newCoverSong = [data?.title ?? "", data?.artist ?? ""] as [string, string];
 
           // Reset album art if the song has changed
           if (this.coverSong != null && this.status != null) {
@@ -58,16 +59,17 @@ class MediaFetcherStore extends MediaControlsBaseStore {
 
   getState(): MediaState | null {
     if (this.status == null) return null;
-    if (this.status.song == null) return null;
 
     return {
       //title: "REALLY LONG TITLE THAT CLIPS OFF THE SCREEN kjhasdhfjhkahsdjhf]asdjhf",
-      title: this.status.song.title,
-      artist: this.status.song.artist,
-      elapsed: this.status.song.elapsed,
-      duration: this.status.song.duration,
+      title: this.status.title,
+      artist: this.status.artist,
+      elapsed: this.status.elapsed,
+      duration: this.status.duration,
       cover: this.cover ?? undefined,
-      playing: this.status.playing
+      playing: this.status.playing,
+      repeat: this.status.repeat,
+      shuffle: this.status.shuffle
     };
   }
 
@@ -89,6 +91,16 @@ class MediaFetcherStore extends MediaControlsBaseStore {
   next() {
     if (natives == null) return;
     natives.sendMediaFetcherRequest({ type: MediaFetcherRequestType.SkipForward });
+  }
+
+  setRepeatMode(mode: RepeatMode) {
+    if (natives == null) return;
+    natives.sendMediaFetcherRequest({ type: MediaFetcherRequestType.SetRepeatMode, mode });
+  }
+
+  setShuffleMode(shuffle: boolean) {
+    if (natives == null) return;
+    natives.sendMediaFetcherRequest({ type: MediaFetcherRequestType.SetShuffle, shuffle });
   }
 }
 

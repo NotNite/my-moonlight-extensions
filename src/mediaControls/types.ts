@@ -3,24 +3,46 @@ export enum MediaFetcherRequestType {
   Play = "Play",
   Pause = "Pause",
   SkipBackward = "SkipBackward",
-  SkipForward = "SkipForward"
+  SkipForward = "SkipForward",
+  SetRepeatMode = "SetRepeatMode",
+  SetShuffle = "SetShuffle"
 }
 
-export type MediaFetcherRequest = {
-  type: MediaFetcherRequestType;
-};
+export enum RepeatMode {
+  None = "None",
+  All = "All",
+  One = "One"
+}
+
+export type MediaFetcherRequest =
+  | {
+      type: MediaFetcherRequestType.GetAlbumArt;
+    }
+  | {
+      type: MediaFetcherRequestType.Play;
+    }
+  | {
+      type: MediaFetcherRequestType.Pause;
+    }
+  | {
+      type: MediaFetcherRequestType.SkipBackward;
+    }
+  | {
+      type: MediaFetcherRequestType.SkipForward;
+    }
+  | {
+      type: MediaFetcherRequestType.SetRepeatMode;
+      mode: RepeatMode;
+    }
+  | {
+      type: MediaFetcherRequestType.SetShuffle;
+      shuffle: boolean;
+    };
 
 export enum MediaFetcherResponseType {
   AlbumArt = "AlbumArt",
   PlaybackStatus = "PlaybackStatus"
 }
-
-export type SongStatus = {
-  title: string;
-  artist: string;
-  elapsed: number;
-  duration: number;
-};
 
 export type MediaFetcherResponseAlbumArt = {
   type: MediaFetcherResponseType.AlbumArt;
@@ -29,8 +51,13 @@ export type MediaFetcherResponseAlbumArt = {
 
 export type MediaFetcherResponsePlaybackStatus = {
   type: MediaFetcherResponseType.PlaybackStatus;
-  song?: SongStatus;
+  title: string;
+  artist: string;
+  elapsed: number;
+  duration: number;
   playing: boolean;
+  repeat: RepeatMode;
+  shuffle: boolean;
 };
 
 export type MediaFetcherResponse = MediaFetcherResponseAlbumArt | MediaFetcherResponsePlaybackStatus;
@@ -47,4 +74,6 @@ export type MediaState = {
   duration: number;
   cover?: string;
   playing: boolean;
+  repeat: RepeatMode;
+  shuffle: boolean;
 };

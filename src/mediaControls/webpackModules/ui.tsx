@@ -5,6 +5,8 @@ import { useStateFromStores } from "@moonlight-mod/wp/discord/packages/flux";
 import AppPanels from "@moonlight-mod/wp/appPanels_appPanels";
 import * as Components from "@moonlight-mod/wp/discord/components/common/index";
 import { RepeatMode } from "../types";
+import { NextTrackIcon } from "./NextTrackIcon";
+import { PreviousTrackIcon } from "./PreviousTrackIcon";
 
 const {
   PlayIcon,
@@ -187,13 +189,13 @@ function MediaControlsUI() {
       </div>
 
       <div className="mediaControls-interact">
-        <IconButton icon={ArrowSmallLeftIcon} tooltipText="Previous" onClick={() => MediaControlsStore.previous()} />
+        <IconButton icon={PreviousTrackIcon} tooltipText="Previous" onClick={() => MediaControlsStore.previous()} />
         <IconButton
           icon={state.playing ? PauseIcon : PlayIcon}
           tooltipText={state.playing ? "Pause" : "Play"}
           onClick={() => MediaControlsStore.playPause()}
         />
-        <IconButton icon={ArrowSmallRightIcon} tooltipText="Next" onClick={() => MediaControlsStore.next()} />
+        <IconButton icon={NextTrackIcon} tooltipText="Next" onClick={() => MediaControlsStore.next()} />
       </div>
     </div>
   );

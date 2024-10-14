@@ -4,10 +4,7 @@ import spacepack from "@moonlight-mod/wp/spacepack_spacepack";
 
 // TODO: types
 const SpotifyStore = spacepack.require("discord/modules/spotify/SpotifyStore").default;
-const HTTPUtils = spacepack.require("discord/utils/HTTPUtils");
-const HTTP = Object.entries(HTTPUtils).find(
-  ([, v]) => typeof v === "object" && v !== null && "patch" in v
-)?.[1] as Record<string, any>;
+const { HTTP } = spacepack.require("discord/utils/HTTPUtils");
 
 type SpotifyTrack = {
   album?: {

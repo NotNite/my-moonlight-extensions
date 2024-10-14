@@ -53,6 +53,9 @@ function makeConfig(ext, name) {
     }
   };
 
+  const styleInput = `./src/${ext}/style.css`;
+  const styleOutput = `./dist/${ext}/style.css`;
+
   return {
     entryPoints,
     outdir: `./dist/${ext}`,
@@ -73,6 +76,14 @@ function makeConfig(ext, name) {
         src: `./src/${ext}/manifest.json`,
         dest: `./dist/${ext}/manifest.json`
       }),
+      ...(fs.existsSync(styleInput)
+        ? [
+            copyStaticFiles({
+              src: styleInput,
+              dest: styleOutput
+            })
+          ]
+        : []),
       wpImportPlugin,
       buildLogPlugin
     ]

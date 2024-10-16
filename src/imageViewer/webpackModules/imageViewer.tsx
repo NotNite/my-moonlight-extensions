@@ -61,6 +61,10 @@ function close() {
 
 const noop = () => {};
 
+function stopPropagation(event) {
+  event.stopPropagation();
+}
+
 export default function ImageViewer({ proxyUrl, url, width, height, alt, type }: Props): JSX.Element {
   const calculatedScale = React.useMemo(() => scale(width, height), [width, height]);
 
@@ -149,6 +153,7 @@ export default function ImageViewer({ proxyUrl, url, width, height, alt, type }:
         style={{
           transform: transformStyle
         }}
+        onClick={stopPropagation}
       >
         {isVideo ? (
           <Video
@@ -176,87 +181,89 @@ export default function ImageViewer({ proxyUrl, url, width, height, alt, type }:
         )}
       </div>
       <div className="imageViewer-toolbar">
-        <HeaderBar.Icon tooltip={Messages.CLOSE} tooltipPosition="top" icon={XLargeIcon} onClick={close} />
+        <div className="imageViewer-toolbar-buttons" onClick={stopPropagation}>
+          <HeaderBar.Icon tooltip={Messages.CLOSE} tooltipPosition="top" icon={XLargeIcon} onClick={close} />
 
-        <HeaderBar.Divider />
+          <HeaderBar.Divider />
 
-        <HeaderBar.Icon
-          tooltip={Messages.OPEN_IN_BROWSER}
-          tooltipPosition="top"
-          icon={WindowLaunchIcon}
-          onClick={() => {
-            window.open(src);
-          }}
-        />
-        <HeaderBar.Icon
-          tooltip="Copy Link"
-          tooltipPosition="top"
-          icon={LinkIcon}
-          onClick={() => {
-            copy(src);
-          }}
-        />
-        {/* @ts-expect-error missing typing for window.DiscordNative */}
-        {!isVideo && window.DiscordNative != null ? (
           <HeaderBar.Icon
-            tooltip={Messages.COPY_IMAGE_MENU_ITEM}
+            tooltip={Messages.OPEN_IN_BROWSER}
             tooltipPosition="top"
-            icon={CopyIcon}
+            icon={WindowLaunchIcon}
             onClick={() => {
-              NativeUtils.copyImage(src);
+              window.open(src);
             }}
           />
-        ) : null}
+          <HeaderBar.Icon
+            tooltip="Copy Link"
+            tooltipPosition="top"
+            icon={LinkIcon}
+            onClick={() => {
+              copy(src);
+            }}
+          />
+          {/* @ts-expect-error missing typing for window.DiscordNative */}
+          {!isVideo && window.DiscordNative != null ? (
+            <HeaderBar.Icon
+              tooltip={Messages.COPY_IMAGE_MENU_ITEM}
+              tooltipPosition="top"
+              icon={CopyIcon}
+              onClick={() => {
+                NativeUtils.copyImage(src);
+              }}
+            />
+          ) : null}
 
-        <HeaderBar.Divider />
+          <HeaderBar.Divider />
 
-        <HeaderBar.Icon
-          tooltip="Recenter"
-          tooltipPosition="top"
-          icon={FullscreenEnterIcon}
-          onClick={() => {
-            setX(0);
-            setY(0);
-            setZoom(calculatedScale);
-          }}
-        />
-        <HeaderBar.Icon
-          tooltip="Zoom In"
-          tooltipPosition="top"
-          icon={PlusLargeIcon}
-          onClick={() => {
-            setZoom((prevZoom) => Math.min(20.0, prevZoom + 0.1));
-          }}
-        />
-        <HeaderBar.Icon
-          tooltip="Zoom Out"
-          tooltipPosition="top"
-          icon={MinusIcon}
-          onClick={() => {
-            setZoom((prevZoom) => Math.max(calculatedScale / 10, prevZoom - 0.1));
-          }}
-        />
+          <HeaderBar.Icon
+            tooltip="Recenter"
+            tooltipPosition="top"
+            icon={FullscreenEnterIcon}
+            onClick={() => {
+              setX(0);
+              setY(0);
+              setZoom(calculatedScale);
+            }}
+          />
+          <HeaderBar.Icon
+            tooltip="Zoom In"
+            tooltipPosition="top"
+            icon={PlusLargeIcon}
+            onClick={() => {
+              setZoom((prevZoom) => Math.min(20.0, prevZoom + 0.1));
+            }}
+          />
+          <HeaderBar.Icon
+            tooltip="Zoom Out"
+            tooltipPosition="top"
+            icon={MinusIcon}
+            onClick={() => {
+              setZoom((prevZoom) => Math.max(calculatedScale / 10, prevZoom - 0.1));
+            }}
+          />
 
-        <HeaderBar.Divider />
+          <HeaderBar.Divider />
 
-        <HeaderBar.Icon
-          tooltip="Rotate Counter-clockwise"
-          tooltipPosition="top"
-          icon={ArrowAngleLeftUpIcon}
-          onClick={() => {
-            setRotate((prevRotate) => prevRotate - 90);
-          }}
-        />
-        <HeaderBar.Icon
-          tooltip="Rotate Clockwise"
-          tooltipPosition="top"
-          icon={ArrowAngleRightUpIcon}
-          onClick={() => {
-            setRotate((prevRotate) => prevRotate + 90);
-          }}
-        />
+          <HeaderBar.Icon
+            tooltip="Rotate Counter-clockwise"
+            tooltipPosition="top"
+            icon={ArrowAngleLeftUpIcon}
+            onClick={() => {
+              setRotate((prevRotate) => prevRotate - 90);
+            }}
+          />
+          <HeaderBar.Icon
+            tooltip="Rotate Clockwise"
+            tooltipPosition="top"
+            icon={ArrowAngleRightUpIcon}
+            onClick={() => {
+              setRotate((prevRotate) => prevRotate + 90);
+            }}
+          />
+        </div>
 
-        <div className="imageViewer-toolbar-label">
+        <div className="imageViewer-toolbar-label" onClick={stopPropagation}>
           <Text variant="text-sm/medium">{filename}</Text>
 
           <HeaderBar.Divider />

@@ -33,6 +33,14 @@
   align-items: center;
 }
 
+.imageViewer-toolbar-buttons {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: row;
+  align-items: center;
+  z-index: 1;
+}
+
 .imageViewer-toolbar-label {
   display: flex;
   flex-grow: 1;

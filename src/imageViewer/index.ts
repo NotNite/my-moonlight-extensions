@@ -4,9 +4,9 @@ export const patches: Patch[] = [
   {
     find: ".Messages.OPEN_IN_BROWSER",
     replace: {
-      match: /,{(.):function\(\){return (.)},(.):function\(\){return (.)}}\)/,
-      replacement: (_, exp1, func1, exp2, func2) =>
-        `,{${exp1}:function(){return(props)=>require("imageViewer_imageViewer").default(props,${func1})},${exp2}:function(){return(props)=>require("imageViewer_imageViewer").default(props,${func2})}})`
+      match: /(?<=\.Fragment,{children:)(\(0,.\.jsx\))\(.\.animated\.div,{.+?},(.)\.url\)/,
+      replacement: (_, createElement, media) =>
+        `${createElement}(require("imageViewer_imageViewer").default,${media},${media}.url)`
     }
   },
 

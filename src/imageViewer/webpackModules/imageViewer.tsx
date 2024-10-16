@@ -31,13 +31,15 @@ const { Messages } = spacepack.require("discord/i18n").default;
 
 type Props = {
   src: string;
+  url: string;
+  proxyUrl: string;
   alt?: string;
   width: number;
   height: number;
   children?: React.ReactNode;
   animated: boolean;
-  poster?: string;
   onClose: () => void;
+  type: "IMAGE" | "VIDEO";
 };
 
 function scale(width: number, height: number) {
@@ -59,7 +61,7 @@ function close() {
 
 const noop = () => {};
 
-export default function ImageViewer({ src, width, height, alt, poster }: Props): JSX.Element {
+export default function ImageViewer({ proxyUrl, url, width, height, alt, type }: Props): JSX.Element {
   const calculatedScale = React.useMemo(() => scale(width, height), [width, height]);
 
   const [x, setX] = React.useState(0);
@@ -71,8 +73,14 @@ export default function ImageViewer({ src, width, height, alt, poster }: Props):
   const [zoomEdit, setZoomEdit] = React.useState(100);
   const wrapperRef = React.createRef<HTMLDivElement>();
 
+  const src = React.useMemo(() => proxyUrl ?? url, [proxyUrl, url]);
   const filename = React.useMemo(() => new URL(src).pathname.split("/").pop(), [src]);
-  const isVideo = React.useMemo(() => poster != null, [poster]);
+  const isVideo = React.useMemo(() => type === "VIDEO", [type]);
+  const poster = React.useMemo(() => {
+    const urlObj = new URL(src);
+    urlObj.searchParams.set("format", "webp");
+    return urlObj.toString();
+  }, [src]);
 
   const handleMouseMove = React.useCallback(
     (e: MouseEvent) => {

@@ -26,8 +26,7 @@ const copy = Object.entries(ClipboardUtils).find(([key, value]) => typeof value 
   text: string
 ) => void;
 const NativeUtils = spacepack.findByCode("Data fetch unsuccessful")[0].exports.ZP;
-const Video = spacepack.findByCode(".Messages.VIDEO", ",onVolumeChange:")[0].exports.Z;
-const { Messages } = spacepack.require("discord/i18n").default;
+const Video = spacepack.findByCode(".VIDEO,", ",onVolumeChange:")[0].exports.Z;
 
 type Props = {
   src: string;
@@ -61,7 +60,7 @@ function close() {
 
 const noop = () => {};
 
-function stopPropagation(event) {
+function stopPropagation(event: any) {
   event.stopPropagation();
 }
 
@@ -182,12 +181,12 @@ export default function ImageViewer({ proxyUrl, url, width, height, alt, type }:
       </div>
       <div className="imageViewer-toolbar">
         <div className="imageViewer-toolbar-buttons" onClick={stopPropagation}>
-          <HeaderBar.Icon tooltip={Messages.CLOSE} tooltipPosition="top" icon={XLargeIcon} onClick={close} />
+          <HeaderBar.Icon tooltip={"Close"} tooltipPosition="top" icon={XLargeIcon} onClick={close} />
 
           <HeaderBar.Divider />
 
           <HeaderBar.Icon
-            tooltip={Messages.OPEN_IN_BROWSER}
+            tooltip={"Open in Browser"}
             tooltipPosition="top"
             icon={WindowLaunchIcon}
             onClick={() => {
@@ -205,7 +204,7 @@ export default function ImageViewer({ proxyUrl, url, width, height, alt, type }:
           {/* @ts-expect-error missing typing for window.DiscordNative */}
           {!isVideo && window.DiscordNative != null ? (
             <HeaderBar.Icon
-              tooltip={Messages.COPY_IMAGE_MENU_ITEM}
+              tooltip={"Copy Image"}
               tooltipPosition="top"
               icon={CopyIcon}
               onClick={() => {

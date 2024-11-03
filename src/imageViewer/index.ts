@@ -2,7 +2,7 @@ import type { ExtensionWebpackModule, Patch } from "@moonlight-mod/types";
 
 export const patches: Patch[] = [
   {
-    find: ".Messages.OPEN_IN_BROWSER",
+    find: ".zoomedMediaFitWrapper,",
     replace: {
       match: /(?<=\.Fragment,{children:)(\(0,.\.jsx\))\(.\.animated\.div,{.+?},(.)\.url\)/,
       replacement: (_, createElement, media) =>

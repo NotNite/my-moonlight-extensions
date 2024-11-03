@@ -1,18 +1,21 @@
-import type { Patch } from "@moonlight-mod/types";
+import type { ExtensionWebExports } from "@moonlight-mod/types";
 
-export const patches: Patch[] = [
+export const patches: ExtensionWebExports["patches"] = [
   {
-    find: ".DEV_NOTICE_STAGING.format",
+    find: ".devBanner,",
     replace: [
       {
         match: '"staging"===window.GLOBAL_ENV.RELEASE_CHANNEL',
         replacement: "true"
       },
       {
-        match: /.\..\.Messages\.DEV_NOTICE_STAGING\.format\({buildNumber:(.+?)}\)/,
-        replacement: (_, buildNumber) =>
-          `window.GLOBAL_ENV.RELEASE_CHANNEL.charAt(0).toUpperCase() + window.GLOBAL_ENV.RELEASE_CHANNEL.slice(1) + " " + ${buildNumber}`
+        match: /.\.intl\.format\(.+?,{buildNumber:(.+?)}\)/,
+        replacement: (_, buildNumber) => `require("devBanner_devBanner").transform(${buildNumber})`
       }
     ]
   }
 ];
+
+export const webpackModules: ExtensionWebExports["webpackModules"] = {
+  devBanner: {}
+};

@@ -25,13 +25,27 @@ const ClipboardUtils = spacepack.require("discord/utils/ClipboardUtils");
 const copy = Object.entries(ClipboardUtils).find(([key, value]) => typeof value !== "boolean")?.[1] as (
   text: string
 ) => void;
-const NativeUtils = spacepack.findByCode("Data fetch unsuccessful")[0].exports.ZP;
-const Video = spacepack.findByCode(".VIDEO,", ",onVolumeChange:")[0].exports.Z;
+const NativeUtils = spacepack.findByCode("Data fetch" + " unsuccessful")[0].exports.ZP;
+const RawVideo = spacepack.findByCode(
+  'MOSAIC?{width:"100%",height:"100%",' + 'maxHeight:"inherit",objectFit:"contain"}'
+)[0].exports.Z;
+const Video = spacepack.findByCode(".VIDEO,", ",onVolume" + "Change:")[0].exports.Z;
+
+type SourceMetadata = {
+  identifier: {
+    type: string;
+    embedIndex?: number;
+  };
+  message: {
+    embeds?: any[];
+  };
+};
 
 type Props = {
   src: string;
   url: string;
-  proxyUrl: string;
+  original: string;
+  proxyUrl?: string;
   alt?: string;
   width: number;
   height: number;
@@ -39,6 +53,7 @@ type Props = {
   animated: boolean;
   onClose: () => void;
   type: "IMAGE" | "VIDEO";
+  sourceMetadata: SourceMetadata;
 };
 
 function scale(width: number, height: number) {
@@ -64,7 +79,17 @@ function stopPropagation(event: any) {
   event.stopPropagation();
 }
 
-export default function ImageViewer({ proxyUrl, url, width, height, alt, type }: Props): JSX.Element {
+export default function ImageViewer({
+  proxyUrl,
+  url,
+  original,
+  width,
+  height,
+  alt,
+  type,
+  animated,
+  sourceMetadata
+}: Props): JSX.Element {
   const calculatedScale = React.useMemo(() => scale(width, height), [width, height]);
 
   const [x, setX] = React.useState(0);
@@ -76,7 +101,15 @@ export default function ImageViewer({ proxyUrl, url, width, height, alt, type }:
   const [zoomEdit, setZoomEdit] = React.useState(100);
   const wrapperRef = React.createRef<HTMLDivElement>();
 
-  const src = React.useMemo(() => proxyUrl ?? url, [proxyUrl, url]);
+  const src = React.useMemo(() => {
+    if (animated) {
+      return (
+        sourceMetadata.message.embeds?.[sourceMetadata.identifier.embedIndex ?? -1]?.video?.proxyURL ?? proxyUrl ?? url
+      );
+    } else {
+      return proxyUrl ?? url;
+    }
+  }, [proxyUrl, url, animated, sourceMetadata]);
   const filename = React.useMemo(() => new URL(src).pathname.split("/").pop(), [src]);
   const isVideo = React.useMemo(() => type === "VIDEO", [type]);
   const poster = React.useMemo(() => {
@@ -154,7 +187,18 @@ export default function ImageViewer({ proxyUrl, url, width, height, alt, type }:
         }}
         onClick={stopPropagation}
       >
-        {isVideo ? (
+        {animated ? (
+          <RawVideo
+            src={src}
+            width={width}
+            height={height}
+            autoPlay={true}
+            loop={true}
+            muted={true}
+            preload="none"
+            aria-label={alt}
+          />
+        ) : isVideo ? (
           <Video
             src={src}
             width={width}
@@ -169,7 +213,7 @@ export default function ImageViewer({ proxyUrl, url, width, height, alt, type }:
           />
         ) : (
           <Image
-            className={`imageViewer-image${zoom > 1 ? " imageViewer-pixelate" : ""}`}
+            className={`imageViewer-image${zoom >= 1 ? " imageViewer-pixelate" : ""}`}
             src={src}
             placeholder={src}
             alt={alt}
@@ -190,7 +234,7 @@ export default function ImageViewer({ proxyUrl, url, width, height, alt, type }:
             tooltipPosition="top"
             icon={WindowLaunchIcon}
             onClick={() => {
-              window.open(src);
+              window.open(original);
             }}
           />
           <HeaderBar.Icon
@@ -202,7 +246,7 @@ export default function ImageViewer({ proxyUrl, url, width, height, alt, type }:
             }}
           />
           {/* @ts-expect-error missing typing for window.DiscordNative */}
-          {!isVideo && window.DiscordNative != null ? (
+          {!isVideo && !animated && window.DiscordNative != null ? (
             <HeaderBar.Icon
               tooltip={"Copy Image"}
               tooltipPosition="top"

@@ -1,7 +1,7 @@
 {
   "$schema": "https://moonlight-mod.github.io/manifest.schema.json",
   "id": "callTimer",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "apiLevel": 2,
   "meta": {
     "name": "Call Timer",

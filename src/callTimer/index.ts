@@ -4,12 +4,8 @@ export const patches: Patch[] = [
   {
     find: "renderConnectionStatus(){",
     replace: {
-      match: /(.)\.jsx(.+?)channel,children:(.)\}/,
-      replacement: (_, react, filler, children) =>
-        `${react}.jsx${filler}channel,children:${react}.jsx(
-  require("callTimer_callTimer").default,
-  { children: ${children} }
-)}`
+      match: /(.)\.jsx\)\(.\.Popout.+?this\.renderVoiceStates\(\),/,
+      replacement: (orig, react) => `${orig}${react}.jsx(require("callTimer_callTimer").default,{key:"callTimer"}),`
     }
   }
 ];
@@ -26,3 +22,15 @@ export const webpackModules: Record<string, ExtensionWebpackModule> = {
     ]
   }
 };
+
+export const styles = [
+  `
+.callTimer-text {
+  color: var(--header-secondary);
+}
+
+[class*="connection_"]:has([class*="rtcConnectionStatusWrapper_"]) {
+  padding-bottom: 0 !important;
+}
+  `
+];

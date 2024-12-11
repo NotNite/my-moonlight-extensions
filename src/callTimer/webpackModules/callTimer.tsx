@@ -1,5 +1,8 @@
 import Dispatcher from "@moonlight-mod/wp/discord/Dispatcher";
 import React from "@moonlight-mod/wp/react";
+import * as Components from "@moonlight-mod/wp/discord/components/common/index";
+
+const { Text } = Components;
 
 let startTime: number | null = null;
 
@@ -17,7 +20,7 @@ function formatTime(elapsed: number) {
   return items.map((item) => item.toString().padStart(2, "0")).join(":");
 }
 
-export default function CallTimer({ children }: { children: React.ReactNode }): JSX.Element {
+export default function CallTimer(): JSX.Element {
   const [time, setTime] = React.useState(formatTime(0));
 
   React.useEffect(() => {
@@ -33,13 +36,9 @@ export default function CallTimer({ children }: { children: React.ReactNode }): 
     return () => clearInterval(interval);
   });
 
-  return time !== "" ? (
-    <span>
+  return (
+    <Text variant="text-xs/normal" className="callTimer-text">
       {time}
-      <br />
-      {children}
-    </span>
-  ) : (
-    <>{children}</>
+    </Text>
   );
 }

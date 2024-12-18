@@ -223,7 +223,7 @@ export default function ImageViewer({
           />
         )}
       </div>
-      <div className="imageViewer-toolbar">
+      <div className="imageViewer-toolbar theme-dark">
         <div className="imageViewer-toolbar-buttons" onClick={stopPropagation}>
           <HeaderBar.Icon tooltip={"Close"} tooltipPosition="top" icon={XLargeIcon} onClick={close} />
 

@@ -263,7 +263,7 @@ export default function ImageViewer({
             tooltipPosition="top"
             icon={PlusLargeIcon}
             onClick={() => {
-              setZoom((zoom) => Math.min(MAX_ZOOM, zoom + 1));
+              setZoom((zoom) => Math.min(MAX_ZOOM, zoom + STEP_MAX));
             }}
           />
           <HeaderBar.Icon
@@ -271,7 +271,7 @@ export default function ImageViewer({
             tooltipPosition="top"
             icon={MinusIcon}
             onClick={() => {
-              setZoom((zoom) => Math.max(minZoom, zoom - 1));
+              setZoom((zoom) => Math.max(minZoom, zoom - STEP_MAX));
             }}
           />
 

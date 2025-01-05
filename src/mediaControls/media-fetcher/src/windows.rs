@@ -42,6 +42,8 @@ impl WindowsMediaFetcher {
         let mut new_status = PlaybackStatus {
             title: String::new(),
             artist: String::new(),
+            album: String::new(),
+            album_artist: String::new(),
             elapsed,
             duration,
             playing: playback_status
@@ -63,6 +65,8 @@ impl WindowsMediaFetcher {
                 .map(|x| x.Value().ok())
                 .flatten()
                 .unwrap_or(false),
+            track_number: 0,
+            total_tracks: 0,
         };
 
         if let Ok(media_properties) = session.TryGetMediaPropertiesAsync()?.await {
@@ -74,6 +78,20 @@ impl WindowsMediaFetcher {
                 .Artist()
                 .unwrap_or_default()
                 .to_string_lossy();
+            new_status.album = media_properties
+                .AlbumTitle()
+                .unwrap_or_default()
+                .to_string_lossy();
+            new_status.album_artist = media_properties
+                .AlbumArtist()
+                .unwrap_or_default()
+                .to_string_lossy();
+            new_status.track_number = media_properties
+                .TrackNumber()
+                .unwrap_or_default();
+            new_status.total_tracks = media_properties
+                .AlbumTrackCount()
+                .unwrap_or_default();
         }
 
         Ok(new_status)

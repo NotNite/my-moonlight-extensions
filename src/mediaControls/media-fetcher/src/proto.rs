@@ -27,11 +27,15 @@ pub enum Request {
 pub struct PlaybackStatus {
     pub title: String,
     pub artist: String,
+    pub album: String,
+    pub album_artist: String,
     pub elapsed: f64,
     pub duration: f64,
     pub playing: bool,
     pub repeat: RepeatMode,
     pub shuffle: bool,
+    pub track_number: i32,
+    pub total_tracks: i32,
 }
 
 impl PartialEq for PlaybackStatus {

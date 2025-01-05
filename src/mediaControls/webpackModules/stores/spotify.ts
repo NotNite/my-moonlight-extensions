@@ -8,6 +8,7 @@ const { HTTP } = spacepack.require("discord/utils/HTTPUtils");
 
 type SpotifyTrack = {
   album?: {
+    name?: string;
     image?: {
       url: string;
     };
@@ -40,12 +41,15 @@ export class MediaControlsSpotifyStore extends MediaControlsBaseStore {
     return {
       title: this.state?.track?.name ?? "",
       artist: this.state?.track?.artists?.map((a) => a.name).join(", ") ?? "",
+      album: this.state?.track?.album?.name ?? "",
       elapsed: this.state.position / 1000,
       duration: this.state.track?.duration != null ? this.state.track.duration / 1000 : 0,
       playing: this.state.isPlaying,
       repeat: this.state.repeat ? RepeatMode.All : RepeatMode.None,
       shuffle: false,
-      cover: this.state.track?.album?.image?.url ?? undefined
+      cover: this.state.track?.album?.image?.url,
+      track_number: 0,
+      total_tracks: 0
     };
   }
 

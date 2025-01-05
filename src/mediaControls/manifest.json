@@ -1,21 +1,29 @@
 {
   "$schema": "https://moonlight-mod.github.io/manifest.schema.json",
   "id": "mediaControls",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "apiLevel": 2,
   "meta": {
     "name": "Media Controls",
     "tagline": "Control your music from within Discord",
     "description": "**Configuration required!**\nFor this extension to work, you must enable which media sources to use.\n- To use Spotify, your Spotify account must be linked to your Discord account.\n- To use the system media player, you must [build the media fetcher from source](https://github.com/NotNite/my-moonlight-extensions/tree/main/src/mediaControls/media-fetcher) and set the path to the executable.",
-    "authors": ["NotNite"]
+    "authors": [
+      "NotNite"
+    ]
   },
-  "dependencies": ["spacepack", "appPanels"],
+  "dependencies": [
+    "spacepack",
+    "appPanels"
+  ],
   "settings": {
     "sources": {
       "displayName": "Media sources",
       "description": "Where to grab media information from",
       "type": "multiselect",
-      "options": ["mediaFetcher", "spotify"]
+      "options": [
+        "mediaFetcher",
+        "spotify"
+      ]
     },
     "disableBar": {
       "displayName": "Disable progress bar",
@@ -27,6 +35,74 @@
       "displayName": "Media fetcher path",
       "description": "[Media fetcher only] Path to the media fetcher executable on your system",
       "type": "string"
+    },
+    "richPresence": {
+      "displayName": "Rich Presence",
+      "description": "[Media fetcher only]",
+      "type": "boolean",
+      "default": false
+    },
+    "richPresenceTitle": {
+      "displayName": "Rich Presence -> Title",
+      "type": "string",
+      "default": "music"
+    },
+    "richPresencePausedSuffix": {
+      "displayName": "Rich Presence -> Title -> Paused Suffix",
+      "description": "Set to an empty string to disable",
+      "type": "string",
+      "default": "[paused]"
+    },
+    "richPresenceAlbumArtist": {
+      "displayName": "Rich Presence -> Show Album Artist",
+      "description": "When applicable. Will display as `<artist> // <album artist>`",
+      "type": "boolean",
+      "default": true
+    },
+    "richPresenceByPrefix": {
+      "displayName": "Rich Presence -> Prefix artist with \"by \"",
+      "type": "boolean",
+      "default": true
+    },
+    "richPresenceOnPrefix": {
+      "displayName": "Rich Presence -> Prefix album with \"on \"",
+      "type": "boolean",
+      "default": false
+    },
+    "richPresenceAppId": {
+      "displayName": "Rich Presence -> App ID",
+      "type": "string"
+    },
+    "richPresenceStateImage": {
+      "displayName": "Rich Presence -> Show Playing/Paused image",
+      "type": "boolean",
+      "default": false
+    },
+    "richPresenceAssetPlaying": {
+      "displayName": "Rich Presence -> Playing Asset",
+      "description": "Application assets must be their ID, not name. Otherwise use a URL",
+      "type": "string"
+    },
+    "richPresenceAssetPaused": {
+      "displayName": "Rich Presence -> Paused Asset",
+      "description": "Application assets must be their ID, not name. Otherwise use a URL",
+      "type": "string"
+    },
+    "richPresenceAssetDefault": {
+      "displayName": "Rich Presence -> Fallback Artwork Asset",
+      "description": "Application assets must be their ID, not name. Otherwise use a URL",
+      "type": "string"
+    },
+    "richPresenceLastFm": {
+      "displayName": "Rich Presence -> Fetch artwork from last.fm",
+      "type": "boolean",
+      "default": true
+    },
+    "richPresenceSpotify": {
+      "displayName": "Rich Presence -> Fetch artwork from Spotify",
+      "description": "Requires Spotify to be linked to Discord",
+      "type": "boolean",
+      "default": true
     }
   }
 }

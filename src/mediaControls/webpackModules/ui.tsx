@@ -11,8 +11,6 @@ import { PreviousTrackIcon } from "./PreviousTrackIcon";
 const {
   PlayIcon,
   PauseIcon,
-  ArrowSmallLeftIcon,
-  ArrowSmallRightIcon,
 
   Text,
   Tooltip,
@@ -132,6 +130,8 @@ function MediaControlsUI() {
 
   if (state == null) return <></>;
 
+  const artistAndAlbum = `${state.artist}${state.album && state.album !== "" ? ` • ${state.album}` : ""}`;
+
   return (
     <div
       className="mediaControls"
@@ -179,10 +179,10 @@ function MediaControlsUI() {
           )}
         </Tooltip>
 
-        <Tooltip text={state.artist} position="top">
+        <Tooltip text={artistAndAlbum} position="top">
           {(props: any) => (
             <Text {...props} variant="text-xs/normal" className="mediaControls-label">
-              {state.artist}
+              {artistAndAlbum}
             </Text>
           )}
         </Tooltip>

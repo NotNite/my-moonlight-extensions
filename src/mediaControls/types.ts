@@ -58,11 +58,15 @@ export type MediaFetcherResponsePlaybackStatus = {
   type: MediaFetcherResponseType.PlaybackStatus;
   title: string;
   artist: string;
+  album?: string;
+  album_artist?: string;
   elapsed: number;
   duration: number;
   playing: boolean;
   repeat: RepeatMode;
   shuffle: boolean;
+  track_number: number;
+  total_tracks: number;
 };
 
 export type MediaFetcherResponse = MediaFetcherResponseAlbumArt | MediaFetcherResponsePlaybackStatus;
@@ -75,10 +79,14 @@ export type MediaControlsNatives = {
 export type MediaState = {
   title: string;
   artist: string;
+  album?: string;
+  album_artist?: string;
   elapsed: number;
   duration: number;
   cover?: string;
   playing: boolean;
   repeat: RepeatMode;
   shuffle: boolean;
+  track_number: number;
+  total_tracks: number;
 };

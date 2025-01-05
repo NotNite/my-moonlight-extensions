@@ -20,6 +20,8 @@ impl LinuxMediaFetcher {
         let mut status = PlaybackStatus {
             title: String::new(),
             artist: String::new(),
+            album: String::new(),
+            album_artist: String::new(),
             elapsed: 0.,
             duration: 0.,
             playing: playback_status == mpris::PlaybackStatus::Playing,
@@ -29,6 +31,8 @@ impl LinuxMediaFetcher {
                 mpris::LoopStatus::None => crate::proto::RepeatMode::None,
             },
             shuffle: player.get_shuffle().unwrap_or(false),
+            track_number: 0,
+            total_tracks: 0,
         };
 
         if let Ok(metadata) = player.get_metadata() {
@@ -40,6 +44,18 @@ impl LinuxMediaFetcher {
                 .map(|x| x.to_string())
                 .collect::<Vec<String>>()
                 .join(", ");
+            status.album = metadata.album_name().unwrap_or_default().to_string();
+            status.album_artist = metadata
+                .album_artists()
+                .unwrap_or_default()
+                .iter()
+                .map(|x| x.to_string())
+                .collect::<Vec<String>>()
+                .join(", ");
+            status.track_number = metadata.track_number().unwrap_or_default();
+            // mpris nor xesam don't have a total track count property :(
+            status.total_tracks = status.track_number;
+
         }
 
         Ok(status)

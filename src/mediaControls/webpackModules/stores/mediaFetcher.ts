@@ -64,12 +64,16 @@ export class MediaControlsMediaFetcherStore extends MediaControlsBaseStore {
       //title: "REALLY LONG TITLE THAT CLIPS OFF THE SCREEN kjhasdhfjhkahsdjhf]asdjhf",
       title: this.status.title,
       artist: this.status.artist,
+      album: this.status.album,
+      album_artist: this.status.album_artist,
       elapsed: this.status.elapsed,
       duration: this.status.duration,
       cover: this.cover ?? undefined,
       playing: this.status.playing,
       repeat: this.status.repeat,
-      shuffle: this.status.shuffle
+      shuffle: this.status.shuffle,
+      track_number: this.status.track_number,
+      total_tracks: this.status.total_tracks
     };
   }
 

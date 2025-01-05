@@ -56,7 +56,11 @@ type Props = {
   sourceMetadata: SourceMetadata;
 };
 
-function scale(width: number, height: number) {
+const STEP_MAX = 50;
+const ZOOM_SCALE = 1 / (4 * STEP_MAX);
+const MAX_ZOOM = Math.log2(32) / ZOOM_SCALE;
+
+function calculateInitialZoom(width: number, height: number) {
   const padding = 128;
   const maxWidth = window.innerWidth - padding;
   const maxHeight = window.innerHeight - padding;
@@ -65,7 +69,9 @@ function scale(width: number, height: number) {
 
   const widthScale = maxWidth / width;
   const heightScale = maxHeight / height;
-  return Math.min(widthScale, heightScale);
+
+  const zoom = Math.log2(Math.min(widthScale, heightScale)) / ZOOM_SCALE;
+  return Math.floor(zoom / STEP_MAX) * STEP_MAX;
 }
 
 function close() {
@@ -90,28 +96,27 @@ export default function ImageViewer({
   animated,
   sourceMetadata
 }: Props): JSX.Element {
-  const calculatedScale = React.useMemo(() => scale(width, height), [width, height]);
+  const initialZoom = calculateInitialZoom(width, height);
+  const minZoom = initialZoom - MAX_ZOOM;
 
   const [x, setX] = React.useState(0);
   const [y, setY] = React.useState(0);
   const [rotate, setRotate] = React.useState(0);
-  const [zoom, setZoom] = React.useState(calculatedScale);
+  const [zoom, setZoom] = React.useState(initialZoom);
+  const scale = 2 ** (zoom * ZOOM_SCALE);
   const [dragging, setDragging] = React.useState(false);
   const [editingZoom, setEditingZoom] = React.useState(false);
   const [zoomEdit, setZoomEdit] = React.useState(100);
   const wrapperRef = React.createRef<HTMLDivElement>();
 
-  const src = React.useMemo(() => {
-    if (animated) {
-      return (
-        sourceMetadata.message.embeds?.[sourceMetadata.identifier.embedIndex ?? -1]?.video?.proxyURL ?? proxyUrl ?? url
-      );
-    } else {
-      return proxyUrl ?? url;
-    }
-  }, [proxyUrl, url, animated, sourceMetadata]);
-  const filename = React.useMemo(() => new URL(src).pathname.split("/").pop(), [src]);
-  const isVideo = React.useMemo(() => type === "VIDEO", [type]);
+  let src = proxyUrl ?? url;
+  if (animated) {
+    src = sourceMetadata.message.embeds?.[sourceMetadata.identifier.embedIndex ?? -1]?.video?.proxyURL ?? src;
+  }
+  const filename = React.useMemo(() => {
+    return new URL(src).pathname.split("/").pop();
+  }, [src]);
+  const isVideo = type === "VIDEO";
   const poster = React.useMemo(() => {
     const urlObj = new URL(src);
     urlObj.searchParams.set("format", "webp");
@@ -122,8 +127,8 @@ export default function ImageViewer({
     (e: MouseEvent) => {
       if (!dragging) return;
 
-      setX((prevX) => prevX + e.movementX / (zoom * window.devicePixelRatio));
-      setY((prevY) => prevY + e.movementY / (zoom * window.devicePixelRatio));
+      setX((prevX) => prevX + e.movementX / (scale * window.devicePixelRatio));
+      setY((prevY) => prevY + e.movementY / (scale * window.devicePixelRatio));
     },
     [dragging, zoom]
   );
@@ -133,27 +138,15 @@ export default function ImageViewer({
   const handleMouseUp = React.useCallback(() => {
     setDragging(false);
   }, []);
-  const handleWheel = React.useCallback(
-    (e: WheelEvent) => {
-      let deltaY = e.deltaY;
-
+  const handleWheel = React.useCallback((e: WheelEvent) => {
+    setZoom((zoom) => {
       // clamp delta, for linear scrolling (e.g. trackpads)
-      if (deltaY > 20) {
-        deltaY = 20;
-      } else if (deltaY < -20) {
-        deltaY = -20;
-      }
-
-      // * zoom here to make it more smooth when scrolling in farther
-      const newZoom = zoom + (-deltaY / 100) * zoom;
-      const newZoomClamped = Math.min(20, Math.max(calculatedScale / 10, newZoom));
-      setZoom(newZoomClamped);
-    },
-    [zoom, calculatedScale]
-  );
+      const delta = Math.min(STEP_MAX, Math.max(-STEP_MAX, -e.deltaY));
+      return Math.min(MAX_ZOOM, Math.max(minZoom, zoom + delta));
+    });
+  }, []);
 
   React.useEffect(() => {
-    // FIXME: this seems to be re-registering events every time the component updates. not great
     const wrapper = wrapperRef.current;
     if (!wrapper) return;
 
@@ -170,12 +163,8 @@ export default function ImageViewer({
     };
   }, [wrapperRef.current, handleMouseDown, handleMouseMove, handleMouseUp, handleWheel]);
 
-  const transformStyle = React.useMemo(
-    () => `scale(${zoom}) translate(${x}px, ${y}px) rotate(${rotate}deg)`,
-    [zoom, x, y, rotate]
-  );
-
-  const zoomLabel = React.useMemo(() => (zoom < 0.1 ? (zoom * 100).toFixed(2) : Math.round(zoom * 100)), [zoom]);
+  const transformStyle = `scale(${scale}) translate(${x}px, ${y}px) rotate(${rotate}deg)`;
+  const zoomLabel = scale < 0.1 ? (scale * 100).toFixed(2) : Math.round(scale * 100);
 
   return (
     <div className="imageViewer">
@@ -213,7 +202,7 @@ export default function ImageViewer({
           />
         ) : (
           <Image
-            className={`imageViewer-image${zoom >= 1 ? " imageViewer-pixelate" : ""}`}
+            className={`imageViewer-image${scale >= 1 ? " imageViewer-pixelate" : ""}`}
             src={src}
             placeholder={src}
             alt={alt}
@@ -266,7 +255,7 @@ export default function ImageViewer({
             onClick={() => {
               setX(0);
               setY(0);
-              setZoom(calculatedScale);
+              setZoom(initialZoom);
             }}
           />
           <HeaderBar.Icon
@@ -274,7 +263,7 @@ export default function ImageViewer({
             tooltipPosition="top"
             icon={PlusLargeIcon}
             onClick={() => {
-              setZoom((prevZoom) => Math.min(20.0, prevZoom + 0.1));
+              setZoom((zoom) => Math.min(MAX_ZOOM, zoom + 1));
             }}
           />
           <HeaderBar.Icon
@@ -282,7 +271,7 @@ export default function ImageViewer({
             tooltipPosition="top"
             icon={MinusIcon}
             onClick={() => {
-              setZoom((prevZoom) => Math.max(calculatedScale / 10, prevZoom - 0.1));
+              setZoom((zoom) => Math.max(minZoom, zoom - 1));
             }}
           />
 
@@ -331,12 +320,12 @@ export default function ImageViewer({
                 setZoomEdit(Number(zoomLabel));
               }}
               onBlur={() => {
-                setZoom(zoomEdit / 100);
+                setZoom(Math.log2(zoomEdit / 100) / ZOOM_SCALE);
                 setEditingZoom(false);
               }}
               onKeyDown={(event: KeyboardEvent) => {
                 if (event.key === "Enter") {
-                  setZoom(zoomEdit / 100);
+                  setZoom(Math.log2(zoomEdit / 100) / ZOOM_SCALE);
                   setEditingZoom(false);
                 }
               }}

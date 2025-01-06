@@ -1,0 +1,12 @@
+{
+  "$schema": "https://moonlight-mod.github.io/manifest.schema.json",
+  "id": "oneko",
+  "version": "1.0.0",
+  "apiLevel": 2,
+  "meta": {
+    "name": "Oneko",
+    "tagline": "Cat follow mouse real!",
+    "description": "Puts a cat on your Discord. A port of [oneko.js](https://github.com/adryd325/oneko.js).",
+    "authors": ["NotNite", "adryd"]
+  }
+}

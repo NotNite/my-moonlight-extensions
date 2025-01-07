@@ -39,6 +39,7 @@ export class MediaControlsSpotifyStore extends MediaControlsBaseStore {
     if (this.state.track == null) return null;
 
     return {
+      player_name: "Spotify",
       title: this.state?.track?.name ?? "",
       artist: this.state?.track?.artists?.map((a) => a.name).join(", ") ?? "",
       album: this.state?.track?.album?.name ?? "",

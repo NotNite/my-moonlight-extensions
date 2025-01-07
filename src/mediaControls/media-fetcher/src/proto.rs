@@ -25,6 +25,7 @@ pub enum Request {
 
 #[derive(Serialize, Default, Clone, Debug)]
 pub struct PlaybackStatus {
+    pub player_name: String,
     pub title: String,
     pub artist: String,
     pub album: String,

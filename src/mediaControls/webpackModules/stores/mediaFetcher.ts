@@ -62,6 +62,7 @@ export class MediaControlsMediaFetcherStore extends MediaControlsBaseStore {
 
     return {
       //title: "REALLY LONG TITLE THAT CLIPS OFF THE SCREEN kjhasdhfjhkahsdjhf]asdjhf",
+      player_name: this.status.player_name,
       title: this.status.title,
       artist: this.status.artist,
       album: this.status.album,

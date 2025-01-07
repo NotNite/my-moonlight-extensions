@@ -18,6 +18,7 @@ impl LinuxMediaFetcher {
             .unwrap_or(mpris::PlaybackStatus::Stopped);
 
         let mut status = PlaybackStatus {
+            player_name: player.identity(),
             title: String::new(),
             artist: String::new(),
             album: String::new(),

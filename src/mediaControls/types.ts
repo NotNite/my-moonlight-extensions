@@ -55,6 +55,7 @@ export type MediaFetcherResponseAlbumArt = {
 };
 
 export type MediaFetcherResponsePlaybackStatus = {
+  player_name?: string;
   type: MediaFetcherResponseType.PlaybackStatus;
   title: string;
   artist: string;
@@ -77,6 +78,7 @@ export type MediaControlsNatives = {
 };
 
 export type MediaState = {
+  player_name?: string;
   title: string;
   artist: string;
   album?: string;

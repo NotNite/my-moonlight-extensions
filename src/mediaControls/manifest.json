@@ -13,7 +13,8 @@
   },
   "dependencies": [
     "spacepack",
-    "appPanels"
+    "appPanels",
+    "common"
   ],
   "settings": {
     "sources": {
@@ -47,6 +48,12 @@
       "type": "string",
       "default": "music"
     },
+    "richPresenceProvidedTitle": {
+      "displayName": "Rich Presence -> Use Provided Title",
+      "description": "Will use title string if none is provided by the player",
+      "type": "boolean",
+      "default": true
+    },
     "richPresencePausedSuffix": {
       "displayName": "Rich Presence -> Title -> Paused Suffix",
       "description": "Set to an empty string to disable",
@@ -62,7 +69,7 @@
     "richPresenceByPrefix": {
       "displayName": "Rich Presence -> Prefix artist with \"by \"",
       "type": "boolean",
-      "default": true
+      "default": false
     },
     "richPresenceOnPrefix": {
       "displayName": "Rich Presence -> Prefix album with \"on \"",
@@ -71,7 +78,9 @@
     },
     "richPresenceAppId": {
       "displayName": "Rich Presence -> App ID",
-      "type": "string"
+      "description": "Required for URL assets",
+      "type": "string",
+      "default": "1325969326150258708"
     },
     "richPresenceStateImage": {
       "displayName": "Rich Presence -> Show Playing/Paused image",

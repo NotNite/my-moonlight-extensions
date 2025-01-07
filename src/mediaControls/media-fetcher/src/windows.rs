@@ -33,6 +33,7 @@ impl WindowsMediaFetcher {
         let timeline_properties = session.GetTimelineProperties()?;
         let playback_info = session.GetPlaybackInfo()?;
         let playback_status = playback_info.PlaybackStatus()?;
+        let app_media_id = session.SourceAppUserModelId()?;
 
         let elapsed = timeline_properties.Position().unwrap_or_default().Duration as f64
             / WHAT_ARE_THEY_DOING_AT_MICROSOFT;
@@ -40,6 +41,7 @@ impl WindowsMediaFetcher {
             / WHAT_ARE_THEY_DOING_AT_MICROSOFT;
 
         let mut new_status = PlaybackStatus {
+            player_name: app_media_id.to_string_lossy(),
             title: String::new(),
             artist: String::new(),
             album: String::new(),

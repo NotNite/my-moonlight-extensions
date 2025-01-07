@@ -362,10 +362,8 @@ async function updatePresence(state: MediaState) {
     playingAsset !== "" &&
     pausedAsset !== ""
   ) {
-    // @ts-expect-error you stupid
-    activity.assets.small_image = playing ? playingAsset : pausedAsset;
-    // @ts-expect-error you stupid
-    activity.assets.small_text = playing ? "Playing" : "Paused";
+    activity.assets!.small_image = playing ? playingAsset : pausedAsset;
+    activity.assets!.small_text = playing ? "Playing" : "Paused";
   }
 
   const position = Math.floor(state.elapsed * 1000);

@@ -392,12 +392,14 @@ async function onChange() {
   if ((!state || !enabled) && running) {
     sendActivity();
     running = false;
+    lastState = undefined;
   } else if (state && enabled && state.player_name !== "Spotify") {
     running = true;
     if (
       !lastState ||
       lastState.artist !== state.artist ||
       lastState.title !== state.title ||
+      lastState.playing !== state.playing ||
       state.elapsed < lastState.elapsed // looping track
     ) {
       lastState = state;

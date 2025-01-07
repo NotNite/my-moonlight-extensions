@@ -380,6 +380,16 @@ async function updatePresence(state: MediaState) {
     if (duration > 0) activity.timestamps.end = endPos;
   }
 
+  // kinda pointless since they dont render it on listening activities anymore, oh well
+  if (state.track_number && state.total_tracks && state.track_number > 0) {
+    let total = state.total_tracks;
+    if (state.track_number > 0 && state.total_tracks === 0) total = state.track_number;
+
+    activity.party = {
+      size: [state.track_number, total]
+    };
+  }
+
   sendActivity(activity);
 }
 

@@ -18,7 +18,7 @@ impl LinuxMediaFetcher {
             .unwrap_or(mpris::PlaybackStatus::Stopped);
 
         let mut status = PlaybackStatus {
-            player_name: player.identity(),
+            player_name: player.identity().to_string(),
             title: String::new(),
             artist: String::new(),
             album: String::new(),
@@ -56,7 +56,6 @@ impl LinuxMediaFetcher {
             status.track_number = metadata.track_number().unwrap_or_default();
             // mpris nor xesam don't have a total track count property :(
             status.total_tracks = status.track_number;
-
         }
 
         Ok(status)

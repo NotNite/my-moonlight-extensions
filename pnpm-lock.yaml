@@ -15,6 +15,9 @@ importers:
       '@electron/asar':
         specifier: ^3.2.8
         version: 3.2.8
+      '@moonlight-mod/esbuild-config':
+        specifier: github:moonlight-mod/esbuild-config
+        version: https://codeload.github.com/moonlight-mod/esbuild-config/tar.gz/19981580bdb630ef4d0b8d9c24603e873d16e61e(esbuild@0.19.3)
       '@moonlight-mod/eslint-config':
         specifier: github:moonlight-mod/eslint-config
         version: https://codeload.github.com/moonlight-mod/eslint-config/tar.gz/7eb7bd7c51fe0e3ee9d2a0baf149212d2bb893af(eslint@9.12.0)(prettier@3.3.3)(typescript@5.3.2)
@@ -219,6 +222,12 @@ packages:
   '@humanwhocodes/retry@0.3.1':
     resolution: {integrity: sha512-JBxkERygn7Bv/GbN5Rv8Ul6LVknS+5Bp6RgDC/O8gEBU/yeH5Ui5C/OlWrTb6qct7LjjfT6Re2NxB0ln0yYybA==}
     engines: {node: '>=18.18'}
+
+  '@moonlight-mod/esbuild-config@https://codeload.github.com/moonlight-mod/esbuild-config/tar.gz/19981580bdb630ef4d0b8d9c24603e873d16e61e':
+    resolution: {tarball: https://codeload.github.com/moonlight-mod/esbuild-config/tar.gz/19981580bdb630ef4d0b8d9c24603e873d16e61e}
+    version: 1.0.0
+    peerDependencies:
+      esbuild: '>= 0.19'
 
   '@moonlight-mod/eslint-config@https://codeload.github.com/moonlight-mod/eslint-config/tar.gz/7eb7bd7c51fe0e3ee9d2a0baf149212d2bb893af':
     resolution: {tarball: https://codeload.github.com/moonlight-mod/eslint-config/tar.gz/7eb7bd7c51fe0e3ee9d2a0baf149212d2bb893af}
@@ -1305,6 +1314,10 @@ snapshots:
   '@humanwhocodes/module-importer@1.0.1': {}
 
   '@humanwhocodes/retry@0.3.1': {}
+
+  '@moonlight-mod/esbuild-config@https://codeload.github.com/moonlight-mod/esbuild-config/tar.gz/19981580bdb630ef4d0b8d9c24603e873d16e61e(esbuild@0.19.3)':
+    dependencies:
+      esbuild: 0.19.3
 
   '@moonlight-mod/eslint-config@https://codeload.github.com/moonlight-mod/eslint-config/tar.gz/7eb7bd7c51fe0e3ee9d2a0baf149212d2bb893af(eslint@9.12.0)(prettier@3.3.3)(typescript@5.3.2)':
     dependencies:

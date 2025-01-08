@@ -46,6 +46,6 @@
   flex-basis: auto;
 }
 
-.mediaControls [class^="mediaBarInteraction_"] {
+.mediaControls [class^="mediaBarInteraction"] {
   margin: 0 3px;
 }

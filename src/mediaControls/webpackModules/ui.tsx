@@ -68,7 +68,7 @@ function MediaControlsContextMenu() {
         <MenuCheckboxItem
           id="media-controls-shuffle"
           label="Shuffle"
-          checked={state?.shuffle}
+          checked={state?.shuffle ?? false}
           action={() => MediaControlsStore.setShuffleMode(!state?.shuffle)}
         />
 

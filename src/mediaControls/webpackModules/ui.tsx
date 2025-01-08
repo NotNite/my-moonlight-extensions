@@ -19,7 +19,8 @@ const {
   MenuItem,
   MenuGroup,
   MenuRadioItem,
-  MenuCheckboxItem
+  MenuCheckboxItem,
+  MenuSeparator
 } = Components;
 const ContextMenuActionCreators = spacepack.require("discord/actions/ContextMenuActionCreators");
 let copy: (text: string) => void;
@@ -27,64 +28,64 @@ let IconButton: React.ComponentType<any>;
 let NativeUtils: {
   copyImage: (src: string) => void;
 };
-
-const disableBar = moonlight.getConfigOption("mediaControls", "disableBar") ?? false;
+let MediaBar: React.ComponentType<any> & { Types: { DURATION: "DURATION"; VOLUME: "VOLUME" } };
 
 function MediaControlsContextMenu() {
   const state = useStateFromStores([MediaControlsStore], () => MediaControlsStore.getState());
 
   return (
-    <div>
-      <Menu navId="media-controls" onClose={ContextMenuActionCreators.closeContextMenu}>
-        <MenuGroup>
-          <MenuItem id="media-controls-repeat" label="Repeat">
-            <MenuRadioItem
-              id="media-controls-repeat-none"
-              label="None"
-              checked={state?.repeat === RepeatMode.None}
-              action={() => {
-                MediaControlsStore.setRepeatMode(RepeatMode.None);
-              }}
-            />
-
-            <MenuRadioItem
-              id="media-controls-repeat-all"
-              label="All"
-              checked={state?.repeat === RepeatMode.All}
-              action={() => {
-                MediaControlsStore.setRepeatMode(RepeatMode.All);
-              }}
-            />
-
-            <MenuRadioItem
-              id="media-controls-repeat-one"
-              label="One"
-              checked={state?.repeat === RepeatMode.One}
-              action={() => {
-                MediaControlsStore.setRepeatMode(RepeatMode.One);
-              }}
-            />
-          </MenuItem>
-
-          <MenuCheckboxItem
-            id="media-controls-shuffle"
-            label="Shuffle"
-            checked={state?.shuffle}
-            action={() => MediaControlsStore.setShuffleMode(!state?.shuffle)}
-          />
-
-          <MenuItem
-            id="media-controls-copy-cover"
-            label="Copy Cover"
+    <Menu navId="media-controls" onClose={ContextMenuActionCreators.closeContextMenu}>
+      <MenuGroup>
+        <MenuItem id="media-controls-repeat" label="Repeat">
+          <MenuRadioItem
+            id="media-controls-repeat-none"
+            label="None"
+            checked={state?.repeat === RepeatMode.None}
             action={() => {
-              if (state?.cover != null) {
-                NativeUtils.copyImage(state.cover);
-              }
+              MediaControlsStore.setRepeatMode(RepeatMode.None);
             }}
           />
-        </MenuGroup>
-      </Menu>
-    </div>
+
+          <MenuRadioItem
+            id="media-controls-repeat-all"
+            label="All"
+            checked={state?.repeat === RepeatMode.All}
+            action={() => {
+              MediaControlsStore.setRepeatMode(RepeatMode.All);
+            }}
+          />
+
+          <MenuRadioItem
+            id="media-controls-repeat-one"
+            label="One"
+            checked={state?.repeat === RepeatMode.One}
+            action={() => {
+              MediaControlsStore.setRepeatMode(RepeatMode.One);
+            }}
+          />
+        </MenuItem>
+
+        <MenuCheckboxItem
+          id="media-controls-shuffle"
+          label="Shuffle"
+          checked={state?.shuffle}
+          action={() => MediaControlsStore.setShuffleMode(!state?.shuffle)}
+        />
+
+        {state?.cover != null ? (
+          <>
+            <MenuSeparator />
+            <MenuItem
+              id="media-controls-copy-cover"
+              label="Copy Cover"
+              action={() => {
+                NativeUtils.copyImage(state.cover as string);
+              }}
+            />
+          </>
+        ) : null}
+      </MenuGroup>
+    </Menu>
   );
 }
 
@@ -97,11 +98,17 @@ function MediaControlsUI() {
     ) => void;
     IconButton = spacepack.findByCode(".PANEL_BUTTON,")[0].exports.Z;
     NativeUtils = spacepack.findByCode("Data fetch unsuccessful")[0].exports.ZP;
+    MediaBar = spacepack.findByCode(".mediaBarInteractionVolume:null")[0].exports.Z;
   }
+
+  const disableBar = moonlight.getConfigOption("mediaControls", "disableBar") ?? false;
 
   const state = useStateFromStores([MediaControlsStore], () => MediaControlsStore.getState());
   const [realElapsed, setRealElapsed] = React.useState(0);
   const [elapsed, setElapsed] = React.useState(0);
+  const barRef = React.useRef<any>(null);
+  const [dragging, setDragging] = React.useState(false);
+  const [seekPercent, setSeekPercent] = React.useState(0);
 
   // Basic elapsed time calculation
   React.useEffect(() => {
@@ -123,10 +130,39 @@ function MediaControlsUI() {
       const diff = now - recorded;
       if (diff < 1 || !state?.playing || state.duration === 0) return;
       setElapsed(realElapsed + diff);
+
+      if (barRef.current && !dragging) {
+        barRef.current.setGrabber(elapsed / state.duration, true);
+      }
     }, 500);
 
     return () => clearInterval(interval);
   }, [realElapsed]);
+
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      if (disableBar || !state?.playing || state.duration === 0) return;
+      if (barRef.current && !dragging) {
+        barRef.current.setGrabber(elapsed / state.duration, true);
+      }
+    }, 500);
+
+    return () => clearInterval(interval);
+  }, [elapsed, dragging, barRef]);
+
+  const onDragStart = React.useCallback(() => setDragging(true), [setDragging]);
+  const onDrag = React.useCallback(
+    (percent: number) => {
+      barRef.current.setGrabber(percent);
+      setSeekPercent(percent);
+    },
+    [barRef, setSeekPercent]
+  );
+  const onDragEnd = React.useCallback(() => {
+    setDragging(false);
+    const time = state.duration * seekPercent;
+    MediaControlsStore.seek(time);
+  }, [setDragging, seekPercent, state, MediaControlsStore]);
 
   if (state == null) return <></>;
 
@@ -135,68 +171,52 @@ function MediaControlsUI() {
   return (
     <div
       className="mediaControls"
-      style={{
-        // @ts-expect-error I know what I am doing
-        "--progress": `${(elapsed / state.duration) * 100}%`
-      }}
-      onClick={(e) => {
-        if (disableBar) return;
-
-        const rect = e.currentTarget.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-
-        // This fires for any click anywhere on the element
-        // Only allow clicks that were near the progress bar
-        const leeway = 2;
-        const progressBarSize =
-          parseInt(window.getComputedStyle(e.currentTarget).backgroundSize.split(" ")[1].replace("px", "")) * leeway;
-        if (y > progressBarSize) return;
-
-        const percentage = x / rect.width;
-        const time = state.duration * percentage;
-
-        MediaControlsStore.seek(time);
+      onContextMenu={(event) => {
+        event.preventDefault();
+        ContextMenuActionCreators.openContextMenu(event, () => <MediaControlsContextMenu />);
       }}
     >
-      {state.cover != null && (
-        <img
-          src={state.cover}
-          className="mediaControls-cover"
-          onContextMenu={(e) => {
-            e.preventDefault();
-            ContextMenuActionCreators.openContextMenu(e, () => <MediaControlsContextMenu />);
-          }}
+      <div className="mediaControls-controls">
+        {state.cover != null ? <img src={state.cover} className="mediaControls-cover" /> : null}
+
+        <div className="mediaControls-labels">
+          <Tooltip text={state.title} position="top">
+            {(props: any) => (
+              <Text {...props} variant="text-sm/bold" className="mediaControls-label" tooltipText={state.title}>
+                {state.title}
+              </Text>
+            )}
+          </Tooltip>
+
+          <Tooltip text={artistAndAlbum} position="top">
+            {(props: any) => (
+              <Text {...props} variant="text-xs/normal" className="mediaControls-label">
+                {artistAndAlbum}
+              </Text>
+            )}
+          </Tooltip>
+        </div>
+
+        <div className="mediaControls-interact">
+          <IconButton icon={PreviousTrackIcon} tooltipText="Previous" onClick={() => MediaControlsStore.previous()} />
+          <IconButton
+            icon={state.playing ? PauseIcon : PlayIcon}
+            tooltipText={state.playing ? "Pause" : "Play"}
+            onClick={() => MediaControlsStore.playPause()}
+          />
+          <IconButton icon={NextTrackIcon} tooltipText="Next" onClick={() => MediaControlsStore.next()} />
+        </div>
+      </div>
+      {disableBar ? null : (
+        <MediaBar
+          type={MediaBar.Types.DURATION}
+          value={state.duration === 0 ? 1 : state.duration}
+          ref={barRef}
+          onDragStart={onDragStart}
+          onDrag={onDrag}
+          onDragEnd={onDragEnd}
         />
       )}
-
-      <div className="mediaControls-labels">
-        <Tooltip text={state.title} position="top">
-          {(props: any) => (
-            <Text {...props} variant="text-sm/bold" className="mediaControls-label" tooltipText={state.title}>
-              {state.title}
-            </Text>
-          )}
-        </Tooltip>
-
-        <Tooltip text={artistAndAlbum} position="top">
-          {(props: any) => (
-            <Text {...props} variant="text-xs/normal" className="mediaControls-label">
-              {artistAndAlbum}
-            </Text>
-          )}
-        </Tooltip>
-      </div>
-
-      <div className="mediaControls-interact">
-        <IconButton icon={PreviousTrackIcon} tooltipText="Previous" onClick={() => MediaControlsStore.previous()} />
-        <IconButton
-          icon={state.playing ? PauseIcon : PlayIcon}
-          tooltipText={state.playing ? "Pause" : "Play"}
-          onClick={() => MediaControlsStore.playPause()}
-        />
-        <IconButton icon={NextTrackIcon} tooltipText="Next" onClick={() => MediaControlsStore.next()} />
-      </div>
     </div>
   );
 }

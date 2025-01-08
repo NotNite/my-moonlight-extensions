@@ -120,6 +120,10 @@ function MediaControlsUI() {
   }, [state]);
 
   React.useEffect(() => {
+    if (!dragging && state != null) barRef.current?.setGrabber(elapsed / state.duration, true);
+  }, [elapsed, dragging, state]);
+
+  React.useEffect(() => {
     if (disableBar) return;
     setElapsed(realElapsed);
 
@@ -130,25 +134,10 @@ function MediaControlsUI() {
       const diff = now - recorded;
       if (diff < 1 || !state?.playing || state.duration === 0) return;
       setElapsed(realElapsed + diff);
-
-      if (barRef.current && !dragging) {
-        barRef.current.setGrabber(elapsed / state.duration, true);
-      }
     }, 500);
 
     return () => clearInterval(interval);
   }, [realElapsed]);
-
-  React.useEffect(() => {
-    const interval = setInterval(() => {
-      if (disableBar || !state?.playing || state.duration === 0) return;
-      if (barRef.current && !dragging) {
-        barRef.current.setGrabber(elapsed / state.duration, true);
-      }
-    }, 500);
-
-    return () => clearInterval(interval);
-  }, [elapsed, dragging, barRef]);
 
   const onDragStart = React.useCallback(() => setDragging(true), [setDragging]);
   const onDrag = React.useCallback(
@@ -160,6 +149,7 @@ function MediaControlsUI() {
   );
   const onDragEnd = React.useCallback(() => {
     setDragging(false);
+    if (state == null) return;
     const time = state.duration * seekPercent;
     MediaControlsStore.seek(time);
   }, [setDragging, seekPercent, state, MediaControlsStore]);

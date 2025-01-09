@@ -4,7 +4,7 @@ export const patches: Patch[] = [
   {
     find: '"displayName","SpotifyStore"',
     replace: {
-      match: /hasConnectedAccount\(\){return Object.keys\((.{1,2})\)/,
+      match: /hasConnectedAccount\(\){return Object.keys\((\i)\)/,
       replacement: (orig, accounts) => `__getAccounts(){return ${accounts}}${orig}`
     }
   }

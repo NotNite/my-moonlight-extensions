@@ -4,7 +4,7 @@ export const patches: Patch[] = [
   {
     find: ".zoomedMediaFitWrapper,",
     replace: {
-      match: /(?<=\.Fragment,{children:)(\(0,.\.jsx\))\(.\.animated\.div,{.+?},(.)\.url\)/,
+      match: /(?<=\.Fragment,{children:)(\(0,\i\.jsx\))\(\i\.animated\.div,{.+?},(\i)\.url\)/,
       replacement: (_, createElement, media) =>
         `${createElement}(require("imageViewer_imageViewer").default,${media},${media}.url)`
     }
@@ -12,10 +12,9 @@ export const patches: Patch[] = [
 
   // media proxy cannot upscale images, prevent fetching images larger than possible
   {
-    find: /\(.{1,2}\+="\?"\+.{1,2}\.stringify\(.{1,2}\)\)/,
+    find: '.startsWith("data:image"))return',
     replace: {
-      // two replacements one patch: the sequel
-      match: /function( .)?\((.)\){(let{src:.,sourceWidth:.,sourceHeight:.,targetWidth:.,targetHeight:.)/g,
+      match: /function( \i)?\((\i)\){(let{src:\i,sourceWidth:\i,sourceHeight:\i,targetWidth:\i,targetHeight:\i)/,
       replacement: (_, name, props, orig) =>
         `function${
           name ?? ""

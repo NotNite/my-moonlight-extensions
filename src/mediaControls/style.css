@@ -6,6 +6,12 @@
   padding: 0.5rem;
   height: 2.5rem;
 }
+.theme-dark .mediaControls {
+  background: var(--bg-overlay-1, var(--background-secondary-alt));
+}
+.theme-light .mediaControls {
+  background: var(--bg-overlay-3, var(--background-secondary-alt));
+}
 
 .mediaControls-controls {
   display: flex;

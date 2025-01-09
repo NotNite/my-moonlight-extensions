@@ -4,9 +4,9 @@ export const patches: Patch[] = [
   {
     find: "renderConnectionStatus(){",
     replace: {
-      match: /((\(\i\.jsx\))\(\i\.Popout.+?)this\.renderVoiceStates\(\),/,
-      replacement: (_, orig, createElement) =>
-        `${orig}${createElement}(require("callTimer_callTimer").default,{key:"callTimer"}),this.renderVoiceStates(),`
+      match: /children:this\.renderConnectionStatus\(\)(?=}\),(\(0,\i\.jsxs\)))/,
+      replacement: (_, createElement) =>
+        `children:[this.renderConnectionStatus(),${createElement}(require("callTimer_callTimer").default,{key:"callTimer"})]`
     }
   }
 ];

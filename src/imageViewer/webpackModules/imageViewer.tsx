@@ -308,7 +308,6 @@ export default function ImageViewer({
             <TextInput
               className="imageViewer-edit-zoom"
               size={TextInput.Sizes.MINI}
-              /* @ts-expect-error not typed */
               type="number"
               autoFocus={true}
               value={zoomEdit.toString()}
@@ -323,7 +322,7 @@ export default function ImageViewer({
                 setZoom(Math.log2(zoomEdit / 100) / ZOOM_SCALE);
                 setEditingZoom(false);
               }}
-              onKeyDown={(event: KeyboardEvent) => {
+              onKeyDown={(event) => {
                 if (event.key === "Enter") {
                   setZoom(Math.log2(zoomEdit / 100) / ZOOM_SCALE);
                   setEditingZoom(false);

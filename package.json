@@ -7,7 +7,9 @@
     "repo": "node repo.mjs",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
-    "lint:report": "eslint --output-file eslint_report.json --format json serc"
+    "lint:report": "eslint --output-file eslint_report.json --format json serc",
+    "typecheck": "tsc --noEmit",
+    "check": "pnpm run lint && pnpm run typecheck"
   },
   "devDependencies": {
     "@electron/asar": "^3.2.8",

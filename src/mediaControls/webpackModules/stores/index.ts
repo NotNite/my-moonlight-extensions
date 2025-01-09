@@ -21,7 +21,6 @@ class MediaControlsStore extends Store<any> {
     if (sources.includes("spotify")) this.sources.push(createSpotifyStore());
 
     for (const fetcher of this.sources) {
-      // @ts-expect-error TODO: mappings
       fetcher.addChangeListener(() => {
         // This is very unperformant, but it's fine for now :^)
         this.emitChange();

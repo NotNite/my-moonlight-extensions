@@ -110,7 +110,9 @@ export class MediaControlsSpotifyStore extends MediaControlsBaseStore {
 
   private request(method: string, url: string, data: any = {}) {
     const socket = SpotifyStore.getActiveSocketAndDevice().socket;
-    return HTTP[method.toLowerCase()]({
+    // @ts-expect-error jank but it works
+    const fetcher = HTTP[method.toLowerCase()] as (typeof HTTP)["get"];
+    return fetcher({
       url: "https://api.spotify.com/v1" + url,
       headers: {
         Authorization: "Bearer " + socket.accessToken

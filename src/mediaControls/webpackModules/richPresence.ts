@@ -286,6 +286,7 @@ async function updatePresence(state: MediaState) {
           body: {
             urls: [artwork]
           },
+          // @ts-expect-error TODO: mappings
           oldFormErrors: true
         });
 
@@ -419,7 +420,6 @@ async function onChange() {
 }
 
 function init() {
-  // @ts-expect-error TODO: mappings
   MediaControlsStore.addChangeListener(onChange);
   Dispatcher.unsubscribe("CONNECTION_OPEN", init);
 }

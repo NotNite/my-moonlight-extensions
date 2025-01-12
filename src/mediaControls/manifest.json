@@ -7,103 +7,130 @@
     "name": "Media Controls",
     "tagline": "Control your music from within Discord",
     "description": "**Configuration required!**\nFor this extension to work, you must enable which media sources to use.\n- To use Spotify, your Spotify account must be linked to your Discord account.\n- To use the system media player, you must [build the media fetcher from source](https://github.com/NotNite/my-moonlight-extensions/tree/main/src/mediaControls/media-fetcher) and set the path to the executable.",
-    "authors": ["NotNite", "Cynosphere"],
+    "authors": [
+      "NotNite",
+      "Cynosphere"
+    ],
     "source": "https://github.com/NotNite/my-moonlight-extensions"
   },
-  "dependencies": ["spacepack", "appPanels", "common"],
+  "dependencies": [
+    "spacepack",
+    "appPanels",
+    "common"
+  ],
   "settings": {
     "sources": {
       "displayName": "Media sources",
       "description": "Where to grab media information from",
       "type": "multiselect",
-      "options": ["mediaFetcher", "spotify"]
+      "options": [
+        "mediaFetcher",
+        "spotify"
+      ],
+      "advice": "reload"
     },
     "disableBar": {
       "displayName": "Disable progress bar",
       "description": "Disables the bar that shows the song duration at the top of the controls",
       "type": "boolean",
-      "default": false
+      "default": false,
+      "advice": "none"
     },
     "mediaFetcherPath": {
       "displayName": "Media fetcher path",
       "description": "[Media fetcher only] Path to the media fetcher executable on your system",
-      "type": "string"
+      "type": "string",
+      "advice": "reload"
     },
     "richPresence": {
       "displayName": "Rich Presence",
       "description": "[Media fetcher only]",
       "type": "boolean",
-      "default": false
+      "default": false,
+      "advice": "none"
     },
     "richPresenceTitle": {
       "displayName": "Rich Presence -> Title",
       "type": "string",
-      "default": "music"
+      "default": "music",
+      "advice": "none"
     },
     "richPresenceProvidedTitle": {
       "displayName": "Rich Presence -> Use Provided Title",
       "description": "Will use title string if none is provided by the player",
       "type": "boolean",
-      "default": true
+      "default": true,
+      "advice": "none"
     },
     "richPresencePausedSuffix": {
       "displayName": "Rich Presence -> Title -> Paused Suffix",
       "description": "Set to an empty string to disable",
       "type": "string",
-      "default": "[paused]"
+      "default": "[paused]",
+      "advice": "none"
     },
     "richPresenceAlbumArtist": {
       "displayName": "Rich Presence -> Show Album Artist",
       "description": "When applicable. Will display as `<artist> // <album artist>`",
       "type": "boolean",
-      "default": true
+      "default": true,
+      "advice": "none"
     },
     "richPresenceByPrefix": {
       "displayName": "Rich Presence -> Prefix artist with \"by \"",
       "type": "boolean",
-      "default": false
+      "default": false,
+      "advice": "none"
     },
     "richPresenceOnPrefix": {
       "displayName": "Rich Presence -> Prefix album with \"on \"",
       "type": "boolean",
-      "default": false
+      "default": false,
+      "advice": "none"
     },
     "richPresenceAppId": {
       "displayName": "Rich Presence -> App ID",
       "description": "Required for URL assets",
       "type": "string",
-      "default": "1325969326150258708"
+      "default": "1325969326150258708",
+      "advice": "none"
     },
     "richPresenceStateImage": {
       "displayName": "Rich Presence -> Show Playing/Paused image",
       "type": "boolean",
-      "default": false
+      "default": false,
+      "advice": "none"
     },
     "richPresenceAssetPlaying": {
       "displayName": "Rich Presence -> Playing Asset",
       "description": "Application assets must be their ID, not name. Otherwise use a URL",
-      "type": "string"
+      "type": "string",
+      "advice": "none"
     },
     "richPresenceAssetPaused": {
       "displayName": "Rich Presence -> Paused Asset",
       "description": "Application assets must be their ID, not name. Otherwise use a URL",
-      "type": "string"
+      "type": "string",
+      "advice": "none"
     },
     "richPresenceAssetDefault": {
       "displayName": "Rich Presence -> Fallback Artwork Asset",
       "description": "Application assets must be their ID, not name. Otherwise use a URL",
-      "type": "string"
+      "type": "string",
+      "advice": "none"
     },
     "richPresenceLastFm": {
       "displayName": "Rich Presence -> Fetch artwork from last.fm",
       "type": "boolean",
-      "default": true
+      "default": true,
+      "advice": "none"
     },
     "richPresenceSpotify": {
       "displayName": "Rich Presence -> Fetch artwork from Spotify",
       "description": "Requires Spotify to be linked to Discord",
       "type": "boolean",
-      "default": true
+      "default": true,
+      "advice": "none"
     }
   }
 }

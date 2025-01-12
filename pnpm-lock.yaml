@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@moonlight-mod/types':
-        specifier: ^1.3.3
-        version: 1.3.3
+        specifier: ^1.3.4
+        version: 1.3.4
     devDependencies:
       '@electron/asar':
         specifier: ^3.2.8
@@ -248,8 +248,8 @@ packages:
   '@moonlight-mod/moonmap@1.0.3':
     resolution: {integrity: sha512-G7pwvrcVDimc388IX6VZFzBXpbuyvqbJ+w9/v+MUIc8P7dADJXQ9YkBWvobtRc6eaBBl1FWUwTeU8oobbxLVag==}
 
-  '@moonlight-mod/types@1.3.3':
-    resolution: {integrity: sha512-Br9ZxmgWPfz647IpVyuWi1Dkbg6W8yhgBKk3GAZlNUjO/wBgVIqnaFSOv5KdiiQp1OWfrfaftDh95go9LaNR+Q==}
+  '@moonlight-mod/types@1.3.4':
+    resolution: {integrity: sha512-9SIhh38exQK239IeDqhTnF45Faybow7CO8++31OBOIO+pJB21qFNfB9wcuY/WH0Fx64b8wEUiawm5+kAjaCsXA==}
 
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -1349,7 +1349,7 @@ snapshots:
 
   '@moonlight-mod/moonmap@1.0.3': {}
 
-  '@moonlight-mod/types@1.3.3':
+  '@moonlight-mod/types@1.3.4':
     dependencies:
       '@moonlight-mod/lunast': 1.0.0
       '@moonlight-mod/mappings': 1.0.10(@moonlight-mod/lunast@1.0.0)(@moonlight-mod/moonmap@1.0.3)

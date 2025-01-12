@@ -6,12 +6,8 @@
   "meta": {
     "name": "Call Timer",
     "tagline": "Shows how long you've been in a voice call",
-    "authors": [
-      "NotNite"
-    ],
-    "tags": [
-      "voice"
-    ],
+    "authors": ["NotNite"],
+    "tags": ["voice"],
     "source": "https://github.com/NotNite/my-moonlight-extensions"
   }
 }

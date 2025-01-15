@@ -22,3 +22,23 @@ export function joinGuild() {
     window.open(GUILD_INVITE);
   }
 }
+
+export function copy(str: string) {
+  const ClipboardUtils = spacepack.require("discord/utils/ClipboardUtils");
+  const copy = Object.entries(ClipboardUtils).find(([key, value]) => typeof value !== "boolean")?.[1] as (
+    text: string
+  ) => void;
+  copy(str);
+}
+
+export function alert(title: string, body: string, onConfirm: () => void) {
+  const Alerts = spacepack.findByCode("secondaryConfirmText:", "this.show({")[0].exports.Z;
+  Alerts.show({
+    title,
+    body,
+    confirmColor: "decor-danger-btn",
+    confirmText: "Yes",
+    cancelText: "No",
+    onConfirm
+  });
+}

@@ -1,3 +1,8 @@
+.decor-danger-btn {
+  color: var(--white-500);
+  background-color: var(--button-danger-background);
+}
+
 .decor-change-decoration-modal-content {
   position: relative;
   display: flex;

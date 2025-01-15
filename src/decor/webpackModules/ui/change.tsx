@@ -6,7 +6,7 @@ import Flex from "@moonlight-mod/wp/discord/uikit/Flex";
 import { UserStore } from "@moonlight-mod/wp/common_stores";
 
 import { Decoration } from "../../types";
-import { decorationToAvatarDecoration, joinGuild } from "./util";
+import { alert, copy, decorationToAvatarDecoration, joinGuild } from "./util";
 import SectionedGridList from "./components/SectionedGridList";
 import DecorationGridNone from "./components/DecorationGridNone";
 import DecorationGridCreate from "./components/DecorationGridCreate";
@@ -21,7 +21,6 @@ import {
 } from "./components";
 import openGuidelinesModal from "./guidelines";
 import openCreateDecorationModal from "./create";
-import spacepack from "@moonlight-mod/wp/spacepack_spacepack";
 import MarkupUtils from "@moonlight-mod/wp/discord/modules/markup/MarkupUtils";
 
 const {
@@ -249,11 +248,6 @@ function ChangeDecorationModal(props: ModalProps) {
           {isActiveDecorationPreset && (
             <Button
               onClick={() => {
-                // TODO: mappings
-                const ClipboardUtils = spacepack.require("discord/utils/ClipboardUtils");
-                const copy = Object.entries(ClipboardUtils).find(([key, value]) => typeof value !== "boolean")?.[1] as (
-                  text: string
-                ) => void;
                 copy(activeDecorationPreset.id);
               }}
             >
@@ -283,8 +277,10 @@ function ChangeDecorationModal(props: ModalProps) {
         <div className="decor-change-decoration-modal-footer-btn-container">
           <Button
             onClick={() => {
-              DecorAuthStore.logout();
-              props.onClose();
+              alert("Log Out", "Are you sure you want to log out of Decor?", () => {
+                DecorAuthStore.logout();
+                props.onClose();
+              });
             }}
             color={Button.Colors.PRIMARY}
             look={Button.Looks.LINK}

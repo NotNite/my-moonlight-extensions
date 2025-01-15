@@ -5,7 +5,7 @@ import spacepack from "@moonlight-mod/wp/spacepack_spacepack";
 import { UserStore } from "@moonlight-mod/wp/common_stores";
 import { Decoration, NewDecoration, Preset } from "../types";
 
-const logger = moonlight.getLogger("decor/store");
+const logger = moonlight.getLogger("decor/stores");
 const FOUR_HOURS = 1000 * 60 * 60 * 4;
 
 const { openOAuth2Modal } = spacepack.findByCode("OAuth2AuthorizeModal")[0].exports;
@@ -95,6 +95,7 @@ class DecorAuthStore extends Flux.PersistedStore<any> {
 
   logout() {
     delete auth.tokens[this.currentUser];
+    this.authorized = false;
     this.emitChange();
   }
 
@@ -158,6 +159,10 @@ class DecorAuthStore extends Flux.PersistedStore<any> {
       method: "PUT",
       body: formData
     }).then((c) => (decoration && "file" in decoration ? c.json() : c.text()));
+  }
+
+  async deleteDecoration(decoration: Decoration) {
+    await this.fetchApi(this.makeUrl(`api/decorations/${decoration.hash}`), { method: "DELETE" });
   }
 }
 DecorAuthStore.persistKey = "DecorAuthStore";

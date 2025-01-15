@@ -27,9 +27,12 @@ export function DecorSection() {
             if (authorized) {
               openChangeDecorationModal();
             } else {
-              DecorAuthStore.authorize()
-                .then(openChangeDecorationModal)
-                .catch(() => {});
+              const onChange = () => {
+                openChangeDecorationModal();
+                DecorAuthStore.removeChangeListener(onChange);
+              };
+              DecorAuthStore.addChangeListener(onChange);
+              DecorAuthStore.authorize().catch(() => {});
             }
           }}
           size={Button.Sizes.SMALL}

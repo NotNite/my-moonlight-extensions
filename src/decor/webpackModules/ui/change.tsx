@@ -266,7 +266,7 @@ function ChangeDecorationModal(props: ModalProps) {
               DecorDecorationStore.setDecoration(tryingDecoration!);
               await props.onClose();
             }}
-            disabled={!isTryingDecoration}
+            disabled={!isTryingDecoration || tryingDecoration?.hash === userCurrentDecoration?.hash}
           >
             Apply
           </Button>

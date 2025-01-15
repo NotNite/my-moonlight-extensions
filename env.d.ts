@@ -15,3 +15,6 @@ declare module "@moonlight-mod/wp/decor_api" {
   import api from "src/decor/webpackModules/api";
   export default api;
 }
+declare module "@moonlight-mod/wp/decor_stores" {
+  export * from "src/decor/webpackModules/stores";
+}

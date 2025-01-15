@@ -30,7 +30,7 @@ const {
   ModalCloseButton,
   ModalContent,
   ModalFooter,
-  openModalLazy,
+  openModal,
   Text,
   Tooltip,
   FormTitle,
@@ -308,11 +308,8 @@ function ChangeDecorationModal(props: ModalProps) {
   );
 }
 
-export default async function openChangeDecorationModal() {
-  // @ts-expect-error TODO: mappings
-  await openModalLazy(async () => {
-    return (props: ModalProps) => {
-      return <ChangeDecorationModal {...props} />;
-    };
+export default function openChangeDecorationModal() {
+  openModal((props: ModalProps) => {
+    return <ChangeDecorationModal {...props} />;
   });
 }

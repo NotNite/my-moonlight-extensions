@@ -9,7 +9,7 @@ import { Decoration, GUILD_INVITE, RAW_SKU_ID } from "../../types";
 import { joinGuild } from "./util";
 
 const {
-  openModalLazy,
+  openModal,
   ModalRoot,
   ModalHeader,
   ModalSize,
@@ -164,11 +164,8 @@ function CreateDecorationModal(props: ModalProps) {
   );
 }
 
-export default async function openCreateDecorationModal() {
-  // @ts-expect-error TODO: mappings
-  await openModalLazy(async () => {
-    return (props: ModalProps) => {
-      return <CreateDecorationModal {...props} />;
-    };
+export default function openCreateDecorationModal() {
+  openModal((props: ModalProps) => {
+    return <CreateDecorationModal {...props} />;
   });
 }

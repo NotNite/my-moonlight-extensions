@@ -13,7 +13,7 @@ const {
   ModalFooter,
   Text,
   FormText,
-  openModalLazy,
+  openModal,
   Button
 } = Components;
 
@@ -45,7 +45,7 @@ function GuidelinesModal(props: ModalProps) {
           onClick={async () => {
             DecorAuthStore.agreeToGuidelines();
             await props.onClose();
-            setTimeout(openCreateDecorationModal, 0);
+            setTimeout(openCreateDecorationModal, 100);
           }}
         >
           Continue
@@ -58,11 +58,8 @@ function GuidelinesModal(props: ModalProps) {
   );
 }
 
-export default async function openGuidelinesModal() {
-  // @ts-expect-error TODO: mappings
-  await openModalLazy(async () => {
-    return (props: ModalProps) => {
-      return <GuidelinesModal {...props} />;
-    };
+export default function openGuidelinesModal() {
+  openModal((props: ModalProps) => {
+    return <GuidelinesModal {...props} />;
   });
 }

@@ -123,6 +123,9 @@ function ChangeDecorationModal(props: ModalProps) {
 
   const activeSelectedDecoration = isTryingDecoration ? tryingDecoration : userCurrentDecoration;
   const activeDecorationHasAuthor = typeof activeSelectedDecoration?.authorId !== "undefined";
+  const decorationAuthor = useStateFromStores([UserStore], () =>
+    activeDecorationHasAuthor ? UserStore.getUser(activeSelectedDecoration.authorId) : null
+  );
   const hasDecorationPendingReview = userCreatedDecorations.some((d) => d.reviewed === false);
 
   const presets = usePresets();
@@ -229,9 +232,17 @@ function ChangeDecorationModal(props: ModalProps) {
             </Text>
           )}
           {activeDecorationHasAuthor && (
-            <Text key={`createdBy-${activeSelectedDecoration.authorId}`} variant="text-sm/normal">
-              Created by {MarkupUtils.parse(`<@${activeSelectedDecoration.authorId}>`, true)}
-            </Text>
+            <>
+              <Text key={`createdBy-${activeSelectedDecoration.authorId}`} variant="text-sm/normal">
+                Created by {MarkupUtils.parse(`<@${activeSelectedDecoration.authorId}>`, true)}
+              </Text>
+
+              {decorationAuthor == null && (
+                <Button onClick={() => DecorCacheStore.ensureOrLookupUser(activeSelectedDecoration.authorId!)}>
+                  Lookup Author
+                </Button>
+              )}
+            </>
           )}
           {isActiveDecorationPreset && (
             <Button

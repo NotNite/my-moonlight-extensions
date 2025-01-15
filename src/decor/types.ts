@@ -1,3 +1,5 @@
+import { Snowflake } from "@moonlight-mod/types";
+
 export const SKU_ID = "100101099111114"; // "decor" in decimal codepoints
 export const RAW_SKU_ID = "11497119"; // raw in ascii numbers
 export const GUILD_INVITE = "https://discord.gg/dXp2SdxDcP";
@@ -14,7 +16,7 @@ export type Decoration = {
   hash: string;
   animated: boolean;
   alt: string | null;
-  authorId: string | null;
+  authorId: Snowflake | null;
   reviewed: boolean | null;
   presetId: string | null;
 };

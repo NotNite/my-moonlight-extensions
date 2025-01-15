@@ -9,6 +9,7 @@ const logger = moonlight.getLogger("decor/store");
 const FOUR_HOURS = 1000 * 60 * 60 * 4;
 
 const { openOAuth2Modal } = spacepack.findByCode("OAuth2AuthorizeModal")[0].exports;
+const UserActionCreators = spacepack.require("discord/actions/UserActionCreators");
 
 // fsr persiststore isn't working if we have the fields on the class and this is how discord does it so this works
 const auth: {
@@ -196,6 +197,7 @@ class DecorCacheStore extends Store<any> {
   private cacheTimes = new Map<Snowflake, number>();
   private users = new Map<Snowflake, string | null>();
   private locked = false;
+  private pendingUsers = new Set<Snowflake>();
 
   constructor() {
     super(Dispatcher);
@@ -266,6 +268,22 @@ class DecorCacheStore extends Store<any> {
   setUser(id: Snowflake, hash: string | null) {
     this.users.set(id, hash);
     this.emitChange();
+  }
+
+  // We decided to only do this on hover of some things because otherwise it leans into automation territory
+  async ensureOrLookupUser(id: Snowflake) {
+    const existing = UserStore.getUser(id);
+    if (existing != null) return;
+    if (this.pendingUsers.has(id)) return;
+
+    logger.trace("Looking up user:", id);
+    this.pendingUsers.add(id);
+    try {
+      await UserActionCreators.getUser(id);
+      this.pendingUsers.delete(id);
+    } catch (e) {
+      logger.error("Failed to lookup user:", e);
+    }
   }
 }
 const decorCacheStore = new DecorCacheStore();

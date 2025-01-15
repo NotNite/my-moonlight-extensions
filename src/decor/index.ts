@@ -60,7 +60,7 @@ export const patches: Patch[] = [
       // Remove "NEW" label from Decor decorations
       {
         match: /(?<=avatarDecorationOverride:(\i),.+?=>)\i===\i\.\i\.PURCHASE/,
-        replacement: (orig, decoration) => `${decoration}.skuId===${SKU_ID}||${orig}`
+        replacement: (orig, decoration) => `${decoration}.skuId==="${SKU_ID}"||${orig}`
       }
     ]
   }

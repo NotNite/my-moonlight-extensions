@@ -232,17 +232,19 @@ function ChangeDecorationModal(props: ModalProps) {
             </Text>
           )}
           {activeDecorationHasAuthor && (
-            <>
+            <div
+              onMouseOver={() => {
+                DecorCacheStore.ensureOrLookupUser(activeSelectedDecoration.authorId!);
+              }}
+            >
               <Text key={`createdBy-${activeSelectedDecoration.authorId}`} variant="text-sm/normal">
-                Created by {MarkupUtils.parse(`<@${activeSelectedDecoration.authorId}>`, true)}
+                Created by{" "}
+                {MarkupUtils.parse(
+                  `<@${activeSelectedDecoration.authorId}>` + (decorationAuthor == null ? " (hover to lookup)" : ""),
+                  true
+                )}
               </Text>
-
-              {decorationAuthor == null && (
-                <Button onClick={() => DecorCacheStore.ensureOrLookupUser(activeSelectedDecoration.authorId!)}>
-                  Lookup Author
-                </Button>
-              )}
-            </>
+            </div>
           )}
           {isActiveDecorationPreset && (
             <Button

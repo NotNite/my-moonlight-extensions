@@ -99,7 +99,7 @@ function CreateDecorationModal(props: ModalProps) {
               <FormText
                 // @ts-expect-error TODO: mappings
                 type="description"
-                className={Margins.top8}
+                className={Margins.marginTop8}
               >
                 File should be APNG or PNG.
               </FormText>
@@ -109,7 +109,7 @@ function CreateDecorationModal(props: ModalProps) {
               <FormText
                 // @ts-expect-error TODO: mappings
                 type="description"
-                className={Margins.top8}
+                className={Margins.marginTop8}
               >
                 This name will be used when referring to this decoration.
               </FormText>
@@ -119,7 +119,7 @@ function CreateDecorationModal(props: ModalProps) {
             <AvatarDecorationModalPreview avatarDecorationOverride={decoration} user={UserStore.getCurrentUser()} />
           </div>
         </div>
-        <HelpMessage messageType={HelpMessageTypes.INFO} className={Margins.bottom8}>
+        <HelpMessage messageType={HelpMessageTypes.INFO} className={Margins.marginBottom8}>
           To receive updates on your decoration's review, join{" "}
           <a
             href={GUILD_INVITE}

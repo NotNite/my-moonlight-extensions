@@ -82,7 +82,7 @@ function SectionHeader({ section }: { section: Section }) {
             showDefaultAvatarsForNullUsers
             size={16}
             showUserPopout
-            className={Margins.bottom8}
+            className={Margins.marginBottom8}
           />
         )}
       </Flex>
@@ -91,7 +91,7 @@ function SectionHeader({ section }: { section: Section }) {
         <FormText
           // @ts-expect-error TODO: mappings
           type="description"
-          className={Margins.bottom8}
+          className={Margins.marginBottom8}
         >
           {section.subtitle}
         </FormText>

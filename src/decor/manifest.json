@@ -1,0 +1,26 @@
+{
+  "$schema": "https://moonlight-mod.github.io/manifest.schema.json",
+  "id": "decor",
+  "version": "1.0.0",
+  "apiLevel": 2,
+  "meta": {
+    "name": "Decor",
+    "tagline": "Custom avatar decorations",
+    "description": "Requires interaction with the Decor CDN.\n\nCurrently only supports viewing only (no editing).",
+    "authors": ["NotNite"],
+    "tags": ["profiles"],
+    "source": "https://github.com/NotNite/my-moonlight-extensions"
+  },
+  "settings": {
+    "baseUrl": {
+      "description": "Base URL",
+      "type": "string",
+      "default": "https://decor.fieryflames.dev/"
+    },
+    "cdnUrl": {
+      "description": "CDN URL",
+      "type": "string",
+      "default": "https://decorcdn.fieryflames.dev/"
+    }
+  }
+}

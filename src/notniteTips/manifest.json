@@ -1,13 +1,14 @@
 {
   "$schema": "https://moonlight-mod.github.io/manifest.schema.json",
   "id": "notniteTips",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "apiLevel": 2,
   "meta": {
     "name": "NotNite Tips:tm:",
     "tagline": "Your helpful moonlight assistant!",
     "description": "A helpful moonlight assistant, created from the rotting remains of Clippy found on the side of the road. Tip accuracy is variable and may be wrong due to state-of-the-art LLM technology.",
     "authors": ["NotNite"],
+    "tags": ["fun"],
     "source": "https://github.com/NotNite/my-moonlight-extensions"
   },
   "dependencies": ["spacepack", "commands"],

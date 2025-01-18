@@ -16,18 +16,17 @@ interface DecorDecorationGridDecorationProps extends React.HTMLProps<HTMLDivElem
 }
 
 function DecorationContextMenu({ decoration }: { decoration: Decoration }) {
-  // @ts-expect-error TODO: mappings
   const currentUser = useStateFromStores([DecorAuthStore], () => DecorAuthStore.currentUser);
 
   return (
     <Menu navId="decor-decoration" onClose={closeContextMenu} aria-label="Decoration Options">
-      <MenuItem id="copy-hash" label="Copy Decoration Hash" icon={CopyIcon} action={() => copy(decoration.hash)} />
+      <MenuItem id="copy-hash" label="Copy Decoration Hash" icon={<CopyIcon />} action={() => copy(decoration.hash)} />
       {decoration.authorId === currentUser && (
         <MenuItem
           id="delete"
           label="Delete Decoration"
           color="danger"
-          icon={TrashIcon}
+          icon={<TrashIcon />}
           action={() =>
             alert("Delete Decoration", `Are you sure you want to delete "${decoration.alt}"?`, async () => {
               await DecorAuthStore.deleteDecoration(decoration);

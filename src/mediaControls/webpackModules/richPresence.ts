@@ -286,7 +286,6 @@ async function updatePresence(state: MediaState) {
           body: {
             urls: [artwork]
           },
-          // @ts-expect-error TODO: mappings
           oldFormErrors: true
         });
 

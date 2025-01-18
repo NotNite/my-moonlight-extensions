@@ -3,8 +3,9 @@ import * as Components from "@moonlight-mod/wp/discord/components/common/index";
 import { UserStore } from "@moonlight-mod/wp/common_stores";
 import { DecorAuthStore, DecorDecorationStore } from "@moonlight-mod/wp/decor_stores";
 import spacepack from "@moonlight-mod/wp/spacepack_spacepack";
-import { AvatarDecorationModalPreview, DecorationModalStyles, Margins, ModalProps } from "./components";
+import { AvatarDecorationModalPreview, DecorationModalStyles, Margins } from "./components";
 import { Decoration, GUILD_INVITE, RAW_SKU_ID } from "../../types";
+import type { ModalProps } from "@moonlight-mod/mappings/types/discord/components/common/index";
 
 import { joinGuild } from "./util";
 

@@ -4,7 +4,6 @@ import type { MediaState, RepeatMode } from "../../types";
 
 export default abstract class MediaControlsBaseStore extends Store<any> {
   constructor(...args: any[]) {
-    // @ts-expect-error Wrong types for store ctor
     super(Dispatcher, ...args);
   }
 

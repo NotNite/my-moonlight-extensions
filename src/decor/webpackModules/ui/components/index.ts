@@ -20,8 +20,3 @@ export function usePresets() {
   }, []);
   return presets;
 }
-
-export type ModalProps = {
-  transitionState: number | null;
-  onClose: () => Promise<void>;
-};

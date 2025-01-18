@@ -15,13 +15,13 @@ import {
   AvatarDecorationModalPreview,
   DecorationModalStyles,
   Margins,
-  ModalProps,
   UserSummaryItem,
   usePresets
 } from "./components";
 import openGuidelinesModal from "./guidelines";
 import openCreateDecorationModal from "./create";
 import MarkupUtils from "@moonlight-mod/wp/discord/modules/markup/MarkupUtils";
+import type { ModalProps } from "@moonlight-mod/mappings/types/discord/components/common/index";
 
 const {
   ModalRoot,
@@ -65,12 +65,7 @@ function SectionHeader({ section }: { section: Section }) {
   return (
     <div>
       <Flex>
-        <FormTitle
-          // @ts-expect-error TODO: mappings
-          style={{ flexGrow: 1 }}
-        >
-          {section.title}
-        </FormTitle>
+        <FormTitle style={{ flexGrow: 1 }}>{section.title}</FormTitle>
 
         {hasAuthorIds && (
           <UserSummaryItem
@@ -107,7 +102,6 @@ function ChangeDecorationModal(props: ModalProps) {
     tryingDecoration != null ? decorationToAvatarDecoration(tryingDecoration) : tryingDecoration;
 
   const { userCreatedDecorations, userCurrentDecoration, agreedToGuidelines } = useStateFromStores(
-    // @ts-expect-error TODO: mappings
     [DecorDecorationStore, DecorAuthStore],
     () => ({
       userCreatedDecorations: DecorDecorationStore.userCreatedDecorations,
@@ -309,7 +303,7 @@ function ChangeDecorationModal(props: ModalProps) {
 }
 
 export default function openChangeDecorationModal() {
-  openModal((props: ModalProps) => {
+  openModal((props) => {
     return <ChangeDecorationModal {...props} />;
   });
 }

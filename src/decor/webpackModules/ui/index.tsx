@@ -9,7 +9,6 @@ import { Snowflake } from "@moonlight-mod/types";
 import { DiscordDecoration, RAW_SKU_ID, SKU_ID } from "../../types";
 
 export function DecorSection() {
-  // @ts-expect-error TODO: mappings
   const { authorized, selectedDecoration } = useStateFromStores([DecorAuthStore, DecorDecorationStore], () => ({
     authorized: DecorAuthStore.authorized,
     selectedDecoration: DecorDecorationStore.userCurrentDecoration

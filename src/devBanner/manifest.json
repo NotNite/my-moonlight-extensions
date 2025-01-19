@@ -1,13 +1,14 @@
 {
   "$schema": "https://moonlight-mod.github.io/manifest.schema.json",
   "id": "devBanner",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "apiLevel": 2,
   "meta": {
     "name": "Dev Banner",
     "tagline": "Enables the Discord dev banner, which shows the build ID",
     "authors": ["NotNite"],
     "tags": ["development"],
-    "source": "https://github.com/NotNite/my-moonlight-extensions"
+    "source": "https://github.com/NotNite/my-moonlight-extensions",
+    "donate": "https://notnite.com/givememoney"
   }
 }

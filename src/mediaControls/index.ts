@@ -26,7 +26,8 @@ export const webpackModules: Record<string, ExtensionWebpackModule> = {
       { ext: "appPanels", id: "appPanels" },
       { id: "react" },
       { id: "discord/components/common/index" },
-      { id: "discord/uikit/Flex" }
+      { id: "discord/uikit/Flex" },
+      { id: "discord/components/common/PanelButton" }
     ],
     entrypoint: true
   },

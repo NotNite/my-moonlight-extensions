@@ -1,8 +1,6 @@
-import spacepack from "@moonlight-mod/wp/spacepack_spacepack";
 import React from "@moonlight-mod/wp/react";
 import Grid, { GridProps } from "./Grid";
-
-const ScrollerClasses = spacepack.findByCode("managedReactiveScroller:")[0].exports;
+import * as ScrollerClasses from "@moonlight-mod/wp/discord/components/common/Scroller.css";
 
 type Section<SectionT, ItemT> = SectionT & {
   items: Array<ItemT>;

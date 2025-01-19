@@ -1,13 +1,14 @@
 {
   "$schema": "https://moonlight-mod.github.io/manifest.schema.json",
   "id": "callTimer",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "apiLevel": 2,
   "meta": {
     "name": "Call Timer",
     "tagline": "Shows how long you've been in a voice call",
     "authors": ["NotNite"],
     "tags": ["voice"],
-    "source": "https://github.com/NotNite/my-moonlight-extensions"
+    "source": "https://github.com/NotNite/my-moonlight-extensions",
+    "donate": "https://notnite.com/givememoney"
   }
 }

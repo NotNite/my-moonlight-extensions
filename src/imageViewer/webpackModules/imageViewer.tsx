@@ -1,12 +1,9 @@
 import spacepack from "@moonlight-mod/wp/spacepack_spacepack";
 import React from "@moonlight-mod/wp/react";
-import * as Components from "@moonlight-mod/wp/discord/components/common/index";
-
-const {
+import {
   Image,
   Text,
   TextInput,
-
   XLargeIcon,
   CopyIcon,
   LinkIcon,
@@ -16,15 +13,12 @@ const {
   ArrowAngleLeftUpIcon,
   ArrowAngleRightUpIcon,
   WindowLaunchIcon,
-
   closeModal,
   useModalsStore
-} = Components;
+} from "@moonlight-mod/wp/discord/components/common/index";
+import { copy } from "@moonlight-mod/wp/discord/utils/ClipboardUtils";
+
 const HeaderBar = spacepack.require("discord/uikit/HeaderBar").default;
-const ClipboardUtils = spacepack.require("discord/utils/ClipboardUtils");
-const copy = Object.entries(ClipboardUtils).find(([key, value]) => typeof value !== "boolean")?.[1] as (
-  text: string
-) => void;
 const NativeUtils = spacepack.findByCode("Data fetch" + " unsuccessful")[0].exports.ZP;
 const RawVideo = spacepack.findByCode(
   'MOSAIC?{width:"100%",height:"100%",' + 'maxHeight:"inherit",objectFit:"contain"}'

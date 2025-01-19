@@ -4,11 +4,11 @@ import { Snowflake } from "@moonlight-mod/types";
 import spacepack from "@moonlight-mod/wp/spacepack_spacepack";
 import { UserStore } from "@moonlight-mod/wp/common_stores";
 import { Decoration, NewDecoration, Preset } from "../types";
+import { openOAuth2Modal } from "@moonlight-mod/wp/discord/modules/oauth2/index";
 
 const logger = moonlight.getLogger("decor/stores");
 const FOUR_HOURS = 1000 * 60 * 60 * 4;
 
-const { openOAuth2Modal } = spacepack.findByCode("OAuth2AuthorizeModal")[0].exports;
 const UserActionCreators = spacepack.require("discord/actions/UserActionCreators");
 
 // fsr persiststore isn't working if we have the fields on the class and this is how discord does it so this works

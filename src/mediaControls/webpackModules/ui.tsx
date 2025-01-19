@@ -3,31 +3,25 @@ import React from "@moonlight-mod/wp/react";
 import { MediaControlsStore } from "@moonlight-mod/wp/mediaControls_stores";
 import { useStateFromStores } from "@moonlight-mod/wp/discord/packages/flux";
 import AppPanels from "@moonlight-mod/wp/appPanels_appPanels";
-import * as Components from "@moonlight-mod/wp/discord/components/common/index";
-import { RepeatMode } from "../types";
-import { NextTrackIcon } from "./NextTrackIcon";
-import { PreviousTrackIcon } from "./PreviousTrackIcon";
-
-const {
+import {
   PlayIcon,
   PauseIcon,
-
   Text,
   Tooltip,
-
   Menu,
   MenuItem,
   MenuGroup,
   MenuRadioItem,
   MenuCheckboxItem,
   MenuSeparator
-} = Components;
+} from "@moonlight-mod/wp/discord/components/common/index";
+import { RepeatMode } from "../types";
+import { NextTrackIcon } from "./NextTrackIcon";
+import { PreviousTrackIcon } from "./PreviousTrackIcon";
+import NativeUtils from "@moonlight-mod/wp/discord/utils/NativeUtils";
+import PanelButton from "@moonlight-mod/wp/discord/components/common/PanelButton";
+
 const ContextMenuActionCreators = spacepack.require("discord/actions/ContextMenuActionCreators");
-let copy: (text: string) => void;
-let IconButton: React.ComponentType<any>;
-let NativeUtils: {
-  copyImage: (src: string) => void;
-};
 let MediaBar: React.ComponentType<any> & { Types: { DURATION: "DURATION"; VOLUME: "VOLUME" } };
 
 function MediaControlsContextMenu() {
@@ -90,14 +84,7 @@ function MediaControlsContextMenu() {
 }
 
 function MediaControlsUI() {
-  if (!copy) {
-    // TODO: mappings
-    const ClipboardUtils = spacepack.require("discord/utils/ClipboardUtils");
-    copy = Object.entries(ClipboardUtils).find(([key, value]) => typeof value !== "boolean")?.[1] as (
-      text: string
-    ) => void;
-    IconButton = spacepack.findByCode(".PANEL_BUTTON,")[0].exports.Z;
-    NativeUtils = spacepack.findByCode("Data fetch unsuccessful")[0].exports.ZP;
+  if (!MediaBar) {
     MediaBar = spacepack.findByCode(".mediaBarInteractionVolume:null")[0].exports.Z;
   }
 
@@ -188,13 +175,13 @@ function MediaControlsUI() {
         </div>
 
         <div className="mediaControls-interact">
-          <IconButton icon={PreviousTrackIcon} tooltipText="Previous" onClick={() => MediaControlsStore.previous()} />
-          <IconButton
+          <PanelButton icon={PreviousTrackIcon} tooltipText="Previous" onClick={() => MediaControlsStore.previous()} />
+          <PanelButton
             icon={state.playing ? PauseIcon : PlayIcon}
             tooltipText={state.playing ? "Pause" : "Play"}
             onClick={() => MediaControlsStore.playPause()}
           />
-          <IconButton icon={NextTrackIcon} tooltipText="Next" onClick={() => MediaControlsStore.next()} />
+          <PanelButton icon={NextTrackIcon} tooltipText="Next" onClick={() => MediaControlsStore.next()} />
         </div>
       </div>
       {disableBar ? null : (

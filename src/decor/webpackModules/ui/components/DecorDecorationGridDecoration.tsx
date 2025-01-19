@@ -1,13 +1,11 @@
 import React from "@moonlight-mod/wp/react";
 import { useStateFromStores } from "@moonlight-mod/wp/discord/packages/flux";
-import * as Components from "@moonlight-mod/wp/discord/components/common/index";
+import { Menu, MenuItem, CopyIcon, TrashIcon } from "@moonlight-mod/wp/discord/components/common/index";
 import { openContextMenu, closeContextMenu } from "@moonlight-mod/wp/discord/actions/ContextMenuActionCreators";
 import { DecorAuthStore, DecorDecorationStore } from "@moonlight-mod/wp/decor_stores";
 import { Decoration } from "../../../types";
 import { alert, copy, decorationToAvatarDecoration } from "../util";
 import { DecorationGridDecoration } from ".";
-
-const { Menu, MenuItem, CopyIcon, TrashIcon } = Components;
 
 interface DecorDecorationGridDecorationProps extends React.HTMLProps<HTMLDivElement> {
   decoration: Decoration;
@@ -42,7 +40,6 @@ function DecorationContextMenu({ decoration }: { decoration: Decoration }) {
 export default function DecorDecorationGridDecoration(props: DecorDecorationGridDecorationProps) {
   const { decoration } = props;
 
-  // TODO: context menu
   return (
     <DecorationGridDecoration
       {...props}

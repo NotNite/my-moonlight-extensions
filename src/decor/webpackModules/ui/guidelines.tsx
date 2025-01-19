@@ -1,11 +1,5 @@
 import React from "@moonlight-mod/wp/react";
-import * as Components from "@moonlight-mod/wp/discord/components/common/index";
-import { DecorationModalStyles } from "./components";
-import { DecorAuthStore } from "@moonlight-mod/wp/decor_stores";
-import openCreateDecorationModal from "./create";
-import type { ModalProps } from "@moonlight-mod/mappings/types/discord/components/common/index";
-
-const {
+import {
   ModalRoot,
   ModalSize,
   ModalHeader,
@@ -16,7 +10,11 @@ const {
   FormText,
   openModal,
   Button
-} = Components;
+} from "@moonlight-mod/wp/discord/components/common/index";
+import { DecorationModalStyles } from "./components";
+import { DecorAuthStore } from "@moonlight-mod/wp/decor_stores";
+import openCreateDecorationModal from "./create";
+import type { ModalProps } from "@moonlight-mod/mappings/types/discord/components/common/index";
 
 function GuidelinesModal(props: ModalProps) {
   return (

@@ -1,4 +1,17 @@
-import * as Components from "@moonlight-mod/wp/discord/components/common/index";
+import {
+  ModalRoot,
+  ModalSize,
+  ModalHeader,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  openModal,
+  Text,
+  Tooltip,
+  FormTitle,
+  FormText,
+  Button
+} from "@moonlight-mod/wp/discord/components/common/index";
 import React from "@moonlight-mod/wp/react";
 import { useStateFromStores } from "@moonlight-mod/wp/discord/packages/flux";
 import { DecorAuthStore, DecorCacheStore, DecorDecorationStore } from "@moonlight-mod/wp/decor_stores";
@@ -22,21 +35,6 @@ import openGuidelinesModal from "./guidelines";
 import openCreateDecorationModal from "./create";
 import MarkupUtils from "@moonlight-mod/wp/discord/modules/markup/MarkupUtils";
 import type { ModalProps } from "@moonlight-mod/mappings/types/discord/components/common/index";
-
-const {
-  ModalRoot,
-  ModalSize,
-  ModalHeader,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  openModal,
-  Text,
-  Tooltip,
-  FormTitle,
-  FormText,
-  Button
-} = Components;
 
 type Section = {
   title: string;

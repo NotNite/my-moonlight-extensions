@@ -1,8 +1,6 @@
 import Dispatcher from "@moonlight-mod/wp/discord/Dispatcher";
 import React from "@moonlight-mod/wp/react";
-import * as Components from "@moonlight-mod/wp/discord/components/common/index";
-
-const { Text } = Components;
+import { Text } from "@moonlight-mod/wp/discord/components/common/index";
 
 let startTime: number | null = null;
 

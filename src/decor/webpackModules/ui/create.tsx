@@ -1,15 +1,5 @@
 import React from "@moonlight-mod/wp/react";
-import * as Components from "@moonlight-mod/wp/discord/components/common/index";
-import { UserStore } from "@moonlight-mod/wp/common_stores";
-import { DecorAuthStore, DecorDecorationStore } from "@moonlight-mod/wp/decor_stores";
-import spacepack from "@moonlight-mod/wp/spacepack_spacepack";
-import { AvatarDecorationModalPreview, DecorationModalStyles, Margins } from "./components";
-import { Decoration, GUILD_INVITE, RAW_SKU_ID } from "../../types";
-import type { ModalProps } from "@moonlight-mod/mappings/types/discord/components/common/index";
-
-import { joinGuild } from "./util";
-
-const {
+import {
   openModal,
   ModalRoot,
   ModalHeader,
@@ -24,8 +14,15 @@ const {
   FormSection,
   FormText,
   Button
-} = Components;
-const FileUpload = spacepack.findByCode("fileUploadInput,")[0].exports.Z;
+} from "@moonlight-mod/wp/discord/components/common/index";
+import { UserStore } from "@moonlight-mod/wp/common_stores";
+import { DecorAuthStore, DecorDecorationStore } from "@moonlight-mod/wp/decor_stores";
+import { AvatarDecorationModalPreview, DecorationModalStyles, Margins } from "./components";
+import { Decoration, GUILD_INVITE, RAW_SKU_ID } from "../../types";
+import type { ModalProps } from "@moonlight-mod/mappings/types/discord/components/common/index";
+import FileUpload from "@moonlight-mod/wp/discord/components/common/FileUpload";
+
+import { joinGuild } from "./util";
 
 function useObjectURL(object: Blob | MediaSource | null) {
   const [url, setUrl] = React.useState<string | null>(null);

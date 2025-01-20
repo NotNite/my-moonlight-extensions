@@ -1,0 +1,14 @@
+{
+  "$schema": "https://moonlight-mod.github.io/manifest.schema.json",
+  "id": "screenshotMaker",
+  "version": "1.0.0",
+  "apiLevel": 2,
+  "meta": {
+    "name": "Screenshot Maker",
+    "tagline": "Takes screenshots for the moonlight README",
+    "description": "Usage instructions:\n\n- Reset your config, rename `extensions`, etc. to not load any other extensions (make sure to not add the entire dist folder too!)\n- Enable Platform Styles with the style set to \"web\"\n- Ensure you are scrolled to the top of the settings window, there aren't any carets in the search bars, and Moonbase is at the top with no custom extensions showing\n- Take two screenshots by pressing `Alt+Ctrl+M`, one in light mode and one in dark mode\n- Ship it",
+    "authors": ["NotNite"],
+    "source": "https://github.com/NotNite/my-moonlight-extensions",
+    "donate": "https://notnite.com/givememoney"
+  }
+}

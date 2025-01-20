@@ -26,12 +26,12 @@ export const patches: Patch[] = [
   {
     find: "renderAvatarWithPopout(){",
     replace: {
-      match:
-        /currentUser:(\i).+?(\i)=\(0,\i\.\i\)\({avatarDecoration:\i,size:\(0,\i\.\i\)\(\i\.AvatarSizes\.SIZE_32\)}\);/,
-      replacement: (orig, currentUser, avatarDecoration) =>
+      match: /((\i)=\(0,\i.\i\)\({avatarDecoration:.+?;)return/,
+      replacement: (_, orig, avatarDecoration) =>
         `${orig}
-        const __decorDecoration = require("decor_ui").useDecorDecoration(${currentUser}?.id);
-        if (__decorDecoration !== null) ${avatarDecoration} = __decorDecoration;`
+        const __decorDecoration = require("decor_ui").useDecorDecoration(arguments[0].currentUser?.id);
+        if (__decorDecoration != null) ${avatarDecoration} = __decorDecoration;
+        return`
     }
   },
 

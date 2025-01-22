@@ -9,7 +9,8 @@
     "description": "Puts a cat on your Discord. A port of [oneko.js](https://github.com/adryd325/oneko.js).",
     "authors": ["NotNite", "adryd", "danielah05"],
     "tags": ["fun"],
-    "source": "https://github.com/NotNite/my-moonlight-extensions"
+    "source": "https://github.com/NotNite/my-moonlight-extensions",
+    "changelog": "Added more character skins"
   },
   "settings": {
     "skin": {

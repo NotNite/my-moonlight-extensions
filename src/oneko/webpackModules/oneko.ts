@@ -1,3 +1,13 @@
+enum Oneko {
+  Neko = "Neko",
+  Tora = "Tora",
+  Dog = "Dog",
+  Sakura = "Sakura",
+  Tomoyo = "Tomoyo",
+  BSD = "BSD",
+  Custom = "Custom"
+}
+
 (() => {
   const isReducedMotion = window.matchMedia(`(prefers-reduced-motion: reduce)`).matches === true;
   if (isReducedMotion) return;
@@ -91,31 +101,34 @@
     nekoEl.style.top = `${nekoPosY - 16}px`;
     nekoEl.style.zIndex = "2147483647";
 
-    const skin = moonlight.getConfigOption<Oneko>("oneko", "skin");
+    const skin = moonlight.getConfigOption<string>("oneko", "skin");
 
     let nekoFile;
 
+    const DEFAULT_NEKO = "https://raw.githubusercontent.com/danielah05/oneko.js-skins/refs/heads/main/neko.gif";
+
     switch (skin) {
-      case "Neko":
-        nekoFile = "https://raw.githubusercontent.com/danielah05/oneko.js-skins/refs/heads/main/neko.gif";
+      case Oneko.Neko:
+        nekoFile = DEFAULT_NEKO;
         break;
-      case "Tora":
+      case Oneko.Tora:
         nekoFile = "https://raw.githubusercontent.com/danielah05/oneko.js-skins/refs/heads/main/tora.gif";
         break;
-      case "Dog":
+      case Oneko.Dog:
         nekoFile = "https://raw.githubusercontent.com/danielah05/oneko.js-skins/refs/heads/main/dog.gif";
         break;
-      case "Sakura":
+      case Oneko.Sakura:
         nekoFile = "https://raw.githubusercontent.com/danielah05/oneko.js-skins/refs/heads/main/sakura.gif";
         break;
-      case "Tomoyo":
+      case Oneko.Tomoyo:
         nekoFile = "https://raw.githubusercontent.com/danielah05/oneko.js-skins/refs/heads/main/tomoyo.gif";
         break;
-      case "BSD":
+      case Oneko.BSD:
         nekoFile = "https://raw.githubusercontent.com/danielah05/oneko.js-skins/refs/heads/main/bsd.gif";
         break;
-      case "Custom":
-        nekoFile = moonlight.getConfigOption<Oneko>("oneko", "customskin");
+      case Oneko.Custom:
+        nekoFile = moonlight.getConfigOption<string>("oneko", "customskin") ?? DEFAULT_NEKO;
+        if (nekoFile === "") nekoFile = DEFAULT_NEKO;
         break;
     }
 

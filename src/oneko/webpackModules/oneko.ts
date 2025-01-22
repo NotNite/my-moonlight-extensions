@@ -105,26 +105,32 @@ enum Oneko {
 
     let nekoFile;
 
-    const DEFAULT_NEKO = "https://raw.githubusercontent.com/danielah05/oneko.js-skins/refs/heads/main/neko.gif";
+    const DEFAULT_NEKO =
+      "https://raw.githubusercontent.com/danielah05/oneko.js-skins/3184df1aff638711ea5aa5561d184a1e673cda90/neko.gif";
 
     switch (skin) {
       case Oneko.Neko:
         nekoFile = DEFAULT_NEKO;
         break;
       case Oneko.Tora:
-        nekoFile = "https://raw.githubusercontent.com/danielah05/oneko.js-skins/refs/heads/main/tora.gif";
+        nekoFile =
+          "https://raw.githubusercontent.com/danielah05/oneko.js-skins/3184df1aff638711ea5aa5561d184a1e673cda90/tora.gif";
         break;
       case Oneko.Dog:
-        nekoFile = "https://raw.githubusercontent.com/danielah05/oneko.js-skins/refs/heads/main/dog.gif";
+        nekoFile =
+          "https://raw.githubusercontent.com/danielah05/oneko.js-skins/3184df1aff638711ea5aa5561d184a1e673cda90/dog.gif";
         break;
       case Oneko.Sakura:
-        nekoFile = "https://raw.githubusercontent.com/danielah05/oneko.js-skins/refs/heads/main/sakura.gif";
+        nekoFile =
+          "https://raw.githubusercontent.com/danielah05/oneko.js-skins/3184df1aff638711ea5aa5561d184a1e673cda90/sakura.gif";
         break;
       case Oneko.Tomoyo:
-        nekoFile = "https://raw.githubusercontent.com/danielah05/oneko.js-skins/refs/heads/main/tomoyo.gif";
+        nekoFile =
+          "https://raw.githubusercontent.com/danielah05/oneko.js-skins/3184df1aff638711ea5aa5561d184a1e673cda90/tomoyo.gif";
         break;
       case Oneko.BSD:
-        nekoFile = "https://raw.githubusercontent.com/danielah05/oneko.js-skins/refs/heads/main/bsd.gif";
+        nekoFile =
+          "https://raw.githubusercontent.com/danielah05/oneko.js-skins/3184df1aff638711ea5aa5561d184a1e673cda90/bsd.gif";
         break;
       case Oneko.Custom:
         nekoFile = moonlight.getConfigOption<string>("oneko", "customskin") ?? DEFAULT_NEKO;

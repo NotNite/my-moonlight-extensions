@@ -91,7 +91,34 @@
     nekoEl.style.top = `${nekoPosY - 16}px`;
     nekoEl.style.zIndex = "2147483647";
 
-    let nekoFile = "https://raw.githubusercontent.com/adryd325/oneko.js/refs/heads/main/oneko.gif";
+    const skin = moonlight.getConfigOption<Oneko>("oneko", "skin");
+
+    let nekoFile;
+
+    switch (skin) {
+      case "Neko":
+        nekoFile = "https://raw.githubusercontent.com/danielah05/oneko.js-skins/refs/heads/main/neko.gif";
+        break;
+      case "Tora":
+        nekoFile = "https://raw.githubusercontent.com/danielah05/oneko.js-skins/refs/heads/main/tora.gif";
+        break;
+      case "Dog":
+        nekoFile = "https://raw.githubusercontent.com/danielah05/oneko.js-skins/refs/heads/main/dog.gif";
+        break;
+      case "Sakura":
+        nekoFile = "https://raw.githubusercontent.com/danielah05/oneko.js-skins/refs/heads/main/sakura.gif";
+        break;
+      case "Tomoyo":
+        nekoFile = "https://raw.githubusercontent.com/danielah05/oneko.js-skins/refs/heads/main/tomoyo.gif";
+        break;
+      case "BSD":
+        nekoFile = "https://raw.githubusercontent.com/danielah05/oneko.js-skins/refs/heads/main/bsd.gif";
+        break;
+      case "Custom":
+        nekoFile = moonlight.getConfigOption<Oneko>("oneko", "customskin");
+        break;
+    }
+
     const curScript = document.currentScript;
     if (curScript && curScript.dataset.cat) {
       nekoFile = curScript.dataset.cat;

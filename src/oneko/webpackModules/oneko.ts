@@ -1,3 +1,13 @@
+enum Oneko {
+  Neko = "Neko",
+  Tora = "Tora",
+  Dog = "Dog",
+  Sakura = "Sakura",
+  Tomoyo = "Tomoyo",
+  BSD = "BSD",
+  Custom = "Custom"
+}
+
 (() => {
   const isReducedMotion = window.matchMedia(`(prefers-reduced-motion: reduce)`).matches === true;
   if (isReducedMotion) return;
@@ -91,7 +101,43 @@
     nekoEl.style.top = `${nekoPosY - 16}px`;
     nekoEl.style.zIndex = "2147483647";
 
-    let nekoFile = "https://raw.githubusercontent.com/adryd325/oneko.js/refs/heads/main/oneko.gif";
+    const skin = moonlight.getConfigOption<string>("oneko", "skin");
+
+    let nekoFile;
+
+    const DEFAULT_NEKO =
+      "https://raw.githubusercontent.com/danielah05/oneko.js-skins/3184df1aff638711ea5aa5561d184a1e673cda90/neko.gif";
+
+    switch (skin) {
+      case Oneko.Neko:
+        nekoFile = DEFAULT_NEKO;
+        break;
+      case Oneko.Tora:
+        nekoFile =
+          "https://raw.githubusercontent.com/danielah05/oneko.js-skins/3184df1aff638711ea5aa5561d184a1e673cda90/tora.gif";
+        break;
+      case Oneko.Dog:
+        nekoFile =
+          "https://raw.githubusercontent.com/danielah05/oneko.js-skins/3184df1aff638711ea5aa5561d184a1e673cda90/dog.gif";
+        break;
+      case Oneko.Sakura:
+        nekoFile =
+          "https://raw.githubusercontent.com/danielah05/oneko.js-skins/3184df1aff638711ea5aa5561d184a1e673cda90/sakura.gif";
+        break;
+      case Oneko.Tomoyo:
+        nekoFile =
+          "https://raw.githubusercontent.com/danielah05/oneko.js-skins/3184df1aff638711ea5aa5561d184a1e673cda90/tomoyo.gif";
+        break;
+      case Oneko.BSD:
+        nekoFile =
+          "https://raw.githubusercontent.com/danielah05/oneko.js-skins/3184df1aff638711ea5aa5561d184a1e673cda90/bsd.gif";
+        break;
+      case Oneko.Custom:
+        nekoFile = moonlight.getConfigOption<string>("oneko", "customskin") ?? DEFAULT_NEKO;
+        if (nekoFile === "") nekoFile = DEFAULT_NEKO;
+        break;
+    }
+
     const curScript = document.currentScript;
     if (curScript && curScript.dataset.cat) {
       nekoFile = curScript.dataset.cat;

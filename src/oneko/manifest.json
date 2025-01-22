@@ -1,14 +1,29 @@
 {
   "$schema": "https://moonlight-mod.github.io/manifest.schema.json",
   "id": "oneko",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "apiLevel": 2,
   "meta": {
     "name": "Oneko",
     "tagline": "Cat follow mouse real!",
     "description": "Puts a cat on your Discord. A port of [oneko.js](https://github.com/adryd325/oneko.js).",
-    "authors": ["NotNite", "adryd"],
+    "authors": ["NotNite", "adryd", "danielah05"],
     "tags": ["fun"],
     "source": "https://github.com/NotNite/my-moonlight-extensions"
+  },
+  "settings": {
+    "skin": {
+      "displayName": "Character",
+      "type": "select",
+      "default": "Neko",
+      "options": ["Neko", "Tora", "Dog", "Sakura", "Tomoyo", "BSD", "Custom"],
+      "advice": "reload"
+    },
+    "customskin": {
+      "displayName": "Custom Character",
+      "description": "URL to custom character .gif file (Also requires \"Custom\" to be selected in Character)",
+      "type": "string",
+      "advice": "reload"
+    }
   }
 }

@@ -10,46 +10,34 @@ const { showToast, createToast, popToast, Text } = Components;
 const MarkupClasses = spacepack.findByCode("markup:", "inlineFormat:")[0].exports;
 
 const prefix = "<:notnite4head:1182032403288563843> **NotNite Tip:** ";
-const tips = [
-  "Click a link to open it in your web browser.",
-  "moonlight and extensions can be updated from within Moonbase.",
-  "Did you know I'm watching?",
-  "An internet connection is required to use Discord.",
-  "moonlight works best on a monitor that is at least 3 pixels wide.",
-  "Discord tokens are named that way because they're designed to be shared as a token of friendship!",
-  "Downloading every extension you see on the Internet is a great way to spice up your client!",
-  "It is suggested to focus on the conversation you're having instead of reading this message.",
-  "Tip not available. Please try again later.",
-  "What is wrong with you?",
-  "moonlight is not compatible with the DEWALT 12 in. Double-Bevel Sliding Compound Miter Saw DWS779.",
-  "Does everything happen so much? Close Discord! Nothing can stop you.",
-  "Like moonlight? Tell your friends!",
-  "It would be a shame if that conversation was screenshotted and posted on the Internet.",
-  "Why would you post that?",
-  "Great!"
-];
+Promise.all([
+  fetch("https://notnite.com/cors/tips/tips.json").then((r) => r.json()),
+  fetch("https://notnite.com/cors/tips/moonlight.json").then((r) => r.json())
+])
+  .then((args: string[][]) => args.flat())
+  .then((tips) => {
+    function doATip() {
+      const tip = tips[Math.floor(Math.random() * tips.length)];
+      showToast(
+        createToast(null, 3, {
+          duration: 5000,
+          component: (
+            <Text variant="text-md/normal" className={`${MarkupClasses.markup} notnite-tip`} onClick={popToast}>
+              {MarkupUtils.parse(prefix + tip, true)}
+            </Text>
+          )
+        })
+      );
+    }
 
-function doATip() {
-  const tip = tips[Math.floor(Math.random() * tips.length)];
-  showToast(
-    createToast(null, 3, {
-      duration: 5000,
-      component: (
-        <Text variant="text-md/normal" className={`${MarkupClasses.markup} notnite-tip`} onClick={popToast}>
-          {MarkupUtils.parse(prefix + tip, true)}
-        </Text>
-      )
-    })
-  );
-}
-
-setInterval(doATip, moonlight.getConfigOption<number>("notniteTips", "interval")! * 1000);
-Dispatcher.subscribe("CONNECTION_OPEN", doATip);
-Commands.registerCommand({
-  id: "notniteTip",
-  description: "Dispatch a NotNite Tip:tm:.",
-  inputType: InputType.BUILT_IN,
-  type: CommandType.CHAT,
-  options: [],
-  execute: () => doATip()
-});
+    setInterval(doATip, moonlight.getConfigOption<number>("notniteTips", "interval")! * 1000);
+    Dispatcher.subscribe("CONNECTION_OPEN", doATip);
+    Commands.registerCommand({
+      id: "notniteTip",
+      description: "Dispatch a NotNite Tip:tm:.",
+      inputType: InputType.BUILT_IN,
+      type: CommandType.CHAT,
+      options: [],
+      execute: () => doATip()
+    });
+  });

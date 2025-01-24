@@ -59,7 +59,7 @@ function calculateInitialZoom(width: number, height: number) {
   const maxWidth = window.innerWidth - padding;
   const maxHeight = window.innerHeight - padding;
 
-  if (width <= maxWidth && height <= maxHeight) return 1;
+  if (width <= maxWidth && height <= maxHeight) return 0;
 
   const widthScale = maxWidth / width;
   const heightScale = maxHeight / height;

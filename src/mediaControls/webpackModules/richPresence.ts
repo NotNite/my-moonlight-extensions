@@ -403,7 +403,7 @@ async function onChange() {
     sendActivity();
     running = false;
     lastState = undefined;
-  } else if (state && enabled && state.player_name !== "Spotify") {
+  } else if (state && enabled && state.player_name !== "Spotify" && state.player_name !== "Spotify.exe") {
     running = true;
     if (
       !lastState ||

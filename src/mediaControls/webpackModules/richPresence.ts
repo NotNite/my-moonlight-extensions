@@ -393,6 +393,12 @@ async function updatePresence(state: MediaState) {
   sendActivity(activity);
 }
 
+const SPOTIFY_PLAYER_NAMES = [
+  "Spotify", // Spotify provider type and probably Linux
+  "Spotify.exe", // Windows
+  "SpotifyAB.SpotifyMusic_zpdnekdrzrea0!Spotify" // Windows Store
+];
+
 let running = false;
 let lastState: MediaState | undefined;
 async function onChange() {
@@ -403,7 +409,7 @@ async function onChange() {
     sendActivity();
     running = false;
     lastState = undefined;
-  } else if (state && enabled && state.player_name !== "Spotify" && state.player_name !== "Spotify.exe") {
+  } else if (state && enabled && !SPOTIFY_PLAYER_NAMES.includes(state.player_name ?? "")) {
     running = true;
     if (
       !lastState ||

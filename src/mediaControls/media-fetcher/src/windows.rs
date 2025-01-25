@@ -88,12 +88,8 @@ impl WindowsMediaFetcher {
                 .AlbumArtist()
                 .unwrap_or_default()
                 .to_string_lossy();
-            new_status.track_number = media_properties
-                .TrackNumber()
-                .unwrap_or_default();
-            new_status.total_tracks = media_properties
-                .AlbumTrackCount()
-                .unwrap_or_default();
+            new_status.track_number = media_properties.TrackNumber().unwrap_or_default();
+            new_status.total_tracks = media_properties.AlbumTrackCount().unwrap_or_default();
         }
 
         Ok(new_status)

@@ -36,6 +36,10 @@ impl LinuxMediaFetcher {
             total_tracks: 0,
         };
 
+        if let Ok(position) = player.get_position() {
+            status.elapsed = position.as_secs_f64();
+        }
+
         if let Ok(metadata) = player.get_metadata() {
             status.title = metadata.title().unwrap_or_default().to_string();
             status.artist = metadata
@@ -56,6 +60,10 @@ impl LinuxMediaFetcher {
             status.track_number = metadata.track_number().unwrap_or_default();
             // mpris nor xesam don't have a total track count property :(
             status.total_tracks = status.track_number;
+            status.duration = metadata
+                .length()
+                .map(|d| d.as_secs_f64())
+                .unwrap_or_default();
         }
 
         Ok(status)

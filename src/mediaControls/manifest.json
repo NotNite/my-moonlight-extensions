@@ -10,7 +10,7 @@
     "authors": ["NotNite", "Cynosphere"],
     "source": "https://github.com/NotNite/my-moonlight-extensions",
     "donate": "https://notnite.com/givememoney",
-    "changelog": "Fix broken seekbar when using spotify"
+    "changelog": "- Fix broken seekbar when using Spotify\n- Added song duration information for media-fetcher on Linux\n- Fixed media-fetcher not terminating properly on Linux"
   },
   "dependencies": ["spacepack", "appPanels", "common"],
   "settings": {

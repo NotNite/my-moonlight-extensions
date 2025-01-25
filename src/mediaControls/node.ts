@@ -2,22 +2,26 @@ import type { MediaControlsNatives } from "./types";
 import * as child_process from "node:child_process";
 
 const logger = moonlightNode.getLogger("mediaControls/node");
-let process: child_process.ChildProcess | null = null;
+let mediaFetcherProcess: child_process.ChildProcess | null = null;
+
+process.on("exit", () => {
+  mediaFetcherProcess?.kill();
+});
 
 const natives: MediaControlsNatives = {
   spawnMediaFetcher(cb) {
-    if (process != null) {
-      process.kill("SIGKILL");
-      process = null;
+    if (mediaFetcherProcess != null) {
+      mediaFetcherProcess.kill("SIGKILL");
+      mediaFetcherProcess = null;
     }
 
     const mediaFetcherPath = moonlightNode.getConfigOption<string>("mediaControls", "mediaFetcherPath");
     if (mediaFetcherPath == null) return;
 
-    process = child_process.spawn(mediaFetcherPath);
+    mediaFetcherProcess = child_process.spawn(mediaFetcherPath);
 
     let readBuffer = Buffer.alloc(0);
-    process.stdout!.on("data", (data: Buffer) => {
+    mediaFetcherProcess.stdout!.on("data", (data: Buffer) => {
       // read one line at a time
       readBuffer = Buffer.concat([readBuffer, data]);
       while (true) {
@@ -32,18 +36,18 @@ const natives: MediaControlsNatives = {
       }
     });
 
-    process.stderr!.on("data", (data: Buffer) => {
+    mediaFetcherProcess.stderr!.on("data", (data: Buffer) => {
       logger.error(data.toString());
     });
 
-    process.on("exit", () => {
-      process = null;
+    mediaFetcherProcess.on("exit", () => {
+      mediaFetcherProcess = null;
     });
   },
 
   sendMediaFetcherRequest(request) {
-    if (process == null) return;
-    process.stdin!.write(JSON.stringify(request) + "\n");
+    if (mediaFetcherProcess == null) return;
+    mediaFetcherProcess.stdin!.write(JSON.stringify(request) + "\n");
   }
 };
 

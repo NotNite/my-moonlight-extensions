@@ -99,11 +99,8 @@ function MediaControlsUI() {
 
   // Basic elapsed time calculation
   React.useEffect(() => {
-    const variance = 0.1;
     const nowElapsed = state?.elapsed ?? 0;
-    if (Math.abs(nowElapsed - realElapsed) > variance) {
-      setRealElapsed(nowElapsed);
-    }
+    setRealElapsed(nowElapsed);
   }, [state]);
 
   React.useEffect(() => {

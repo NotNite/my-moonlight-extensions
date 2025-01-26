@@ -1,7 +1,7 @@
 {
   "$schema": "https://moonlight-mod.github.io/manifest.schema.json",
   "id": "mediaControls",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "apiLevel": 2,
   "meta": {
     "name": "Media Controls",
@@ -10,7 +10,7 @@
     "authors": ["NotNite", "Cynosphere"],
     "source": "https://github.com/NotNite/my-moonlight-extensions",
     "donate": "https://notnite.com/givememoney",
-    "changelog": "- Fix broken seekbar when using Spotify\n- Added song duration information for media-fetcher on Linux\n- Fixed media-fetcher not terminating properly on Linux"
+    "changelog": "Rich Presence: Fix presence not broadcasting when no album because Discord doesn't like an empty string as text"
   },
   "dependencies": ["spacepack", "appPanels", "common"],
   "settings": {

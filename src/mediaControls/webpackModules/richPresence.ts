@@ -350,10 +350,11 @@ async function updatePresence(state: MediaState) {
     details: title,
     state: artist,
     assets: {
-      large_image: artworkUrl,
-      large_text: album
+      large_image: artworkUrl
     }
   };
+
+  if (album !== "") activity.assets!.large_text = album;
 
   const playingAsset = moonlight.getConfigOption<string>("mediaControls", "richPresenceAssetPlaying") ?? "";
   const pausedAsset = moonlight.getConfigOption<string>("mediaControls", "richPresenceAssetPaused") ?? "";

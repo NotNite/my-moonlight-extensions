@@ -3,18 +3,14 @@ import React from "@moonlight-mod/wp/react";
 import { MediaControlsStore } from "@moonlight-mod/wp/mediaControls_stores";
 import { useStateFromStores } from "@moonlight-mod/wp/discord/packages/flux";
 import AppPanels from "@moonlight-mod/wp/appPanels_appPanels";
+import { PlayIcon, PauseIcon, Text, Tooltip, Menu } from "@moonlight-mod/wp/discord/components/common/index";
 import {
-  PlayIcon,
-  PauseIcon,
-  Text,
-  Tooltip,
-  Menu,
   MenuItem,
   MenuGroup,
   MenuRadioItem,
   MenuCheckboxItem,
   MenuSeparator
-} from "@moonlight-mod/wp/discord/components/common/index";
+} from "@moonlight-mod/wp/contextMenu_contextMenu";
 import { RepeatMode } from "../types";
 import { NextTrackIcon } from "./NextTrackIcon";
 import { PreviousTrackIcon } from "./PreviousTrackIcon";

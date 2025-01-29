@@ -111,6 +111,10 @@ export const webpackModules: Record<string, ExtensionWebpackModule> = {
       },
       {
         id: "discord/uikit/Flex"
+      },
+      {
+        ext: "contextMenu",
+        id: "contextMenu"
       }
     ]
   }

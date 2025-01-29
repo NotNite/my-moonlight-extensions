@@ -10,10 +10,10 @@ importers:
     dependencies:
       '@moonlight-mod/mappings':
         specifier: ^1.1.6
-        version: 1.1.6(@moonlight-mod/lunast@1.0.0)(@moonlight-mod/moonmap@1.0.3)
+        version: 1.1.6(@moonlight-mod/lunast@1.0.0)(@moonlight-mod/moonmap@1.0.4)
       '@moonlight-mod/types':
-        specifier: ^1.3.7
-        version: 1.3.7
+        specifier: ^1.3.10
+        version: 1.3.10
     devDependencies:
       '@electron/asar':
         specifier: ^3.2.8
@@ -242,17 +242,23 @@ packages:
   '@moonlight-mod/lunast@1.0.0':
     resolution: {integrity: sha512-kJgf41K12i6/2LbXK97CNO+pNO7ADGh9N4bCQcOPwosocKMcwKHDEZUgPqeihNshY3c3AEW1LiyXjlsl24PdDw==}
 
+  '@moonlight-mod/mappings@1.1.13':
+    resolution: {integrity: sha512-ilaPgvI3OgTXsNj0/knaAnU8aSq6xEtNj3BPEUIJVsCkVapHFKPDu4J4igTZ+knuC8vUx2ZYheRTd0t51qtViw==}
+    peerDependencies:
+      '@moonlight-mod/lunast': ^1.0.0
+      '@moonlight-mod/moonmap': ^1.0.4
+
   '@moonlight-mod/mappings@1.1.6':
     resolution: {integrity: sha512-xVVjZVJCxI+5n6f5VJLerSnSoUpu3Jt17aKG7PCDEcamqbS1PFwyBtVBlA2DLc/z6lIAHF7H+q4NDIQLH+chtg==}
     peerDependencies:
       '@moonlight-mod/lunast': ^1.0.0
       '@moonlight-mod/moonmap': ^1.0.0
 
-  '@moonlight-mod/moonmap@1.0.3':
-    resolution: {integrity: sha512-G7pwvrcVDimc388IX6VZFzBXpbuyvqbJ+w9/v+MUIc8P7dADJXQ9YkBWvobtRc6eaBBl1FWUwTeU8oobbxLVag==}
+  '@moonlight-mod/moonmap@1.0.4':
+    resolution: {integrity: sha512-NES5a+ZSfgyRBZ7pBL8PZL40Au5vTDskvC/Gqx0bs3woikkkdjbZiW9RPypwUQqzdBDIP//ga+xF9UhKSADdLw==}
 
-  '@moonlight-mod/types@1.3.7':
-    resolution: {integrity: sha512-BYRP0PsAXB3wdypvt7nn4V9R3zDDZGVfACb/vzA9zYhKGg3WKD1ih98J5erIp5kNhg9MqeZDuvihvrsmqLQMfw==}
+  '@moonlight-mod/types@1.3.10':
+    resolution: {integrity: sha512-EXCJMKKQGBalYoLrWrXgcXOQbLStueMMH3R0BhqGfgvNUHufVksqSwis9nu8tZqw2BGKXTvIJDQQ2B6rJ+4epQ==}
 
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -272,6 +278,9 @@ packages:
 
   '@types/chroma-js@3.1.0':
     resolution: {integrity: sha512-Uwl3SOtUkbQ6Ye6ZYu4q4xdLGBzmY839sEHYtOT7i691neeyd+7fXWT5VIkcUSfNwIFrIjQutNYQn9h4q5HFvg==}
+
+  '@types/chroma-js@3.1.1':
+    resolution: {integrity: sha512-SFCr4edNkZ1bGaLzGz7rgR1bRzVX4MmMxwsIa3/Bh6ose8v+hRpneoizHv0KChdjxaXyjRtaMq7sCuZSzPomQA==}
 
   '@types/estree-jsx@1.0.5':
     resolution: {integrity: sha512-52CcUVNFyfb1A2ALocQw/Dd1BQFNmSdkuC3BkZ6iqhdMfQz7JWOFRuJFloOzjk+6WijU56m9oKXFAXc7o3Towg==}
@@ -293,6 +302,9 @@ packages:
 
   '@types/lodash@4.17.14':
     resolution: {integrity: sha512-jsxagdikDiDBeIRaPYtArcT8my4tN1og7MtMRquFT3XNA6axxyHDRUemqDz/taRDdOUn0GnGHRCuff4q48sW9A==}
+
+  '@types/lodash@4.17.15':
+    resolution: {integrity: sha512-w/P33JFeySuhN6JLkysYUK2gEmy9kHHFN7E8ro0tkfmlDOgxBDzWEZ/J8cWA+fHqFevpswDTFZnDx+R9lbL6xw==}
 
   '@types/node@18.19.2':
     resolution: {integrity: sha512-6wzfBdbWpe8QykUkXBjtmO3zITA0A3FIjoy+in0Y2K4KrCiRhNYJIdwAPDffZ3G6GnaKaSLSEa9ZuORLfEoiwg==}
@@ -1206,6 +1218,24 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
 
+  zustand@5.0.3:
+    resolution: {integrity: sha512-14fwWQtU3pH4dE0dOpdMiWjddcH+QzKIgk1cl8epwSE7yag43k/AD/m4L6+K7DytAOr9gGBe3/EXj9g7cdostg==}
+    engines: {node: '>=12.20.0'}
+    peerDependencies:
+      '@types/react': '>=18.0.0'
+      immer: '>=9.0.6'
+      react: '>=18.0.0'
+      use-sync-external-store: '>=1.2.0'
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      immer:
+        optional: true
+      react:
+        optional: true
+      use-sync-external-store:
+        optional: true
+
 snapshots:
 
   '@electron/asar@3.2.8':
@@ -1354,10 +1384,27 @@ snapshots:
       estree-toolkit: 1.7.8
       meriyah: 6.0.2
 
-  '@moonlight-mod/mappings@1.1.6(@moonlight-mod/lunast@1.0.0)(@moonlight-mod/moonmap@1.0.3)':
+  '@moonlight-mod/mappings@1.1.13(@moonlight-mod/lunast@1.0.0)(@moonlight-mod/moonmap@1.0.4)':
     dependencies:
       '@moonlight-mod/lunast': 1.0.0
-      '@moonlight-mod/moonmap': 1.0.3
+      '@moonlight-mod/moonmap': 1.0.4
+      '@types/chroma-js': 3.1.1
+      '@types/flux': 3.1.14
+      '@types/highlightjs': 9.12.6
+      '@types/lodash': 4.17.15
+      '@types/platform': 1.3.6
+      '@types/react': 18.3.11
+      csstype: 3.1.3
+      zustand: 5.0.3(@types/react@18.3.11)
+    transitivePeerDependencies:
+      - immer
+      - react
+      - use-sync-external-store
+
+  '@moonlight-mod/mappings@1.1.6(@moonlight-mod/lunast@1.0.0)(@moonlight-mod/moonmap@1.0.4)':
+    dependencies:
+      '@moonlight-mod/lunast': 1.0.0
+      '@moonlight-mod/moonmap': 1.0.4
       '@types/chroma-js': 3.1.0
       '@types/flux': 3.1.14
       '@types/highlightjs': 9.12.6
@@ -1366,16 +1413,20 @@ snapshots:
       '@types/react': 18.3.11
       csstype: 3.1.3
 
-  '@moonlight-mod/moonmap@1.0.3': {}
+  '@moonlight-mod/moonmap@1.0.4': {}
 
-  '@moonlight-mod/types@1.3.7':
+  '@moonlight-mod/types@1.3.10':
     dependencies:
       '@moonlight-mod/lunast': 1.0.0
-      '@moonlight-mod/mappings': 1.1.6(@moonlight-mod/lunast@1.0.0)(@moonlight-mod/moonmap@1.0.3)
-      '@moonlight-mod/moonmap': 1.0.3
+      '@moonlight-mod/mappings': 1.1.13(@moonlight-mod/lunast@1.0.0)(@moonlight-mod/moonmap@1.0.4)
+      '@moonlight-mod/moonmap': 1.0.4
       '@types/react': 18.3.11
       csstype: 3.1.2
       standalone-electron-types: 1.0.0
+    transitivePeerDependencies:
+      - immer
+      - react
+      - use-sync-external-store
 
   '@nodelib/fs.scandir@2.1.5':
     dependencies:
@@ -1392,6 +1443,8 @@ snapshots:
   '@pkgr/core@0.1.1': {}
 
   '@types/chroma-js@3.1.0': {}
+
+  '@types/chroma-js@3.1.1': {}
 
   '@types/estree-jsx@1.0.5':
     dependencies:
@@ -1411,6 +1464,8 @@ snapshots:
   '@types/json-schema@7.0.15': {}
 
   '@types/lodash@4.17.14': {}
+
+  '@types/lodash@4.17.15': {}
 
   '@types/node@18.19.2':
     dependencies:
@@ -2552,3 +2607,7 @@ snapshots:
   wrappy@1.0.2: {}
 
   yocto-queue@0.1.0: {}
+
+  zustand@5.0.3(@types/react@18.3.11):
+    optionalDependencies:
+      '@types/react': 18.3.11

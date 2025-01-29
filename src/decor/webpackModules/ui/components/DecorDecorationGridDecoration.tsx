@@ -1,6 +1,7 @@
 import React from "@moonlight-mod/wp/react";
 import { useStateFromStores } from "@moonlight-mod/wp/discord/packages/flux";
-import { Menu, MenuItem, CopyIcon, TrashIcon } from "@moonlight-mod/wp/discord/components/common/index";
+import { Menu, CopyIcon, TrashIcon } from "@moonlight-mod/wp/discord/components/common/index";
+import { MenuItem } from "@moonlight-mod/wp/contextMenu_contextMenu";
 import { openContextMenu, closeContextMenu } from "@moonlight-mod/wp/discord/actions/ContextMenuActionCreators";
 import { DecorAuthStore, DecorDecorationStore } from "@moonlight-mod/wp/decor_stores";
 import { Decoration } from "../../../types";

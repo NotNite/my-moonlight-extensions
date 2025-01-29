@@ -41,6 +41,9 @@ export const webpackModules: Record<string, ExtensionWebpackModule> = {
       },
       {
         id: "discord/utils/ClipboardUtils"
+      },
+      {
+        id: "discord/modules/modals/Modals"
       }
     ]
   }

@@ -12,10 +12,9 @@ import {
   FullscreenEnterIcon,
   ArrowAngleLeftUpIcon,
   ArrowAngleRightUpIcon,
-  WindowLaunchIcon,
-  closeModal,
-  useModalsStore
+  WindowLaunchIcon
 } from "@moonlight-mod/wp/discord/components/common/index";
+import { useModalsStore, closeModal } from "@moonlight-mod/wp/discord/modules/modals/Modals";
 import { copy } from "@moonlight-mod/wp/discord/utils/ClipboardUtils";
 
 const HeaderBar = spacepack.require("discord/uikit/HeaderBar").default;

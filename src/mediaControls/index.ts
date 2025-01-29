@@ -27,7 +27,11 @@ export const webpackModules: Record<string, ExtensionWebpackModule> = {
       { id: "react" },
       { id: "discord/components/common/index" },
       { id: "discord/uikit/Flex" },
-      { id: "discord/components/common/PanelButton" }
+      { id: "discord/components/common/PanelButton" },
+      {
+        ext: "contextMenu",
+        id: "contextMenu"
+      }
     ],
     entrypoint: true
   },

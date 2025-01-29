@@ -1,7 +1,7 @@
 {
   "$schema": "https://moonlight-mod.github.io/manifest.schema.json",
   "id": "mediaControls",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "apiLevel": 2,
   "meta": {
     "name": "Media Controls",
@@ -10,9 +10,9 @@
     "authors": ["NotNite", "Cynosphere"],
     "source": "https://github.com/NotNite/my-moonlight-extensions",
     "donate": "https://notnite.com/givememoney",
-    "changelog": "Rich Presence: Fix presence not broadcasting when no album because Discord doesn't like an empty string as text"
+    "changelog": "Fixes for latest Discord"
   },
-  "dependencies": ["spacepack", "appPanels", "common"],
+  "dependencies": ["spacepack", "appPanels", "common", "contextMenu"],
   "settings": {
     "sources": {
       "displayName": "Media sources",

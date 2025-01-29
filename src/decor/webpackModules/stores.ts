@@ -165,7 +165,6 @@ class DecorAuthStore extends Flux.PersistedStore<any> {
     await this.fetchApi(this.makeUrl(`api/decorations/${decoration.hash}`), { method: "DELETE" });
   }
 }
-// @ts-expect-error buh
 DecorAuthStore.persistKey = "DecorAuthStore";
 const decorAuthStore = new DecorAuthStore();
 

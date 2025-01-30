@@ -11,7 +11,7 @@ function set() {
     lastHue = hue;
     obj.innerText = `
 :root {
-  --theme-base-color: hsl(${hue}, 100%, 95%);
+  --theme-base-color: hsl(${hue}, 100%, 90%);
   --theme-base-color-amount: 100%;
 }
 `.trim();

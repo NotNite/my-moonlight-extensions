@@ -13,7 +13,7 @@ function set() {
 :root {
   --theme-base-color: hsl(${hue}, 100%, 90%);
   --theme-base-color-amount: 100%;
-  --theme-base-color-hsl: ${hue};
+  --theme-base-color-hsl: ${hue} 100% 90%;
 }
 `.trim();
   }

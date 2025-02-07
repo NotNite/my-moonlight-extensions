@@ -4,6 +4,8 @@ use crate::{
 };
 use async_trait::async_trait;
 use base64::Engine;
+use image::GenericImageView;
+use image::Pixel;
 use std::{io::Cursor, sync::Arc};
 use tokio::sync::Mutex;
 use windows::{
@@ -170,6 +172,7 @@ impl MediaFetcher for WindowsMediaFetcher {
                 let media_properties = media_properties.unwrap();
 
                 let thumbnail = media_properties.Thumbnail()?;
+                let app_media_id = session.SourceAppUserModelId()?.to_string_lossy();
 
                 // Use .get() here to avoid it complaining about future stuff
                 let handle = thumbnail.OpenReadAsync()?.get()?;
@@ -182,7 +185,20 @@ impl MediaFetcher for WindowsMediaFetcher {
                 reader.ReadBytes(&mut buf)?;
 
                 // API gives us many formats, let's only send PNG
-                let image = image::load_from_memory(&buf)?;
+                let mut image = image::load_from_memory(&buf)?;
+
+                // Spotify free accounts give a watermarked image
+                match app_media_id.as_str() {
+                    "Spotify.exe" | "SpotifyAB.SpotifyMusic_zpdnekdrzrea0!Spotify" => {
+                        let top_left = image.get_pixel(0, 0);
+                        let col = top_left.to_rgba();
+                        if col[0] == 0 && col[1] == 0 && col[2] == 0 && col[3] == 0 {
+                            image = image.crop_imm(34, 1, 233, 233);
+                        }
+                    }
+                    _ => {}
+                }
+
                 let mut bytes = Vec::new();
                 image.write_to(&mut Cursor::new(&mut bytes), image::ImageFormat::Png)?;
 

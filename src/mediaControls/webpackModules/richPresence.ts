@@ -410,9 +410,11 @@ async function onChange() {
     sendActivity();
     running = false;
     lastState = undefined;
-  } else if (state && enabled && !SPOTIFY_PLAYER_NAMES.includes(state.player_name ?? "")) {
+  } else if (state && enabled) {
     running = true;
-    if (
+    if (SPOTIFY_PLAYER_NAMES.includes(state.player_name ?? "")) {
+      sendActivity();
+    } else if (
       !lastState ||
       lastState.artist !== state.artist ||
       lastState.title !== state.title ||

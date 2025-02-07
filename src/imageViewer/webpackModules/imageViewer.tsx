@@ -88,7 +88,7 @@ export default function ImageViewer({
   type,
   animated,
   sourceMetadata
-}: Props): JSX.Element {
+}: Props) {
   const initialZoom = calculateInitialZoom(width, height);
   const minZoom = initialZoom - MAX_ZOOM;
 

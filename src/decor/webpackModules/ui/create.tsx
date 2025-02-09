@@ -20,9 +20,18 @@ import { DecorAuthStore, DecorDecorationStore } from "@moonlight-mod/wp/decor_st
 import { AvatarDecorationModalPreview, DecorationModalStyles, Margins } from "./components";
 import { Decoration, GUILD_INVITE, RAW_SKU_ID } from "../../types";
 import type { ModalProps } from "@moonlight-mod/mappings/types/discord/components/common/index";
-import FileUpload from "@moonlight-mod/wp/discord/components/common/FileUpload";
+import spacepack from "@moonlight-mod/wp/spacepack_spacepack";
 
 import { joinGuild } from "./util";
+
+let FileUpload: typeof import("@moonlight-mod/wp/discord/components/common/FileUpload").default;
+spacepack
+  .lazyLoad(
+    `${".CREATE_STICKER_MODAL,"}${"location:"}`,
+    /Promise\.all\((\[\i\.\i\("\d+"\).+?\])\)\.then\(\i\.bind\(\i,(\d+)\)\)/,
+    /\.bind\(\i,(\d+)\)\);/
+  )
+  .then(() => (FileUpload = spacepack.require("discord/components/common/FileUpload").default));
 
 function useObjectURL(object: Blob | MediaSource | null) {
   const [url, setUrl] = React.useState<string | null>(null);

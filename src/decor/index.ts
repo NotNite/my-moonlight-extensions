@@ -49,11 +49,11 @@ export const patches: Patch[] = [
     find: ".decorationGridItem,",
     replace: [
       {
-        match: /=(\i=>{.+?\.decorationGridItem,.+?children:\i}\)},)/,
+        match: /=(\i=>{.+?\.decorationGridItem,.+?children:\i}\)\)},)/,
         replacement: (_, DecorationGridItem) => `=exports.__decor_DecorationGridItem=${DecorationGridItem}`
       },
       {
-        match: /=(\i=>{let{user:\i,avatarDecoration:)/,
+        match: /=(\i=>{var{user:\i,avatarDecoration:)/,
         replacement: (_, DecorationGridDecoration) =>
           `=exports.__decor_DecorationGridDecoration=${DecorationGridDecoration}`
       },

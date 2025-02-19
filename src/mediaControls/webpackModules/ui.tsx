@@ -15,10 +15,10 @@ import { RepeatMode } from "../types";
 import { NextTrackIcon } from "./NextTrackIcon";
 import { PreviousTrackIcon } from "./PreviousTrackIcon";
 import NativeUtils from "@moonlight-mod/wp/discord/utils/NativeUtils";
-import PanelButton from "@moonlight-mod/wp/discord/components/common/PanelButton";
 
 const ContextMenuActionCreators = spacepack.require("discord/actions/ContextMenuActionCreators");
 let MediaBar: React.ComponentType<any> & { Types: { DURATION: "DURATION"; VOLUME: "VOLUME" } };
+let PanelButton: (typeof import("@moonlight-mod/wp/discord/components/common/PanelButton"))["default"];
 
 function MediaControlsContextMenu() {
   const state = useStateFromStores([MediaControlsStore], () => MediaControlsStore.getState());
@@ -82,6 +82,7 @@ function MediaControlsContextMenu() {
 function MediaControlsUI() {
   if (!MediaBar) {
     MediaBar = spacepack.findByCode(".mediaBarInteractionVolume:null")[0].exports.Z;
+    PanelButton = spacepack.require("discord/components/common/PanelButton").default;
   }
 
   const disableBar = moonlight.getConfigOption("mediaControls", "disableBar") ?? false;

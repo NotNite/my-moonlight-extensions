@@ -26,12 +26,12 @@ export const patches: Patch[] = [
   {
     find: "renderAvatarWithPopout(){",
     replace: {
-      match: /((\i)=\(0,\i.\i\)\({avatarDecoration:.+?;)return/,
-      replacement: (_, orig, avatarDecoration) =>
+      match: /(\i)=\(0,\i.\i\)\({avatarDecoration:\i,size:.+?\.SIZE_32\)}\),/,
+      replacement: (orig, avatarDecoration) =>
         `${orig}
-        const __decorDecoration = require("decor_ui").useDecorDecoration(arguments[0].currentUser?.id);
+        __decorDecoration = require("decor_ui").useDecorDecoration(arguments[0].currentUser?.id);
         if (__decorDecoration != null) ${avatarDecoration} = __decorDecoration;
-        return`
+        let `
     }
   },
 
@@ -39,7 +39,7 @@ export const patches: Patch[] = [
   {
     find: '"DefaultCustomizationSections"',
     replace: {
-      match: /"decoration"\),(?=(\(0,\i\.jsx\)))/,
+      match: /"decoration"\),(?=.*?(\(0,\i\.jsx\)))/,
       replacement: (orig, createElement) => `${orig}${createElement}(require("decor_ui").DecorSection,{}),`
     }
   },

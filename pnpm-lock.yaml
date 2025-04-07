@@ -10,10 +10,10 @@ importers:
     dependencies:
       '@moonlight-mod/mappings':
         specifier: ^1.1.6
-        version: 1.1.6(@moonlight-mod/lunast@1.0.0)(@moonlight-mod/moonmap@1.0.4)
+        version: 1.1.6(@moonlight-mod/lunast@1.0.1)(@moonlight-mod/moonmap@1.0.5)
       '@moonlight-mod/types':
-        specifier: ^1.3.10
-        version: 1.3.10
+        specifier: ^1.3.15
+        version: 1.3.15
     devDependencies:
       '@electron/asar':
         specifier: ^3.2.8
@@ -239,14 +239,14 @@ packages:
       eslint: '>= 9'
       typescript: '>= 5.3'
 
-  '@moonlight-mod/lunast@1.0.0':
-    resolution: {integrity: sha512-kJgf41K12i6/2LbXK97CNO+pNO7ADGh9N4bCQcOPwosocKMcwKHDEZUgPqeihNshY3c3AEW1LiyXjlsl24PdDw==}
+  '@moonlight-mod/lunast@1.0.1':
+    resolution: {integrity: sha512-K3vxzDlfFuYKjciIW2FMlcZ1qrrkAGDGpSBlNqYGtJ0sMt9bRCd2lpSpg6AX/giSljDtmAUXa/5mOfUoDQxjBA==}
 
-  '@moonlight-mod/mappings@1.1.13':
-    resolution: {integrity: sha512-ilaPgvI3OgTXsNj0/knaAnU8aSq6xEtNj3BPEUIJVsCkVapHFKPDu4J4igTZ+knuC8vUx2ZYheRTd0t51qtViw==}
+  '@moonlight-mod/mappings@1.1.22':
+    resolution: {integrity: sha512-GJjAz/DwaVg724vzOWbEzANbXVIWX8zWAohIh7y6eXCxvwAgq2KuP27iiFmx4RboHQvhWP0nwyqTuKF3A1Ttgw==}
     peerDependencies:
-      '@moonlight-mod/lunast': ^1.0.0
-      '@moonlight-mod/moonmap': ^1.0.4
+      '@moonlight-mod/lunast': ^1.0.1
+      '@moonlight-mod/moonmap': ^1.0.5
 
   '@moonlight-mod/mappings@1.1.6':
     resolution: {integrity: sha512-xVVjZVJCxI+5n6f5VJLerSnSoUpu3Jt17aKG7PCDEcamqbS1PFwyBtVBlA2DLc/z6lIAHF7H+q4NDIQLH+chtg==}
@@ -254,11 +254,12 @@ packages:
       '@moonlight-mod/lunast': ^1.0.0
       '@moonlight-mod/moonmap': ^1.0.0
 
-  '@moonlight-mod/moonmap@1.0.4':
-    resolution: {integrity: sha512-NES5a+ZSfgyRBZ7pBL8PZL40Au5vTDskvC/Gqx0bs3woikkkdjbZiW9RPypwUQqzdBDIP//ga+xF9UhKSADdLw==}
+  '@moonlight-mod/moonmap@1.0.5':
+    resolution: {integrity: sha512-Fdpxj8ghdulKB6TlTnchlCPey2YUKgEf1chuO1ofOIcvlqnVPBcQwSf2S80naOUQpXCDo4dQ+LWSE2fmhdDiiw==}
 
-  '@moonlight-mod/types@1.3.10':
-    resolution: {integrity: sha512-EXCJMKKQGBalYoLrWrXgcXOQbLStueMMH3R0BhqGfgvNUHufVksqSwis9nu8tZqw2BGKXTvIJDQQ2B6rJ+4epQ==}
+  '@moonlight-mod/types@1.3.15':
+    resolution: {integrity: sha512-lGxgILAsIjzsmdkqnvvaIa2vDQW/Gq9R9UhqZyzImP46rNaPB4EtZLUXhKyJxfOz8Kwa/ROoid3sznHEYRd4vw==}
+    engines: {node: '>=22', npm: pnpm, pnpm: '>=10', yarn: pnpm}
 
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -288,6 +289,9 @@ packages:
   '@types/estree@1.0.6':
     resolution: {integrity: sha512-AYnb1nQyY49te+VRAVgmzfcgjYS91mY5P0TKUDCLEM+gNnA+3T6rWITXRLYCpahpqSQbN5cE+gHpnPyXjHWxcw==}
 
+  '@types/estree@1.0.7':
+    resolution: {integrity: sha512-w28IoSUCJpidD/TGviZwwMJckNESJZXFu7NBZ5YJ4mEUnNraUn9Pm8HSZm/jDF1pDWYKspWE7oVphigUPRakIQ==}
+
   '@types/fbemitter@2.0.35':
     resolution: {integrity: sha512-Xem6d7qUfmouCHntCrRYgDBwbf+WWRd6G+7WEFlEZFZ67LZXiYRvT2LV8wcZa6mIaAil95+ABQdKgB6hPIsnng==}
 
@@ -303,8 +307,8 @@ packages:
   '@types/lodash@4.17.14':
     resolution: {integrity: sha512-jsxagdikDiDBeIRaPYtArcT8my4tN1og7MtMRquFT3XNA6axxyHDRUemqDz/taRDdOUn0GnGHRCuff4q48sW9A==}
 
-  '@types/lodash@4.17.15':
-    resolution: {integrity: sha512-w/P33JFeySuhN6JLkysYUK2gEmy9kHHFN7E8ro0tkfmlDOgxBDzWEZ/J8cWA+fHqFevpswDTFZnDx+R9lbL6xw==}
+  '@types/lodash@4.17.16':
+    resolution: {integrity: sha512-HX7Em5NYQAXKW+1T+FiuG27NGwzJfCX3s1GjOa7ujxZa52kjJLOr4FUxT+giF6Tgxv1e+/czV/iTtBw27WTU9g==}
 
   '@types/node@18.19.2':
     resolution: {integrity: sha512-6wzfBdbWpe8QykUkXBjtmO3zITA0A3FIjoy+in0Y2K4KrCiRhNYJIdwAPDffZ3G6GnaKaSLSEa9ZuORLfEoiwg==}
@@ -474,9 +478,6 @@ packages:
     resolution: {integrity: sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w==}
     engines: {node: '>= 8'}
 
-  csstype@3.1.2:
-    resolution: {integrity: sha512-I7K1Uu0MBPzaFKg4nI5Q7Vs2t+3gWWW648spaF+Rg7pI9ds18Ugn+lvg4SHczUdKlHI5LWBXyqfS8+DufyBsgQ==}
-
   csstype@3.1.3:
     resolution: {integrity: sha512-M1uQkMl8rQK/szD0LNhtqxIPLpimGm8sOBwU7lLnCpSbTyY3yeU1Vc7l4KT5zT4s/yOxHH5O7tIuuLOCnLADRw==}
 
@@ -623,8 +624,8 @@ packages:
     resolution: {integrity: sha512-MMdARuVEQziNTeJD8DgMqmhwR11BRQ/cBP+pLtYdSTnf3MIO8fFeiINEbX36ZdNlfU/7A9f3gUw49B3oQsvwBA==}
     engines: {node: '>=4.0'}
 
-  estree-toolkit@1.7.8:
-    resolution: {integrity: sha512-v0Q0L+0agSDFe3x9Sj7aAzrI9afvsfr5r7AM2SNk/8bKYRQ3tUf4PQEUWe99LkWysmT1PsuSpW+W1w/xZmCKeg==}
+  estree-toolkit@1.7.12:
+    resolution: {integrity: sha512-KzaY9qEkKS3W9D1n6ckhlvTuEyhkTDBYrKmX8nGZqDJ1wKJ/onY9hK1xmaUdhJciHIS5VhFZ+v1kO5Eyrmkxjg==}
 
   esutils@2.0.3:
     resolution: {integrity: sha512-kVscqXk4OCp68SZ0dkgEKVi6/8ij300KBWTJq32P/dYeWTSwK41WyTxalN1eRmA5Z9UU/LX9D7FWSmV9SAYx6g==}
@@ -914,8 +915,8 @@ packages:
     resolution: {integrity: sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==}
     engines: {node: '>= 8'}
 
-  meriyah@6.0.2:
-    resolution: {integrity: sha512-RHlo7GK3qrswKzVcMJ/2bMMkMChpn4L/JUOBfs81c3SKp/ZOS5u2aC/qY+sZCiE4qPkrC+a1yNPfGieh0uz19Q==}
+  meriyah@6.0.6:
+    resolution: {integrity: sha512-jXJ2Hn1sLcge9QypNdZwbl/GqF5Qdc46TJA20g9KFa4ZnxQx74bDlJ3RfdaFhUIU3yN0lAcP99EH/XPPAcYcHA==}
     engines: {node: '>=18.0.0'}
 
   micromatch@4.0.8:
@@ -1378,20 +1379,20 @@ snapshots:
       - prettier
       - supports-color
 
-  '@moonlight-mod/lunast@1.0.0':
+  '@moonlight-mod/lunast@1.0.1':
     dependencies:
       astring: 1.9.0
-      estree-toolkit: 1.7.8
-      meriyah: 6.0.2
+      estree-toolkit: 1.7.12
+      meriyah: 6.0.6
 
-  '@moonlight-mod/mappings@1.1.13(@moonlight-mod/lunast@1.0.0)(@moonlight-mod/moonmap@1.0.4)':
+  '@moonlight-mod/mappings@1.1.22(@moonlight-mod/lunast@1.0.1)(@moonlight-mod/moonmap@1.0.5)':
     dependencies:
-      '@moonlight-mod/lunast': 1.0.0
-      '@moonlight-mod/moonmap': 1.0.4
+      '@moonlight-mod/lunast': 1.0.1
+      '@moonlight-mod/moonmap': 1.0.5
       '@types/chroma-js': 3.1.1
       '@types/flux': 3.1.14
       '@types/highlightjs': 9.12.6
-      '@types/lodash': 4.17.15
+      '@types/lodash': 4.17.16
       '@types/platform': 1.3.6
       '@types/react': 18.3.11
       csstype: 3.1.3
@@ -1401,10 +1402,10 @@ snapshots:
       - react
       - use-sync-external-store
 
-  '@moonlight-mod/mappings@1.1.6(@moonlight-mod/lunast@1.0.0)(@moonlight-mod/moonmap@1.0.4)':
+  '@moonlight-mod/mappings@1.1.6(@moonlight-mod/lunast@1.0.1)(@moonlight-mod/moonmap@1.0.5)':
     dependencies:
-      '@moonlight-mod/lunast': 1.0.0
-      '@moonlight-mod/moonmap': 1.0.4
+      '@moonlight-mod/lunast': 1.0.1
+      '@moonlight-mod/moonmap': 1.0.5
       '@types/chroma-js': 3.1.0
       '@types/flux': 3.1.14
       '@types/highlightjs': 9.12.6
@@ -1413,15 +1414,15 @@ snapshots:
       '@types/react': 18.3.11
       csstype: 3.1.3
 
-  '@moonlight-mod/moonmap@1.0.4': {}
+  '@moonlight-mod/moonmap@1.0.5': {}
 
-  '@moonlight-mod/types@1.3.10':
+  '@moonlight-mod/types@1.3.15':
     dependencies:
-      '@moonlight-mod/lunast': 1.0.0
-      '@moonlight-mod/mappings': 1.1.13(@moonlight-mod/lunast@1.0.0)(@moonlight-mod/moonmap@1.0.4)
-      '@moonlight-mod/moonmap': 1.0.4
+      '@moonlight-mod/lunast': 1.0.1
+      '@moonlight-mod/mappings': 1.1.22(@moonlight-mod/lunast@1.0.1)(@moonlight-mod/moonmap@1.0.5)
+      '@moonlight-mod/moonmap': 1.0.5
       '@types/react': 18.3.11
-      csstype: 3.1.2
+      csstype: 3.1.3
       standalone-electron-types: 1.0.0
     transitivePeerDependencies:
       - immer
@@ -1448,9 +1449,11 @@ snapshots:
 
   '@types/estree-jsx@1.0.5':
     dependencies:
-      '@types/estree': 1.0.6
+      '@types/estree': 1.0.7
 
   '@types/estree@1.0.6': {}
+
+  '@types/estree@1.0.7': {}
 
   '@types/fbemitter@2.0.35': {}
 
@@ -1465,7 +1468,7 @@ snapshots:
 
   '@types/lodash@4.17.14': {}
 
-  '@types/lodash@4.17.15': {}
+  '@types/lodash@4.17.16': {}
 
   '@types/node@18.19.2':
     dependencies:
@@ -1478,7 +1481,7 @@ snapshots:
   '@types/react@18.3.11':
     dependencies:
       '@types/prop-types': 15.7.11
-      csstype: 3.1.2
+      csstype: 3.1.3
 
   '@typescript-eslint/eslint-plugin@8.8.1(@typescript-eslint/parser@8.8.1(eslint@9.12.0)(typescript@5.3.2))(eslint@9.12.0)(typescript@5.3.2)':
     dependencies:
@@ -1687,8 +1690,6 @@ snapshots:
       path-key: 3.1.1
       shebang-command: 2.0.0
       which: 2.0.2
-
-  csstype@3.1.2: {}
 
   csstype@3.1.3: {}
 
@@ -1953,9 +1954,9 @@ snapshots:
 
   estraverse@5.3.0: {}
 
-  estree-toolkit@1.7.8:
+  estree-toolkit@1.7.12:
     dependencies:
-      '@types/estree': 1.0.6
+      '@types/estree': 1.0.7
       '@types/estree-jsx': 1.0.5
 
   esutils@2.0.3: {}
@@ -2245,7 +2246,7 @@ snapshots:
 
   merge2@1.4.1: {}
 
-  meriyah@6.0.2: {}
+  meriyah@6.0.6: {}
 
   micromatch@4.0.8:
     dependencies:

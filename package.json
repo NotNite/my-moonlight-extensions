@@ -22,6 +22,6 @@
   },
   "dependencies": {
     "@moonlight-mod/mappings": "^1.1.6",
-    "@moonlight-mod/types": "^1.3.10"
+    "@moonlight-mod/types": "^1.3.15"
   }
 }

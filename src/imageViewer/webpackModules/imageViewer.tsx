@@ -12,22 +12,29 @@ import {
   FullscreenEnterIcon,
   ArrowAngleLeftUpIcon,
   ArrowAngleRightUpIcon,
-  WindowLaunchIcon
+  WindowLaunchIcon,
+  showToast,
+  createToast,
+  ToastType
 } from "@moonlight-mod/wp/discord/components/common/index";
 import { useModalsStore, closeModal } from "@moonlight-mod/wp/discord/modules/modals/Modals";
 import { copy } from "@moonlight-mod/wp/discord/utils/ClipboardUtils";
 
+const i18n = spacepack.require("discord/intl");
 const HeaderBar = spacepack.require("discord/uikit/HeaderBar").default;
 const NativeUtils = spacepack.findByCode("Data fetch" + " unsuccessful")[0].exports.ZP;
 const RawVideo = spacepack.findByCode(
   'MOSAIC?{width:"100%",height:"100%",' + 'maxHeight:"inherit",objectFit:"contain"}'
 )[0].exports.Z;
 const Video = spacepack.findByCode(".VIDEO,", ",onVolume" + "Change:")[0].exports.Z;
+const TextWithOverflow = spacepack.findByCode(/variant:\i,color:"none",className:/)[0].exports.Z;
 
 type SourceMetadata = {
   identifier: {
     type: string;
     embedIndex?: number;
+    size?: number;
+    title?: string;
   };
   message: {
     embeds?: any[];
@@ -47,7 +54,10 @@ type Props = {
   onClose: () => void;
   type: "IMAGE" | "VIDEO";
   sourceMetadata: SourceMetadata;
+  currentIndex?: number;
 };
+
+const logger = moonlight.getLogger("Image Viewer");
 
 const STEP_MAX = 50;
 const ZOOM_SCALE = 1 / (4 * STEP_MAX);
@@ -78,6 +88,23 @@ function stopPropagation(event: any) {
   event.stopPropagation();
 }
 
+// partal impl of https://stackoverflow.com/a/14919494
+// (discord has their own formatters but they're Bad)
+const units = ["KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+function bytesToHumanReadable(bytes: number): string {
+  if (Math.abs(bytes) < 1024) {
+    return bytes + " B";
+  }
+
+  let u = -1;
+  do {
+    bytes /= 1024;
+    ++u;
+  } while (Math.round(Math.abs(bytes) * 100) / 100 >= 1024 && u < units.length - 1);
+
+  return bytes.toFixed(2) + " " + units[u];
+}
+
 export default function ImageViewer({
   proxyUrl,
   url,
@@ -87,7 +114,8 @@ export default function ImageViewer({
   alt,
   type,
   animated,
-  sourceMetadata
+  sourceMetadata,
+  currentIndex
 }: Props) {
   const initialZoom = calculateInitialZoom(width, height);
   const minZoom = initialZoom - MAX_ZOOM;
@@ -103,7 +131,7 @@ export default function ImageViewer({
   const wrapperRef = React.createRef<HTMLDivElement>();
 
   let src = proxyUrl ?? url;
-  if (animated) {
+  if (animated && sourceMetadata?.message != null) {
     src = sourceMetadata.message.embeds?.[sourceMetadata.identifier.embedIndex ?? -1]?.video?.proxyURL ?? src;
   }
   const filename = React.useMemo(() => {
@@ -115,6 +143,12 @@ export default function ImageViewer({
     urlObj.searchParams.set("format", "webp");
     return urlObj.toString();
   }, [src]);
+  let altText = alt ?? sourceMetadata?.identifier?.title;
+
+  // FIXME: embeds have a default description of "Image", idk if thats localized or not
+  if (altText == null && currentIndex != null && sourceMetadata?.message != null)
+    altText =
+      sourceMetadata.message.embeds?.[sourceMetadata.identifier.embedIndex ?? -1]?.images?.[currentIndex]?.description;
 
   const handleMouseMove = React.useCallback(
     (e: MouseEvent) => {
@@ -198,7 +232,7 @@ export default function ImageViewer({
             className={`imageViewer-image${scale >= 1 ? " imageViewer-pixelate" : ""}`}
             src={src}
             placeholder={src}
-            alt={alt}
+            alt={altText}
             width={width}
             height={height}
             zoomable={true}
@@ -224,7 +258,13 @@ export default function ImageViewer({
             tooltipPosition="top"
             icon={LinkIcon}
             onClick={() => {
-              copy(src);
+              try {
+                copy(original);
+                showToast(createToast(i18n.intl.string(i18n.t["L/PwZW"]), ToastType.SUCCESS));
+              } catch (err) {
+                logger.error("Failed to copy link:", err);
+                showToast(createToast("Failed to copy link", ToastType.FAILURE));
+              }
             }}
           />
           {/* @ts-expect-error missing typing for window.DiscordNative */}
@@ -234,7 +274,13 @@ export default function ImageViewer({
               tooltipPosition="top"
               icon={CopyIcon}
               onClick={() => {
-                NativeUtils.copyImage(src);
+                try {
+                  NativeUtils.copyImage(src);
+                  showToast(createToast(i18n.intl.string(i18n.t.bhUpvL), ToastType.SUCCESS));
+                } catch (err) {
+                  logger.error("Failed to copy link:", err);
+                  showToast(createToast(i18n.intl.string(i18n.t.PTPbj4), ToastType.FAILURE));
+                }
               }}
             />
           ) : null}
@@ -288,12 +334,31 @@ export default function ImageViewer({
           />
         </div>
 
+        {altText ? (
+          <div className="imageViewer-altText">
+            <Text variant="text-sm/medium">{'"'}</Text>
+            <TextWithOverflow variant="text-sm/medium" color="text-normal">
+              {altText}
+            </TextWithOverflow>
+            <Text variant="text-sm/medium">{'"'}</Text>
+          </div>
+        ) : null}
+
         <div className="imageViewer-toolbar-label" onClick={stopPropagation}>
-          <Text variant="text-sm/medium">{filename}</Text>
+          <TextWithOverflow variant="text-sm/medium" color="text-normal">
+            {filename}
+          </TextWithOverflow>
 
           <HeaderBar.Divider />
 
           <Text variant="text-sm/medium">{`${width}x${height}`}</Text>
+
+          {sourceMetadata?.identifier?.size ? (
+            <>
+              <HeaderBar.Divider />
+              <Text variant="text-sm/medium">{bytesToHumanReadable(sourceMetadata.identifier.size)}</Text>
+            </>
+          ) : null}
 
           <HeaderBar.Divider />
 

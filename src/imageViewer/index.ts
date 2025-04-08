@@ -2,12 +2,27 @@ import type { ExtensionWebpackModule, Patch } from "@moonlight-mod/types";
 
 export const patches: Patch[] = [
   {
-    find: ".zoomedMediaFitWrapper,",
+    find: /startIndex:\i=0,shouldRedactExplicitContent:\i=!1,/,
     replace: {
-      match: /(?<=\.Fragment,{children:)(\(0,\i\.jsx\))\(\i\.animated\.div,{.+?},(\i)\.url\)/,
-      replacement: (_, createElement, media) =>
-        `${createElement}(require("imageViewer_imageViewer").default,${media},${media}.url)`
+      match:
+        /(\(0,\i\.jsx\)\(\i\.\i,{items:\i,currentIndex:(\i),children:\(\i,\i\)=>)(\(0,\i\.jsx\))(\(\i,{isObscured:.+?media:(\i).+?onContextMenu:\i}\)}\)}\),)/,
+      replacement: (_, beginning, currentIndex, createElement, body, media) =>
+        `${createElement}(require("imageViewer_imageViewer").default,{...${media},currentIndex:${currentIndex}}),`
     }
+  },
+  {
+    find: '("MediaViewerModal");',
+    replace: [
+      {
+        match:
+          /children:\(0,\i\.jsxs\)\(\i\.\i\.Provider,{value:\i,children:\[.+?(\(0,\i\.jsx\)\(\i\.\i,{items:\i.+?shouldHideMediaOptions:\i}\))]}\)/,
+        replacement: (_, modal) => `children:${modal}`
+      },
+      {
+        match: /(className:\i\(\)\(\i\.carouselModal,\i)\),/,
+        replacement: (_, orig) => `${orig},"imageViewer-modal"),`
+      }
+    ]
   },
 
   // media proxy cannot upscale images, prevent fetching images larger than possible

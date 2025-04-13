@@ -5,6 +5,8 @@ mod proto;
 mod linux;
 #[cfg(target_os = "windows")]
 mod windows;
+#[cfg(target_os = "macos")]
+mod macos;
 
 async fn input_handler(fetcher: &Box<dyn base::MediaFetcher>) -> anyhow::Result<()> {
     loop {
@@ -29,6 +31,11 @@ async fn main() -> anyhow::Result<()> {
     #[cfg(target_os = "linux")]
     {
         fetcher = Some(Box::new(linux::LinuxMediaFetcher::default()));
+    }
+
+    #[cfg(target_os = "macos")]
+    {
+        fetcher = Some(Box::new(macos::MacMediaFetcher::default()));
     }
 
     if let Some(mut fetcher) = fetcher {

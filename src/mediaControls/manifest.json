@@ -47,6 +47,13 @@
       "default": "music",
       "advice": "none"
     },
+    "richPresencePlayerRegex": {
+      "displayName": "Rich Presence -> Player Allow Filter Regex",
+      "description": "(Optional) Regex to match player names that should be allowed to display a presence",
+      "type": "string",
+      "default": "",
+      "advice": "reload"
+    },
     "richPresenceProvidedTitle": {
       "displayName": "Rich Presence -> Use Provided Title",
       "description": "Will use title string if none is provided by the player",

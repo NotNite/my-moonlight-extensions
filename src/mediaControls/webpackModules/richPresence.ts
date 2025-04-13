@@ -404,6 +404,9 @@ let running = false;
 let lastState: MediaState | undefined;
 async function onChange() {
   const enabled = moonlight.getConfigOption<boolean>("mediaControls", "richPresence") ?? false;
+
+  const playerReStr = moonlight.getConfigOption<string>("mediaControls", "richPresencePlayerRegex");
+  const playerRe = playerReStr ? new RegExp(playerReStr, "g") : null;
   const state = MediaControlsStore.getState();
 
   if ((!state || !enabled) && running) {
@@ -412,7 +415,10 @@ async function onChange() {
     lastState = undefined;
   } else if (state && enabled) {
     running = true;
-    if (SPOTIFY_PLAYER_NAMES.includes(state.player_name ?? "")) {
+    if (
+      SPOTIFY_PLAYER_NAMES.includes(state.player_name ?? "") ||
+      (playerRe !== null && !playerRe.test(state.player_name ?? ""))
+    ) {
       sendActivity();
     } else if (
       !lastState ||

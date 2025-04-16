@@ -7,7 +7,7 @@ export const patches: Patch[] = [
       match:
         /(\(0,\i\.jsx\)\(\i\.\i,{items:\i,currentIndex:(\i),children:\(\i,\i\)=>)(\(0,\i\.jsx\))(\(\i,{isObscured:.+?media:(\i).+?onContextMenu:\i}\)}\)}\),)/,
       replacement: (_, beginning, currentIndex, createElement, body, media) =>
-        `${createElement}(require("imageViewer_imageViewer").default,{...${media},currentIndex:${currentIndex}}),`
+        `require("imageViewer_imageViewer")?.default!=null?${createElement}(require("imageViewer_imageViewer").default,{...${media},currentIndex:${currentIndex}}):${createElement}${body}`
     }
   },
   {

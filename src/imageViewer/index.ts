@@ -7,7 +7,7 @@ export const patches: Patch[] = [
       match:
         /(\(0,\i\.jsx\)\(\i\.\i,{items:\i,currentIndex:(\i),children:\(\i,\i\)=>)(\(0,\i\.jsx\))(\(\i,{isObscured:.+?media:(\i).+?onContextMenu:\i}\)}\)}\),)/,
       replacement: (_, beginning, currentIndex, createElement, body, media) =>
-        `require("imageViewer_imageViewer")?.default!=null?${createElement}(require("imageViewer_imageViewer").default,{...${media},currentIndex:${currentIndex}}):${createElement}${body}`
+        `require("imageViewer_imageViewer")?.default!=null?${createElement}(require("imageViewer_imageViewer").default,{...${media},currentIndex:${currentIndex}}):${beginning}${createElement}${body}`
     }
   },
   {
@@ -15,8 +15,9 @@ export const patches: Patch[] = [
     replace: [
       {
         match:
-          /children:\(0,\i\.jsxs\)\(\i\.\i\.Provider,{value:\i,children:\[.+?(\(0,\i\.jsx\)\(\i\.\i,{items:\i.+?shouldHideMediaOptions:\i}\))]}\)/,
-        replacement: (_, modal) => `children:${modal}`
+          /children:(\(0,\i\.jsxs\)\(\i\.\i\.Provider,{value:\i,children:\[.+?)(\(0,\i\.jsx\)\(\i\.\i,{items:\i.+?shouldHideMediaOptions:\i}\))]}\)/,
+        replacement: (_, start, modal) =>
+          `children:require("imageViewer_imageViewer")?.default!=null?${modal}:${start}${modal}]})`
       },
       {
         match: /(className:\i\(\)\(\i\.carouselModal,\i)\),/,

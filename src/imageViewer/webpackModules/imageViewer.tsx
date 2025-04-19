@@ -132,7 +132,7 @@ export default function ImageViewer({
 
   let src = proxyUrl ?? url;
   if (animated && sourceMetadata?.message != null) {
-    src = sourceMetadata.message.embeds?.[sourceMetadata.identifier.embedIndex ?? -1]?.video?.proxyURL ?? src;
+    src = sourceMetadata.message.embeds?.[sourceMetadata.identifier?.embedIndex ?? -1]?.video?.proxyURL ?? src;
   }
   const filename = React.useMemo(() => {
     return new URL(src).pathname.split("/").pop();
@@ -146,9 +146,10 @@ export default function ImageViewer({
   let altText = alt ?? sourceMetadata?.identifier?.title;
 
   // FIXME: embeds have a default description of "Image", idk if thats localized or not
+  // FIXME: support for components v2 alt text
   if (altText == null && currentIndex != null && sourceMetadata?.message != null)
     altText =
-      sourceMetadata.message.embeds?.[sourceMetadata.identifier.embedIndex ?? -1]?.images?.[currentIndex]?.description;
+      sourceMetadata.message.embeds?.[sourceMetadata.identifier?.embedIndex ?? -1]?.images?.[currentIndex]?.description;
 
   const handleMouseMove = React.useCallback(
     (e: MouseEvent) => {

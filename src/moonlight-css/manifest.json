@@ -1,0 +1,23 @@
+{
+  "$schema": "https://moonlight-mod.github.io/manifest.schema.json",
+  "id": "moonlight-css",
+  "version": "2.0.0",
+  "apiLevel": 2,
+  "meta": {
+    "name": "CSS",
+    "tagline": "Load custom styles into Discord",
+    "description": "Load custom styles into Discord. Supports CSS and [Sass](https://sass-lang.com/).\n\n**This extension does not come with any built-in themes.** You can find Discord themes across various sites like GitHub. Alternatively, you can write your own CSS!\n\nThis extension should be compatible with most Discord themes. If a theme doesn't work in moonlight, but it works in other client mods, this is a bug and should be reported.",
+    "authors": ["NotNite", "husky"],
+    "source": "https://github.com/NotNite/my-moonlight-extensions",
+    "tags": ["appearance"],
+    "changelog": "**Complete rewrite of the CSS extension.** The extension has been rewritten in TypeScript. It is now maintained by [NotNite](https://github.com/NotNite) (previously [husky](https://github.com/floppydiskette)).\n\nThe configuration has been replaced with a simple list of files/folders/URLs. Your existing settings should be migrated automatically, but please report any issues that arise."
+  },
+  "settings": {
+    "paths": {
+      "displayName": "Paths",
+      "description": "Files/folders/URLs to load CSS from",
+      "type": "list",
+      "advice": "none"
+    }
+  }
+}

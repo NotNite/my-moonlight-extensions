@@ -18,6 +18,7 @@ async function callback(event: CSSEvent) {
 
   switch (event.type) {
     case "add": {
+      // TODO: UserCSS support
       let existing = entries.get(event.file.path);
 
       if (existing == null) {

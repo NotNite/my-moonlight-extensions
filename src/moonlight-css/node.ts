@@ -15,12 +15,25 @@ async function cancelWatcher(path: string, callback: CSSEventCallback) {
   if (existing != null) {
     watchers.delete(path);
     await existing.close();
-    await callback({ type: "removeDir", path });
+
+    // Technically we probably already emitted this in the diff earlier
+    const isDir = await fs
+      .stat(path)
+      .then((s) => s.isDirectory())
+      .catch(() => false);
+
+    if (isDir) {
+      await callback({ type: "removeDir", path });
+    } else {
+      await callback({ type: "remove", path });
+    }
   }
 }
 
 async function watch(root: string, callback: CSSEventCallback) {
+  // there's technically a race condition possible here but w/e
   const isDir = (await fs.stat(root)).isDirectory();
+
   async function addFile(file: string) {
     const fileType = determineFileType(path.basename(file));
     if (fileType == null) return;
@@ -43,12 +56,13 @@ async function watch(root: string, callback: CSSEventCallback) {
     await callback({ type: "remove", path: file });
   }
 
+  // should already be done, but just in case
   await cancelWatcher(root, callback);
 
-  // TODO: this won't properly hot reload but w/e
   const watcher = chokidar
     .watch(root, {
-      depth: lastRecurseDirectory ? undefined : 0
+      depth: lastRecurseDirectory ? undefined : 0,
+      ignoreInitial: true // we already registered all of the initial files
     })
     .on("add", addFile)
     .on("change", addFile)
@@ -69,7 +83,7 @@ const nodeNatives: CSSNodeNatives = {
   async watchPaths(paths, callback) {
     const recurseDirectory = moonlightNode.getConfigOption<boolean>("moonlight-css", "recurseDirectory") ?? false;
     if (recurseDirectory !== lastRecurseDirectory) {
-      // Recurse changed, delete all watchers
+      // Recurse changed, delete all watchers so we can edit their config
       for (const watcher of watchers.keys()) {
         await cancelWatcher(watcher, callback);
         watchers.delete(watcher);

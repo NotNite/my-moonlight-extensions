@@ -12,7 +12,7 @@ import { determineFileType, diffSets, fetchCss, isValidString, parseUrl, scuffed
 
 const logger = moonlightNode.getLogger("moonlight-css/natives");
 
-export async function getFilesRecursively(dir: string): Promise<string[]> {
+export async function getFiles(dir: string, recursive: boolean): Promise<string[]> {
   const fs = moonlightNodeSandboxed.fs;
 
   if (!(await fs.exists(dir)) || !(await fs.isDir(dir))) {
@@ -25,8 +25,8 @@ export async function getFilesRecursively(dir: string): Promise<string[]> {
   for (const entry of entries) {
     const filePath = fs.join(dir, entry);
 
-    if (await fs.isDir(filePath)) {
-      const files = await getFilesRecursively(filePath);
+    if ((await fs.isDir(filePath)) && recursive) {
+      const files = await getFiles(filePath, recursive);
       result.push(...files);
     } else if ((await fs.isFile(filePath)) && determineFileType(entry) != null) {
       result.push(filePath);
@@ -49,11 +49,12 @@ async function migrateConfig() {
 
   // Migrate file selector by adding individual files
   try {
+    const recurseDirectory = moonlightNode.getConfigOption<boolean>("moonlight-css", "recurseDirectory") ?? false;
     const fileSelector = moonlightNode.getConfigOption<string>("moonlight-css", "fileSelector");
 
     if (isValidString(fileSelector) && (await fs.exists(cssPath)) && (await fs.isDir(cssPath))) {
       const selectionRegex = new RegExp(fileSelector, "g");
-      const paths = await getFilesRecursively(cssPath);
+      const paths = await getFiles(cssPath, recurseDirectory);
 
       // Reset the directory or else it'll ignore our file selector anyways
       outputPaths = [];
@@ -76,7 +77,6 @@ async function migrateConfig() {
   await moonlightNode.setConfigOption("moonlight-css", "paths", outputPaths);
   await moonlightNode.setConfigOption("moonlight-css", "cssPath", undefined);
   await moonlightNode.setConfigOption("moonlight-css", "fileSelector", undefined);
-  await moonlightNode.setConfigOption("moonlight-css", "recurseDirectory", undefined);
 }
 
 async function loadFile(path: string): Promise<CSSFile | null> {
@@ -153,7 +153,9 @@ async function updateConfig(callback: CSSEventCallback, oldState?: CSSState, nod
     urls: new Set()
   };
 
+  const recurseDirectory = moonlightNode.getConfigOption<boolean>("moonlight-css", "recurseDirectory") ?? false;
   const rawPaths = moonlightNode.getConfigOption<string[]>("moonlight-css", "paths") ?? [];
+
   for (const path of rawPaths) {
     try {
       if (parseUrl(path) != null) {
@@ -225,7 +227,7 @@ async function updateConfig(callback: CSSEventCallback, oldState?: CSSState, nod
 
   for (const dir of dirsToLoad) {
     try {
-      const files = await getFilesRecursively(dir);
+      const files = await getFiles(dir, recurseDirectory);
 
       for (const filePath of files) {
         try {

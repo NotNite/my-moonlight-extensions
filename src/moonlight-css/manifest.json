@@ -18,6 +18,13 @@
       "description": "Files/folders/URLs to load CSS from",
       "type": "list",
       "advice": "none"
+    },
+    "recurseDirectory": {
+      "displayName": "Recursively search folders",
+      "description": "Search for CSS files in subdirectories of specified folders",
+      "type": "boolean",
+      "default": false,
+      "advice": "none"
     }
   }
 }

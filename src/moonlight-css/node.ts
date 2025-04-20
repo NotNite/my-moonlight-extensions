@@ -8,12 +8,14 @@ import { compileAsync } from "sass";
 
 const logger = moonlightNode.getLogger("moonlight-css/node");
 const watchers = new Map<string, FSWatcher>();
+let lastRecurseDirectory = moonlightNode.getConfigOption<boolean>("moonlight-css", "recurseDirectory") ?? false;
 
 async function cancelWatcher(path: string, callback: CSSEventCallback) {
   const existing = watchers.get(path);
   if (existing != null) {
     watchers.delete(path);
     await existing.close();
+    await callback({ type: "removeDir", path });
   }
 }
 
@@ -42,7 +44,15 @@ async function watch(root: string, callback: CSSEventCallback) {
   }
 
   await cancelWatcher(root, callback);
-  const watcher = chokidar.watch(root).on("add", addFile).on("change", addFile).on("unlink", removeFile);
+
+  // TODO: this won't properly hot reload but w/e
+  const watcher = chokidar
+    .watch(root, {
+      depth: lastRecurseDirectory ? undefined : 0
+    })
+    .on("add", addFile)
+    .on("change", addFile)
+    .on("unlink", removeFile);
   watchers.set(root, watcher);
 }
 
@@ -57,6 +67,17 @@ const nodeNatives: CSSNodeNatives = {
   },
 
   async watchPaths(paths, callback) {
+    const recurseDirectory = moonlightNode.getConfigOption<boolean>("moonlight-css", "recurseDirectory") ?? false;
+    if (recurseDirectory !== lastRecurseDirectory) {
+      // Recurse changed, delete all watchers
+      for (const watcher of watchers.keys()) {
+        await cancelWatcher(watcher, callback);
+        watchers.delete(watcher);
+      }
+
+      lastRecurseDirectory = recurseDirectory;
+    }
+
     const oldPaths = new Set(watchers.keys());
     const diff = diffSets(oldPaths, paths);
 

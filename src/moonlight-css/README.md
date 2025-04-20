@@ -4,5 +4,5 @@ This extension is a rewrite of [husky's CSS extension](https://github.com/floppy
 
 ## TODO
 
-- [ ] Get actual permission to replace this (if husky says no I'm just uploading it under a separate extension ID prolly)
+- [x] Get actual permission to replace this (if husky says no I'm just uploading it under a separate extension ID prolly)
 - [ ] UserCSS support

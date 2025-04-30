@@ -24,4 +24,4 @@ windows = { version = "0.57.0", features = [
 mpris = "2.0.1"
 
 [target.'cfg(target_os = "macos")'.dependencies]
-media-remote = "0.1.1"
+media-remote = "0.1.2"

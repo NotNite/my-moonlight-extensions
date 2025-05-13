@@ -12,8 +12,8 @@ importers:
         specifier: ^1.1.22
         version: 1.1.22(@moonlight-mod/lunast@1.0.1)(@moonlight-mod/moonmap@1.0.5)
       '@moonlight-mod/types':
-        specifier: ^1.3.17
-        version: 1.3.17
+        specifier: ^1.3.18
+        version: 1.3.18
       '@types/node':
         specifier: ^22.14.1
         version: 22.14.1
@@ -254,8 +254,8 @@ packages:
       '@moonlight-mod/lunast': ^1.0.1
       '@moonlight-mod/moonmap': ^1.0.5
 
-  '@moonlight-mod/mappings@1.1.25':
-    resolution: {integrity: sha512-bgnSN9H/IBdMGxGev6RQKXuzhQxwo1090NhIDHnflguZnjiu2pg/usPfh76bqyhxRuX4SS7tiZSNTwBoSflCLg==}
+  '@moonlight-mod/mappings@1.1.26':
+    resolution: {integrity: sha512-yNoAiszR+e5QYJal3FEkuP7dAH2FEhDRGScKv1AI74nl01/TzGnxDCWDNWS25n4tXUZ1cEoyL+TgYA6Z5N4mDQ==}
     engines: {node: '>=22', npm: pnpm, pnpm: '>=10', yarn: pnpm}
     peerDependencies:
       '@moonlight-mod/lunast': ^1.0.1
@@ -264,8 +264,8 @@ packages:
   '@moonlight-mod/moonmap@1.0.5':
     resolution: {integrity: sha512-Fdpxj8ghdulKB6TlTnchlCPey2YUKgEf1chuO1ofOIcvlqnVPBcQwSf2S80naOUQpXCDo4dQ+LWSE2fmhdDiiw==}
 
-  '@moonlight-mod/types@1.3.17':
-    resolution: {integrity: sha512-VBCHUnp9VBjObTfi0DIxypw+HWcMf4qTE17dbPVTXFYjyr2dr5Nnhq+tiwZf8F6kJq72Y8TYii4EupbqJyvAOQ==}
+  '@moonlight-mod/types@1.3.18':
+    resolution: {integrity: sha512-vtnWSFrik3wAIbPGKoNi7UM9HdsW6Rb2Xr36hA4KrzbDkqg3WAxW56TwrEvM27UsYYux1FWxP4++6RJ4oSAYKQ==}
     engines: {node: '>=22', npm: pnpm, pnpm: '>=10', yarn: pnpm}
 
   '@nodelib/fs.scandir@2.1.5':
@@ -413,6 +413,9 @@ packages:
 
   '@types/react@18.3.11':
     resolution: {integrity: sha512-r6QZ069rFTjrEYgFdOck1gK7FLVsgJE7tTz0pQBczlBNUhBNk0MQH4UbnFSwjpQLMkLzgqvBBa+qGpLje16eTQ==}
+
+  '@types/react@19.1.4':
+    resolution: {integrity: sha512-EB1yiiYdvySuIITtD5lhW4yPyJ31RkJkkDw794LaQYrxCSaQV/47y5o1FMC4zF9ZyjUjzJMZwbovEnT5yHTW6g==}
 
   '@typescript-eslint/eslint-plugin@8.8.1':
     resolution: {integrity: sha512-xfvdgA8AP/vxHgtgU310+WBnLB4uJQ9XdyP17RebG26rLtDrQJV3ZYrcopX91GrHmMoH8bdSwMRh2a//TiJ1jQ==}
@@ -1357,6 +1360,24 @@ packages:
       use-sync-external-store:
         optional: true
 
+  zustand@5.0.4:
+    resolution: {integrity: sha512-39VFTN5InDtMd28ZhjLyuTnlytDr9HfwO512Ai4I8ZABCoyAj4F1+sr7sD1jP/+p7k77Iko0Pb5NhgBFDCX0kQ==}
+    engines: {node: '>=12.20.0'}
+    peerDependencies:
+      '@types/react': '>=18.0.0'
+      immer: '>=9.0.6'
+      react: '>=18.0.0'
+      use-sync-external-store: '>=1.2.0'
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      immer:
+        optional: true
+      react:
+        optional: true
+      use-sync-external-store:
+        optional: true
+
 snapshots:
 
   '@electron/asar@3.2.8':
@@ -1522,7 +1543,7 @@ snapshots:
       - react
       - use-sync-external-store
 
-  '@moonlight-mod/mappings@1.1.25(@moonlight-mod/lunast@1.0.1)(@moonlight-mod/moonmap@1.0.5)':
+  '@moonlight-mod/mappings@1.1.26(@moonlight-mod/lunast@1.0.1)(@moonlight-mod/moonmap@1.0.5)':
     dependencies:
       '@moonlight-mod/lunast': 1.0.1
       '@moonlight-mod/moonmap': 1.0.5
@@ -1531,9 +1552,9 @@ snapshots:
       '@types/highlightjs': 9.12.6
       '@types/lodash': 4.17.16
       '@types/platform': 1.3.6
-      '@types/react': 18.3.11
+      '@types/react': 19.1.4
       csstype: 3.1.3
-      zustand: 5.0.3(@types/react@18.3.11)
+      zustand: 5.0.4(@types/react@19.1.4)
     transitivePeerDependencies:
       - immer
       - react
@@ -1541,12 +1562,12 @@ snapshots:
 
   '@moonlight-mod/moonmap@1.0.5': {}
 
-  '@moonlight-mod/types@1.3.17':
+  '@moonlight-mod/types@1.3.18':
     dependencies:
       '@moonlight-mod/lunast': 1.0.1
-      '@moonlight-mod/mappings': 1.1.25(@moonlight-mod/lunast@1.0.1)(@moonlight-mod/moonmap@1.0.5)
+      '@moonlight-mod/mappings': 1.1.26(@moonlight-mod/lunast@1.0.1)(@moonlight-mod/moonmap@1.0.5)
       '@moonlight-mod/moonmap': 1.0.5
-      '@types/react': 18.3.11
+      '@types/react': 19.1.4
       csstype: 3.1.3
       standalone-electron-types: 1.0.0
     transitivePeerDependencies:
@@ -1671,6 +1692,10 @@ snapshots:
   '@types/react@18.3.11':
     dependencies:
       '@types/prop-types': 15.7.11
+      csstype: 3.1.3
+
+  '@types/react@19.1.4':
+    dependencies:
       csstype: 3.1.3
 
   '@typescript-eslint/eslint-plugin@8.8.1(@typescript-eslint/parser@8.8.1(eslint@9.12.0)(typescript@5.3.2))(eslint@9.12.0)(typescript@5.3.2)':
@@ -2826,3 +2851,7 @@ snapshots:
   zustand@5.0.3(@types/react@18.3.11):
     optionalDependencies:
       '@types/react': 18.3.11
+
+  zustand@5.0.4(@types/react@19.1.4):
+    optionalDependencies:
+      '@types/react': 19.1.4

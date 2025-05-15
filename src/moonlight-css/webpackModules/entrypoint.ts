@@ -52,7 +52,7 @@ async function callback(event: CSSEvent) {
       const pathBanner = `/* loaded by moonlight-css from ${safePath} */`;
       existing.element.textContent = pathBanner + "\n" + event.file.src;
 
-      if (currentTheme !== existing.theme) parent.removeChild(existing.element);
+      if (existing.theme !== "none" && currentTheme !== existing.theme) parent.removeChild(existing.element);
       break;
     }
 
@@ -100,6 +100,8 @@ Dispatcher.subscribe("USER_SETTINGS_PROTO_UPDATE", function () {
     const parent = document.documentElement;
 
     for (const existing of entries.values()) {
+      if (existing.theme === "none") continue;
+
       if (currentTheme !== existing.theme && existing.element.parentNode === parent) {
         parent.removeChild(existing.element);
       } else if (currentTheme === existing.theme && existing.element.parentNode == null) {

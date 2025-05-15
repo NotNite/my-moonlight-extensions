@@ -2,7 +2,7 @@
 
 Provides information about the system media player to Media Controls:
 
-- On Windows, uses System Media Transport Controls. Most media players work fine, though some may have less features than others.
+- On Windows, uses System Media Transport Controls. Most media players work fine, though some may require plugins and/or have less features than others. [A full list and feature matrix can be found here](https://github.com/ModernFlyouts-Community/ModernFlyouts/blob/main/docs/GSMTC-Support-And-Popular-Apps.md)
 - On macOS, uses MediaRemote.framework. This is a private framework and may be unstable.
 - On Linux, uses MPRIS. Check if your media player supports MPRIS, as some media players don't.
 

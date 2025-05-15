@@ -7,10 +7,12 @@
 // this trick: https://github.com/moonlight-mod/moonlight/blob/main/packages/core-extensions/src/moonbase/native.ts
 
 import { NodeEventType } from "@moonlight-mod/types/core/event";
-import type { CSSEvent, CSSEventCallback, CSSFile, CSSNativesInit, CSSNodeNatives, CSSState } from "./types";
+import type { CSSEvent, CSSEventCallback, CSSFile, CSSNativesInit, CSSNodeNatives, CSSState, CSSTheme } from "./types";
 import { determineFileType, diffSets, fetchCss, isValidString, parseUrl, scuffedBasename } from "./utils";
 
 const logger = moonlightNode.getLogger("moonlight-css/natives");
+
+const THEME_PREFIX = /^@(dark|light)\s+/;
 
 export async function getFiles(dir: string, recursive: boolean): Promise<string[]> {
   const fs = moonlightNodeSandboxed.fs;
@@ -80,6 +82,13 @@ async function migrateConfig() {
 }
 
 async function loadFile(path: string): Promise<CSSFile | null> {
+  let theme = "none" as CSSTheme;
+  const themePrefixMatch = path.match(THEME_PREFIX);
+  if (themePrefixMatch?.[1]) {
+    path = path.replace(THEME_PREFIX, "");
+    theme = themePrefixMatch[1] as CSSTheme;
+  }
+
   const fs = moonlightNodeSandboxed.fs;
 
   if (!(await fs.exists(path))) {
@@ -101,10 +110,17 @@ async function loadFile(path: string): Promise<CSSFile | null> {
   }
 
   const src = await fs.readFileString(path);
-  return { path, src, fileType };
+  return { path, src, fileType, theme };
 }
 
 async function loadUrl(urlStr: string): Promise<CSSFile | null> {
+  let theme = "none" as CSSTheme;
+  const themePrefixMatch = urlStr.match(THEME_PREFIX);
+  if (themePrefixMatch?.[1]) {
+    urlStr = urlStr.replace(THEME_PREFIX, "");
+    theme = themePrefixMatch[1] as CSSTheme;
+  }
+
   const url = parseUrl(urlStr);
   if (url == null) {
     logger.warn("Tried to load URL but couldn't parse it?", urlStr);
@@ -115,7 +131,7 @@ async function loadUrl(urlStr: string): Promise<CSSFile | null> {
   const filename = scuffedBasename(url.pathname);
   const fileType = determineFileType(filename) ?? "css"; // file extension in the URL might not be .css
 
-  return { path: urlStr, src, fileType };
+  return { path: urlStr, src, fileType, theme };
 }
 
 async function processFile(file: CSSFile, callback: CSSEventCallback, node?: CSSNodeNatives) {
@@ -158,12 +174,14 @@ async function updateConfig(callback: CSSEventCallback, oldState?: CSSState, nod
 
   for (const path of rawPaths) {
     try {
-      if (parseUrl(path) != null) {
+      const cleanPath = path.replace(THEME_PREFIX, "");
+
+      if (parseUrl(cleanPath) != null) {
         newState.urls.add(path); // add string instead of parsed URL because of Set comparisons
-      } else if (await fs.exists(path)) {
-        if (await fs.isDir(path)) {
+      } else if (await fs.exists(cleanPath)) {
+        if (await fs.isDir(cleanPath)) {
           newState.dirs.add(path);
-        } else if (await fs.isFile(path)) {
+        } else if (await fs.isFile(cleanPath)) {
           newState.files.add(path);
         }
       } else {

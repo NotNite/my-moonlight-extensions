@@ -1,5 +1,7 @@
 import createNatives from "../natives";
-import type { CSSEvent, CSSFileType, CSSNativesInit } from "../natives/types";
+import type { CSSEvent, CSSFileType, CSSNativesInit, CSSTheme } from "../natives/types";
+import { ThemeStore } from "@moonlight-mod/wp/common_stores";
+import Dispatcher from "@moonlight-mod/wp/discord/Dispatcher";
 
 const logger = moonlight.getLogger("moonlight-css");
 
@@ -7,6 +9,7 @@ type CSSEntry = {
   parent?: string;
   fileType: CSSFileType;
   element: HTMLStyleElement;
+  theme: CSSTheme;
 };
 
 const entries = new Map<string, CSSEntry>();
@@ -29,7 +32,8 @@ async function callback(event: CSSEvent) {
         const entry: CSSEntry = {
           parent: event.file.parent,
           fileType: event.file.fileType,
-          element
+          element,
+          theme: event.file.theme
         };
 
         entries.set(event.file.path, entry);
@@ -41,10 +45,14 @@ async function callback(event: CSSEvent) {
         existing.parent = undefined;
       }
 
+      const currentTheme = ThemeStore.theme === "light" ? "light" : "dark";
+
       // lmao this is jank
       const safePath = event.file.path.replaceAll("\n", "").replaceAll("*", "");
       const pathBanner = `/* loaded by moonlight-css from ${safePath} */`;
       existing.element.textContent = pathBanner + "\n" + event.file.src;
+
+      if (existing.theme !== "none" && currentTheme !== existing.theme) parent.removeChild(existing.element);
       break;
     }
 
@@ -84,4 +92,24 @@ async function loadNatives() {
 
 loadNatives().catch((err) => {
   logger.error("Failed to load", err);
+});
+
+Dispatcher.subscribe("USER_SETTINGS_PROTO_UPDATE", function () {
+  try {
+    const currentTheme = ThemeStore.theme === "light" ? "light" : "dark";
+    const parent = document.documentElement;
+
+    for (const existing of entries.values()) {
+      if (existing.theme === "none") continue;
+
+      if (currentTheme !== existing.theme && existing.element.parentNode === parent) {
+        parent.removeChild(existing.element);
+      } else if (currentTheme === existing.theme && existing.element.parentNode == null) {
+        parent.appendChild(existing.element);
+      }
+    }
+  } catch (err) {
+    // needed because errors in a subscribed event cause a socket reconnection
+    logger.error("Encountered an error when processing theme update:", err);
+  }
 });

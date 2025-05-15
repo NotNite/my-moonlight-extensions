@@ -52,7 +52,8 @@ export const patches: ExtensionWebExports["patches"] = [
 
 export const webpackModules: ExtensionWebExports["webpackModules"] = {
   entrypoint: {
-    entrypoint: true
+    entrypoint: true,
+    dependencies: [{ ext: "common", id: "stores" }, { id: "discord/Dispatcher" }]
   },
   themeAttributes: {
     dependencies: [{ ext: "common", id: "stores" }]

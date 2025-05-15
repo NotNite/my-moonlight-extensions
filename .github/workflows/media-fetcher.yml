@@ -1,0 +1,85 @@
+name: Build media-fetcher
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - src/mediaControls/media-fetcher/**
+
+jobs:
+  media-fetcher-windows:
+    name: Build media-fetcher on Windows
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: "1.87"
+      - name: Setup Rust cache
+        uses: Swatinem/rust-cache@v2
+
+      - name: Build
+        working-directory: src/mediaControls/media-fetcher
+        run: cargo build --release
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: media-fetcher-windows
+          path: src/mediaControls/media-fetcher/target/release/media-fetcher.exe
+
+  media-fetcher-macos:
+    name: Build media-fetcher on macOS
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: "1.87"
+          targets: x86_64-apple-darwin # macos-latest is aarch64, install x86_64 target
+      - name: Setup Rust cache
+        uses: Swatinem/rust-cache@v2
+
+      - name: Build (AArch64)
+        working-directory: src/mediaControls/media-fetcher
+        run: cargo build --target=aarch64-apple-darwin --release
+      - name: Build (x86_64)
+        working-directory: src/mediaControls/media-fetcher
+        run: cargo build --target=x86_64-apple-darwin --release
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: media-fetcher-macos
+          path: src/mediaControls/media-fetcher/target/*-apple-darwin/release/media-fetcher
+
+  media-fetcher-linux:
+    name: Build media-fetcher on Linux
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: "1.87"
+      - name: Setup Rust cache
+        uses: Swatinem/rust-cache@v2
+
+      - name: Install dependencies
+        run: sudo apt install libdbus-1-dev pkg-config
+
+      - name: Build
+        working-directory: src/mediaControls/media-fetcher
+        run: cargo build --release
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: media-fetcher-linux
+          path: src/mediaControls/media-fetcher/target/release/media-fetcher

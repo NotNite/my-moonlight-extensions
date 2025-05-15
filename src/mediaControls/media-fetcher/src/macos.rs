@@ -4,6 +4,7 @@ use crate::{
 };
 use async_trait::async_trait;
 use base64::Engine;
+use image::imageops::FilterType::Triangle;
 use media_remote::{
     get_now_playing_info, send_command, set_elapsed_time, Command, InfoTypes, NowPlaying, Number,
 };
@@ -159,6 +160,8 @@ impl MediaFetcher for MacMediaFetcher {
             Request::GetAlbumArt => {
                 if let Some(info) = now_playing.get_info().as_ref() {
                     if let Some(image) = &info.album_cover {
+                        let mut image = image.clone();
+
                         if image.width() > 1000 {
                             let ratio = image.height() as f32 / image.width() as f32;
                             image = image.resize(1000, (1000_f32 * ratio).ceil() as u32, Triangle);

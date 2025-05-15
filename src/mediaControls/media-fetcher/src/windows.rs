@@ -4,8 +4,7 @@ use crate::{
 };
 use async_trait::async_trait;
 use base64::Engine;
-use image::Pixel;
-use image::{imageops::FilterType::Triangle, GenericImageView};
+use image::{imageops::FilterType::Triangle, GenericImageView, Pixel};
 use std::{io::Cursor, sync::Arc};
 use tokio::sync::Mutex;
 use windows::{

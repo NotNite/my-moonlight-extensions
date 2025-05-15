@@ -1,12 +1,12 @@
-use std::{io::Cursor, time::Duration};
-
 use crate::{
     base::{send_response, MediaFetcher},
     proto::{PlaybackStatus, Request},
 };
 use async_trait::async_trait;
 use base64::Engine;
+use image::imageops::FilterType::Triangle;
 use mpris::PlayerFinder;
+use std::{io::Cursor, time::Duration};
 
 #[derive(Default)]
 pub struct LinuxMediaFetcher {}
@@ -136,7 +136,7 @@ impl MediaFetcher for LinuxMediaFetcher {
                     let path = percent_encoding::percent_decode_str(path).decode_utf8()?;
                     let path = path.to_string();
 
-                    let image = image::load_from_memory(&std::fs::read(&path)?)?;
+                    let mut image = image::load_from_memory(&std::fs::read(&path)?)?;
 
                     if image.width() > 1000 {
                         let ratio = image.height() as f32 / image.width() as f32;

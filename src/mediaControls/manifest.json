@@ -6,7 +6,7 @@
   "meta": {
     "name": "Media Controls",
     "tagline": "Control your music from within Discord",
-    "description": "**Configuration required!**\nFor this extension to work, you must enable which media sources to use.\n- To use Spotify, your Spotify account must be linked to your Discord account.\n- To use the system media player, you must [build the media fetcher from source](https://github.com/NotNite/my-moonlight-extensions/tree/main/src/mediaControls/media-fetcher) and set the path to the executable.",
+    "description": "**Configuration required!**\nFor this extension to work, you must enable which media sources to use.\n- To use Spotify, your Spotify account must be linked to your Discord account.\n- To use the system media player, you must [manually setup media-fetcher](https://github.com/NotNite/my-moonlight-extensions/blob/main/src/mediaControls/media-fetcher/README.md).",
     "authors": ["NotNite", "Cynosphere"],
     "source": "https://github.com/NotNite/my-moonlight-extensions",
     "donate": "https://notnite.com/givememoney",

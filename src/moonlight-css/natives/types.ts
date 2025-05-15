@@ -18,11 +18,13 @@ export type CSSFile = {
   parent?: string; // if file was loaded from a directory
   src: string;
   fileType: CSSFileType;
+  theme: CSSTheme;
 };
 
 export type CSSNativesInit = (cb: CSSEventCallback) => Promise<void>;
 export type CSSEventCallback = (event: CSSEvent) => Promise<void>;
 export type CSSFileType = "usercss" | "css" | "sass";
+export type CSSTheme = "none" | "light" | "dark";
 
 export type CSSState = {
   files: Set<string>;

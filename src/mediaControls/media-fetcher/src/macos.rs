@@ -159,6 +159,14 @@ impl MediaFetcher for MacMediaFetcher {
             Request::GetAlbumArt => {
                 if let Some(info) = now_playing.get_info().as_ref() {
                     if let Some(image) = &info.album_cover {
+                        if image.width() > 1000 {
+                            let ratio = image.height() as f32 / image.width() as f32;
+                            image = image.resize(1000, (1000_f32 * ratio).ceil() as u32, Triangle);
+                        } else if image.height() > 1000 {
+                            let ratio = image.width() as f32 / image.height() as f32;
+                            image = image.resize((1000_f32 * ratio).ceil() as u32, 1000, Triangle);
+                        }
+
                         let mut bytes = Vec::new();
                         image.write_to(&mut Cursor::new(&mut bytes), image::ImageFormat::Png)?;
                         let base64 = base64::prelude::BASE64_STANDARD.encode(&bytes);

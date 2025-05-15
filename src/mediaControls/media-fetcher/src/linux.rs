@@ -137,6 +137,15 @@ impl MediaFetcher for LinuxMediaFetcher {
                     let path = path.to_string();
 
                     let image = image::load_from_memory(&std::fs::read(&path)?)?;
+
+                    if image.width() > 1000 {
+                        let ratio = image.height() as f32 / image.width() as f32;
+                        image = image.resize(1000, (1000_f32 * ratio).ceil() as u32, Triangle);
+                    } else if image.height() > 1000 {
+                        let ratio = image.width() as f32 / image.height() as f32;
+                        image = image.resize((1000_f32 * ratio).ceil() as u32, 1000, Triangle);
+                    }
+
                     let mut bytes = Vec::new();
                     image.write_to(&mut Cursor::new(&mut bytes), image::ImageFormat::Png)?;
 

@@ -4,8 +4,8 @@ use crate::{
 };
 use async_trait::async_trait;
 use base64::Engine;
-use image::GenericImageView;
 use image::Pixel;
+use image::{imageops::FilterType::Triangle, GenericImageView};
 use std::{io::Cursor, sync::Arc};
 use tokio::sync::Mutex;
 use windows::{
@@ -197,6 +197,14 @@ impl MediaFetcher for WindowsMediaFetcher {
                         }
                     }
                     _ => {}
+                }
+
+                if image.width() > 1000 {
+                    let ratio = image.height() as f32 / image.width() as f32;
+                    image = image.resize(1000, (1000_f32 * ratio).ceil() as u32, Triangle);
+                } else if image.height() > 1000 {
+                    let ratio = image.width() as f32 / image.height() as f32;
+                    image = image.resize((1000_f32 * ratio).ceil() as u32, 1000, Triangle);
                 }
 
                 let mut bytes = Vec::new();

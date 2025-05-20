@@ -33,7 +33,7 @@ async function callback(event: CSSEvent) {
           parent: event.file.parent,
           fileType: event.file.fileType,
           element,
-          theme: event.file.theme
+          theme: event.file.theme ?? "none"
         };
 
         entries.set(event.file.path, entry);
@@ -52,7 +52,8 @@ async function callback(event: CSSEvent) {
       const pathBanner = `/* loaded by moonlight-css from ${safePath} */`;
       existing.element.textContent = pathBanner + "\n" + event.file.src;
 
-      if (existing.theme !== "none" && currentTheme !== existing.theme) parent.removeChild(existing.element);
+      if (existing.theme !== "none" && currentTheme !== existing.theme && existing.element.parentNode != null)
+        parent.removeChild(existing.element);
       break;
     }
 

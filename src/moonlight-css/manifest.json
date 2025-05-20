@@ -1,7 +1,7 @@
 {
   "$schema": "https://moonlight-mod.github.io/manifest.schema.json",
   "id": "moonlight-css",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "apiLevel": 2,
   "meta": {
     "name": "CSS",
@@ -10,7 +10,7 @@
     "authors": ["NotNite", "husky"],
     "source": "https://github.com/NotNite/my-moonlight-extensions",
     "tags": ["appearance"],
-    "changelog": "Allow paths to be dynamically loaded based on theme via `@light` and `@dark` prefixes (client mod parity)"
+    "changelog": "Fix Sass files not reloading"
   },
   "settings": {
     "paths": {

@@ -21,7 +21,8 @@ import { useModalsStore, closeModal } from "@moonlight-mod/wp/discord/modules/mo
 import { copy } from "@moonlight-mod/wp/discord/utils/ClipboardUtils";
 
 const i18n = spacepack.require("discord/intl");
-const HeaderBar = spacepack.require("discord/uikit/HeaderBar").default;
+// FIXME: https://github.com/moonlight-mod/mappings/issues/20
+const HeaderBar = spacepack.findByCode(".HEADER_BAR),", ".Divider")[0].exports.Z;
 const NativeUtils = spacepack.findByCode("Data fetch" + " unsuccessful")[0].exports.ZP;
 const RawVideo = spacepack.findByCode(
   'MOSAIC?{width:"100%",height:"100%",' + 'maxHeight:"inherit",objectFit:"contain"}'
@@ -105,6 +106,43 @@ function bytesToHumanReadable(bytes: number): string {
   return bytes.toFixed(2) + " " + units[u];
 }
 
+// overengineered style manipulation
+type ImageViewerCSSProperty = "scale" | "x" | "y" | "rotate";
+const properties: Record<ImageViewerCSSProperty, string> = {
+  scale: "--image-viewer-scale",
+  x: "--image-viewer-x",
+  y: "--image-viewer-y",
+  rotate: "--image-viewer-rotate"
+};
+const suffixes: Record<ImageViewerCSSProperty, string> = {
+  scale: "%",
+  x: "px",
+  y: "px",
+  rotate: "deg"
+};
+
+function getProperty(element: HTMLElement, prop: ImageViewerCSSProperty) {
+  const name = properties[prop];
+  const suffix = suffixes[prop];
+
+  const res = element.style.getPropertyValue(name).trim();
+  if (!res.endsWith(suffix)) return null;
+
+  const valueStr = res.slice(0, res.length - suffix.length);
+  const value = parseInt(valueStr, 10);
+  if (isNaN(value)) return null;
+
+  return value;
+}
+
+function setProperty(element: HTMLElement, prop: ImageViewerCSSProperty, value: number) {
+  element.style.setProperty(properties[prop], `${value}${suffixes[prop]}`);
+}
+
+function calculateScale(zoom: number) {
+  return 2 ** (zoom * ZOOM_SCALE);
+}
+
 export default function ImageViewer({
   proxyUrl,
   url,
@@ -120,59 +158,89 @@ export default function ImageViewer({
   const initialZoom = calculateInitialZoom(width, height);
   const minZoom = initialZoom - MAX_ZOOM;
 
-  const [x, setX] = React.useState(0);
-  const [y, setY] = React.useState(0);
-  const [rotate, setRotate] = React.useState(0);
   const [zoom, setZoom] = React.useState(initialZoom);
-  const scale = 2 ** (zoom * ZOOM_SCALE);
-  const [dragging, setDragging] = React.useState(false);
   const [editingZoom, setEditingZoom] = React.useState(false);
   const [zoomEdit, setZoomEdit] = React.useState(100);
-  const wrapperRef = React.createRef<HTMLDivElement>();
+  const wrapperRef = React.useRef<HTMLDivElement>(null);
+  const scaleRef = React.useRef(0);
+  const draggingRef = React.useRef(false);
 
-  let src = proxyUrl ?? url;
-  if (animated && sourceMetadata?.message != null) {
-    src = sourceMetadata.message.embeds?.[sourceMetadata.identifier?.embedIndex ?? -1]?.video?.proxyURL ?? src;
-  }
-  const filename = React.useMemo(() => {
-    return new URL(src).pathname.split("/").pop();
-  }, [src]);
+  // update this non-reactive ref for the callbacks
+  scaleRef.current = calculateScale(zoom);
+
+  const zoomLabel = scaleRef.current < 0.1 ? (scaleRef.current * 100).toFixed(2) : Math.round(scaleRef.current * 100);
   const isVideo = type === "VIDEO";
-  const poster = React.useMemo(() => {
+
+  const src = (() => {
+    if (animated && sourceMetadata?.message != null) {
+      const embedIdx = sourceMetadata.identifier?.embedIndex ?? -1;
+      const embedProxyUrl = sourceMetadata.message.embeds?.[embedIdx]?.video?.proxyURL;
+      if (embedProxyUrl != null) return embedProxyUrl;
+    }
+
+    return proxyUrl ?? url;
+  })();
+  const filename = new URL(src).pathname.split("/").pop();
+  const poster = (() => {
     const urlObj = new URL(src);
     urlObj.searchParams.set("format", "webp");
     return urlObj.toString();
-  }, [src]);
-  let altText = alt ?? sourceMetadata?.identifier?.title;
+  })();
+  const altText = (() => {
+    const ret = alt ?? sourceMetadata?.identifier?.title;
+    if (ret != null) return ret;
 
-  // FIXME: embeds have a default description of "Image", idk if thats localized or not
-  // FIXME: support for components v2 alt text
-  if (altText == null && currentIndex != null && sourceMetadata?.message != null)
-    altText =
-      sourceMetadata.message.embeds?.[sourceMetadata.identifier?.embedIndex ?? -1]?.images?.[currentIndex]?.description;
+    // FIXME: embeds have a default description of "Image", idk if thats localized or not
+    // FIXME: support for components v2 alt text
+    if (currentIndex != null && sourceMetadata?.message != null) {
+      const embedIdx = sourceMetadata.identifier?.embedIndex ?? -1;
+      const embedProxyUrl = sourceMetadata.message.embeds?.[embedIdx]?.images?.[currentIndex]?.description;
+      if (embedProxyUrl != null) return embedProxyUrl;
+    }
 
+    return null;
+  })();
+
+  // this uses `zoom` instead of `scale` since it's reactive to the zoom
+  React.useEffect(() => {
+    if (wrapperRef.current == null) return;
+    setProperty(wrapperRef.current, "scale", calculateScale(zoom) * 100);
+  }, [wrapperRef, zoom]);
+
+  // Important to keep in mind that this creates a new callback (and thus new event listeners) when the inputs change
+  // so if it used `zoom` instead of `scaleRef` it would recreate the events every time you zoomed lol
   const handleMouseMove = React.useCallback(
     (e: MouseEvent) => {
-      if (!dragging) return;
+      if (!draggingRef.current || wrapperRef.current == null) return;
 
-      setX((prevX) => prevX + e.movementX / (scale * window.devicePixelRatio));
-      setY((prevY) => prevY + e.movementY / (scale * window.devicePixelRatio));
+      const x = getProperty(wrapperRef.current, "x") ?? 0;
+      const y = getProperty(wrapperRef.current, "y") ?? 0;
+      const scale = scaleRef.current;
+
+      const diffX = e.movementX / scale;
+      const diffY = e.movementY / scale;
+
+      setProperty(wrapperRef.current, "x", x + diffX);
+      setProperty(wrapperRef.current, "y", y + diffY);
     },
-    [dragging, zoom]
+    [draggingRef, wrapperRef, scaleRef]
   );
   const handleMouseDown = React.useCallback(() => {
-    setDragging(true);
-  }, []);
+    draggingRef.current = true;
+  }, [draggingRef]);
   const handleMouseUp = React.useCallback(() => {
-    setDragging(false);
-  }, []);
-  const handleWheel = React.useCallback((e: WheelEvent) => {
-    setZoom((zoom) => {
-      // clamp delta, for linear scrolling (e.g. trackpads)
-      const delta = Math.min(STEP_MAX, Math.max(-STEP_MAX, -e.deltaY));
-      return Math.min(MAX_ZOOM, Math.max(minZoom, zoom + delta));
-    });
-  }, []);
+    draggingRef.current = false;
+  }, [draggingRef]);
+  const handleWheel = React.useCallback(
+    (e: WheelEvent) => {
+      setZoom((zoom) => {
+        // clamp delta, for linear scrolling (e.g. trackpads)
+        const delta = Math.min(STEP_MAX, Math.max(-STEP_MAX, -e.deltaY));
+        return Math.min(MAX_ZOOM, Math.max(minZoom, zoom + delta));
+      });
+    },
+    [setZoom, minZoom]
+  );
 
   React.useEffect(() => {
     const wrapper = wrapperRef.current;
@@ -189,21 +257,11 @@ export default function ImageViewer({
       document.removeEventListener("mouseup", handleMouseUp);
       document.removeEventListener("wheel", handleWheel);
     };
-  }, [wrapperRef.current, handleMouseDown, handleMouseMove, handleMouseUp, handleWheel]);
-
-  const transformStyle = `scale(${scale}) translate(${x}px, ${y}px) rotate(${rotate}deg)`;
-  const zoomLabel = scale < 0.1 ? (scale * 100).toFixed(2) : Math.round(scale * 100);
+  }, [wrapperRef, handleMouseDown, handleMouseMove, handleMouseUp, handleWheel]);
 
   return (
     <div className="imageViewer">
-      <div
-        className="imageViewer-container"
-        ref={wrapperRef}
-        style={{
-          transform: transformStyle
-        }}
-        onClick={stopPropagation}
-      >
+      <div className="imageViewer-container" ref={wrapperRef} onClick={stopPropagation}>
         {animated ? (
           <RawVideo
             src={src}
@@ -230,7 +288,7 @@ export default function ImageViewer({
           />
         ) : (
           <Image
-            className={`imageViewer-image${scale >= 1 ? " imageViewer-pixelate" : ""}`}
+            className={`imageViewer-image${scaleRef.current >= 1 ? " imageViewer-pixelate" : ""}`}
             src={src}
             placeholder={src}
             alt={altText}
@@ -293,8 +351,10 @@ export default function ImageViewer({
             tooltipPosition="top"
             icon={FullscreenEnterIcon}
             onClick={() => {
-              setX(0);
-              setY(0);
+              if (wrapperRef.current != null) {
+                setProperty(wrapperRef.current, "x", 0);
+                setProperty(wrapperRef.current, "y", 0);
+              }
               setZoom(initialZoom);
             }}
           />
@@ -322,7 +382,10 @@ export default function ImageViewer({
             tooltipPosition="top"
             icon={ArrowAngleLeftUpIcon}
             onClick={() => {
-              setRotate((prevRotate) => prevRotate - 90);
+              if (wrapperRef.current != null) {
+                const prevRotate = getProperty(wrapperRef.current, "rotate") ?? 0;
+                setProperty(wrapperRef.current, "rotate", prevRotate - 90);
+              }
             }}
           />
           <HeaderBar.Icon
@@ -330,7 +393,10 @@ export default function ImageViewer({
             tooltipPosition="top"
             icon={ArrowAngleRightUpIcon}
             onClick={() => {
-              setRotate((prevRotate) => prevRotate + 90);
+              if (wrapperRef.current != null) {
+                const prevRotate = getProperty(wrapperRef.current, "rotate") ?? 0;
+                setProperty(wrapperRef.current, "rotate", prevRotate + 90);
+              }
             }}
           />
         </div>

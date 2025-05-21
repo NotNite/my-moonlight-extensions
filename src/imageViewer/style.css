@@ -26,6 +26,16 @@
   pointer-events: none;
 }
 
+.imageViewer-container {
+  --image-viewer-scale: 100%;
+  --image-viewer-x: 0px;
+  --image-viewer-y: 0px;
+  --image-viewer-rotate: 0deg;
+
+  transform: scale(var(--image-viewer-scale)) translate(var(--image-viewer-x), var(--image-viewer-y))
+    rotate(var(--image-viewer-rotate));
+}
+
 .imageViewer-container,
 .imageViewer-toolbar {
   pointer-events: auto;

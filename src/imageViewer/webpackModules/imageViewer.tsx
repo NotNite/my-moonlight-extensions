@@ -21,8 +21,7 @@ import { useModalsStore, closeModal } from "@moonlight-mod/wp/discord/modules/mo
 import { copy } from "@moonlight-mod/wp/discord/utils/ClipboardUtils";
 
 const i18n = spacepack.require("discord/intl");
-// FIXME: https://github.com/moonlight-mod/mappings/issues/20
-const HeaderBar = spacepack.findByCode(".HEADER_BAR),", ".Divider")[0].exports.Z;
+const HeaderBar = spacepack.require("discord/components/common/BaseHeaderBar");
 const NativeUtils = spacepack.findByCode("Data fetch" + " unsuccessful")[0].exports.ZP;
 const RawVideo = spacepack.findByCode(
   'MOSAIC?{width:"100%",height:"100%",' + 'maxHeight:"inherit",objectFit:"contain"}'

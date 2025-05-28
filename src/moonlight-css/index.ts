@@ -1,6 +1,8 @@
 import { ExtensionWebExports } from "@moonlight-mod/types";
 
 const themeAttributes = () => moonlight.getConfigOption<boolean>("moonlight-css", "themeAttributes") ?? false;
+const customThemeBackground = () =>
+  moonlight.getConfigOption<boolean>("moonlight-css", "customThemeBackground") ?? false;
 
 export const patches: ExtensionWebExports["patches"] = [
   //#region Theme Attributes Patches
@@ -45,9 +47,19 @@ export const patches: ExtensionWebExports["patches"] = [
         `"img",{style:require("moonlight-css_themeAttributes").avatarUrls(${avatar}),src:null!=${avatar}?`
     },
     prerequisite: themeAttributes
-  }
+  },
 
   //#endregion
+
+  // force custom-theme-background class
+  {
+    find: "RootElementContextProvider",
+    replace: {
+      match: /"keyboard-mode":(\i),/,
+      replacement: '$&"custom-theme-background":!0,'
+    },
+    prerequisite: customThemeBackground
+  }
 ];
 
 export const webpackModules: ExtensionWebExports["webpackModules"] = {

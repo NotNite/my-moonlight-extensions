@@ -1,3 +1,5 @@
+import type { homedir } from "os";
+
 export type CSSEvent =
   | {
       type: "add";
@@ -36,4 +38,5 @@ export type CSSState = {
 export interface CSSNodeNatives {
   compileSass(path: string): Promise<string>;
   watchPaths(paths: Set<string>, callback: CSSEventCallback): Promise<void>;
+  homedir: typeof homedir;
 }

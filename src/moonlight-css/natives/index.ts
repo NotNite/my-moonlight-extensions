@@ -8,11 +8,9 @@
 
 import { NodeEventType } from "@moonlight-mod/types/core/event";
 import type { CSSEvent, CSSEventCallback, CSSFile, CSSNativesInit, CSSNodeNatives, CSSState, CSSTheme } from "./types";
-import { determineFileType, diffSets, fetchCss, isValidString, parseUrl, scuffedBasename } from "./utils";
+import { THEME_PREFIX, determineFileType, diffSets, fetchCss, isValidString, parseUrl, scuffedBasename } from "./utils";
 
 const logger = moonlightNode.getLogger("moonlight-css/natives");
-
-const THEME_PREFIX = /^@(dark|light)\s+/;
 
 export async function getFiles(dir: string, recursive: boolean): Promise<string[]> {
   const fs = moonlightNodeSandboxed.fs;
@@ -81,12 +79,16 @@ async function migrateConfig() {
   await moonlightNode.setConfigOption("moonlight-css", "fileSelector", undefined);
 }
 
-async function loadFile(path: string): Promise<CSSFile | null> {
+async function loadFile(path: string, homedir?: string): Promise<CSSFile | null> {
   let theme = "none" as CSSTheme;
   const themePrefixMatch = path.match(THEME_PREFIX);
   if (themePrefixMatch?.[1]) {
     path = path.replace(THEME_PREFIX, "");
     theme = themePrefixMatch[1] as CSSTheme;
+  }
+
+  if (homedir != null && /^~/.test(path)) {
+    path = path.replace(/^~/, homedir);
   }
 
   const fs = moonlightNodeSandboxed.fs;
@@ -174,7 +176,10 @@ async function updateConfig(callback: CSSEventCallback, oldState?: CSSState, nod
 
   for (const path of rawPaths) {
     try {
-      const cleanPath = path.replace(THEME_PREFIX, "");
+      let cleanPath = path.replace(THEME_PREFIX, "");
+      if (node != null && /^~/.test(cleanPath)) {
+        cleanPath = cleanPath.replace(/^~/, node.homedir());
+      }
 
       if (parseUrl(cleanPath) != null) {
         newState.urls.add(path); // add string instead of parsed URL because of Set comparisons
@@ -236,7 +241,7 @@ async function updateConfig(callback: CSSEventCallback, oldState?: CSSState, nod
 
   for (const filePath of filesToLoad) {
     try {
-      const file = await loadFile(filePath);
+      const file = await loadFile(filePath, node?.homedir?.());
       if (file != null) await processFile(file, callback, node);
     } catch (e) {
       logger.warn("Failed to load file", filePath, e);

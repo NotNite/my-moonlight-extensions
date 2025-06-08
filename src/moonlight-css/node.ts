@@ -1,14 +1,22 @@
 import createNatives from "./natives";
-import type { CSSEventCallback, CSSNodeNatives } from "./natives/types";
-import { determineFileType, diffSets } from "./natives/utils";
+import type { CSSEventCallback, CSSNodeNatives, CSSTheme } from "./natives/types";
+import { THEME_PREFIX, determineFileType, diffSets } from "./natives/utils";
 import * as fs from "node:fs/promises";
 import * as path from "node:path";
 import chokidar, { type FSWatcher } from "chokidar";
 import { compileAsync } from "sass";
+import { homedir } from "node:os";
 
 const logger = moonlightNode.getLogger("moonlight-css/node");
 const watchers = new Map<string, FSWatcher>();
 let lastRecurseDirectory = moonlightNode.getConfigOption<boolean>("moonlight-css", "recurseDirectory") ?? false;
+
+const HOME_PREFIX = /^(@(dark|light)\s+)?~/;
+function canonicalizePath(path: string) {
+  if (HOME_PREFIX.test(path)) path = path.replace(HOME_PREFIX, (_, themePrefix) => `${themePrefix ?? ""}${homedir()}`);
+
+  return path;
+}
 
 async function cancelWatcher(path: string, callback: CSSEventCallback) {
   const existing = watchers.get(path);
@@ -31,6 +39,14 @@ async function cancelWatcher(path: string, callback: CSSEventCallback) {
 }
 
 async function watch(root: string, callback: CSSEventCallback) {
+  let theme = "none" as CSSTheme;
+  const themePrefixMatch = root.match(THEME_PREFIX);
+  if (themePrefixMatch?.[1]) {
+    root = root.replace(THEME_PREFIX, "");
+    theme = themePrefixMatch[1] as CSSTheme;
+  }
+
+  root = canonicalizePath(root);
   // there's technically a race condition possible here but w/e
   const isDir = (await fs.stat(root)).isDirectory();
 
@@ -42,10 +58,11 @@ async function watch(root: string, callback: CSSEventCallback) {
     await callback({
       type: "add",
       file: {
-        path: file,
+        path: (theme !== "none" ? `@${theme} ` : "") + file,
         parent: isDir ? root : undefined,
         src,
-        fileType
+        fileType,
+        theme
       }
     });
   }
@@ -110,7 +127,9 @@ const nodeNatives: CSSNodeNatives = {
         logger.warn("Failed to create watcher", added, e);
       }
     }
-  }
+  },
+
+  homedir
 };
 
 module.exports = createNatives(nodeNatives);

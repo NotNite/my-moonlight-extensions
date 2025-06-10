@@ -2,7 +2,7 @@ import type { ExtensionWebpackModule, Patch } from "@moonlight-mod/types";
 
 export const patches: Patch[] = [
   {
-    find: /startIndex:\i=0,shouldRedactExplicitContent:\i=!1,/,
+    find: /startIndex:\i=0,/,
     replace: {
       match:
         /(\(0,\i\.jsx\)\(\i\.\i,{items:\i,currentIndex:(\i),children:\(\i,\i\)=>)(\(0,\i\.jsx\))(\(\i,{isObscured:.+?media:(\i).+?onContextMenu:\i}\)}\)}\),)/,
@@ -28,7 +28,7 @@ export const patches: Patch[] = [
 
   // media proxy cannot upscale images, prevent fetching images larger than possible
   {
-    find: '.startsWith("data:image"))return',
+    find: '.startsWith("data:image")',
     replace: {
       match: /function( \i)?\((\i)\){(let{src:\i,sourceWidth:\i,sourceHeight:\i,targetWidth:\i,targetHeight:\i)/,
       replacement: (_, name, props, orig) =>

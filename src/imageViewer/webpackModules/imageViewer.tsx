@@ -128,7 +128,7 @@ function getProperty(element: HTMLElement, prop: ImageViewerCSSProperty) {
   if (!res.endsWith(suffix)) return null;
 
   const valueStr = res.slice(0, res.length - suffix.length);
-  const value = parseInt(valueStr, 10);
+  const value = parseFloat(valueStr);
   if (isNaN(value)) return null;
 
   return value;

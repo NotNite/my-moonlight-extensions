@@ -3,8 +3,11 @@
   flex-direction: column;
   align-items: center;
 
-  padding: 0.5rem;
-  height: 3rem;
+  padding: var(--space-xs) 0;
+  margin: auto var(--space-xs);
+
+  border-bottom: 1px solid var(--border-faint);
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
 
   .visual-refresh & {
     background: unset !important;
@@ -21,7 +24,6 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-bottom: 0.5rem;
   width: 100%;
   max-height: 2rem;
 }
@@ -58,5 +60,5 @@
 }
 
 .mediaControls [class^="mediaBarInteraction"] {
-  margin: 0 3px;
+  margin: var(--space-xs) 3px 0;
 }

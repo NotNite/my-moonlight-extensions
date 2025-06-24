@@ -11,7 +11,7 @@ export const patches: Patch[] = [
     }
   },
   {
-    find: '("MediaViewerModal");',
+    find: ':"MediaViewerModal",',
     replace: [
       {
         match:

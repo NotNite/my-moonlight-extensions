@@ -18,6 +18,21 @@ const DEFAULT_APP_ID = "1325969326150258708";
 const LASTFM_API_KEY = "cba04ed41dff8bfb9c10835ee747ba94"; // taken from MusicBee
 const lastfmBaseUrl = "https://ws.audioscrobbler.com/2.0/";
 
+// Mostly fixes for Windows
+// Taken from YASB
+const NAME_FIXES: Record<string, string> = {
+  "308046B0AF4A39CB": "Firefox",
+  F0DC299D809B9700: "Zen",
+  MSEdge: "Edge",
+  "msedge.exe": "Edge",
+  "Brave.Q2QWMKZ4RMMIMDZ2JQ2NKBXFT4": "Brave",
+  "Microsoft.ZuneMusic_8wekyb3d8bbwe!Microsoft.ZuneMusic": "Media Player",
+  "AppleInc.AppleMusicWin_nzyj5cx40ttqa!App": "Apple Music",
+  "com.badmanners.murglar": "Murglar",
+  "com.squirrel.TIDAL.TIDAL": "Tidal",
+  "com.squirrel.Qobuz.Qobuz": "Qobuz"
+};
+
 async function fetchArtworkFromLastFm(
   method: "album.getinfo" | "album.search",
   album: string,
@@ -205,6 +220,8 @@ async function updatePresence(state: MediaState) {
     state.player_name !== ""
   ) {
     name = state.player_name.replace(".exe", "");
+    const fixedName = NAME_FIXES[name];
+    if (fixedName) name = fixedName;
   }
 
   const playing = state.playing;
@@ -415,10 +432,12 @@ async function onChange() {
     lastState = undefined;
   } else if (state && enabled) {
     running = true;
-    if (
-      SPOTIFY_PLAYER_NAMES.includes(state.player_name ?? "") ||
-      (playerRe !== null && !playerRe.test(state.player_name ?? ""))
-    ) {
+
+    let name = state.player_name ?? "";
+    const fixedName = NAME_FIXES[name];
+    if (fixedName) name = fixedName;
+
+    if (SPOTIFY_PLAYER_NAMES.includes(name) || (playerRe !== null && !playerRe.test(name))) {
       sendActivity();
     } else if (
       !lastState ||

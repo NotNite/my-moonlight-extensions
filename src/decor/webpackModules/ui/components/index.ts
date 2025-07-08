@@ -11,7 +11,7 @@ export const AvatarDecorationModalPreview = spacepack.findByCode(".shopPreviewBa
 export const CustomizationSection = spacepack.findByCode(".customizationSectionBackground")[0].exports.Z;
 export const DecorationModalStyles = spacepack.findByCode("modalFooterShopButton:")[0].exports;
 export const Margins = spacepack.require("discord/styles/shared/Margins.css");
-export const UserSummaryItem = spacepack.findByCode("defaultRenderUser", "showDefaultAvatarsForNullUsers")[0].exports.Z;
+export const UserSummaryItem = spacepack.require("discord/components/common/UserSummaryItem").default;
 
 export function usePresets() {
   const [presets, setPresets] = React.useState<Preset[]>([]);

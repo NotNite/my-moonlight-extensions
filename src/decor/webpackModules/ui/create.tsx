@@ -1,6 +1,5 @@
 import React from "@moonlight-mod/wp/react";
 import {
-  openModal,
   ModalRoot,
   ModalHeader,
   ModalSize,
@@ -15,6 +14,7 @@ import {
   FormText,
   Button
 } from "@moonlight-mod/wp/discord/components/common/index";
+import { openModal } from "@moonlight-mod/wp/discord/modules/modals/Modals";
 import { UserStore } from "@moonlight-mod/wp/common_stores";
 import { DecorAuthStore, DecorDecorationStore } from "@moonlight-mod/wp/decor_stores";
 import { AvatarDecorationModalPreview, DecorationModalStyles, Margins } from "./components";

@@ -1,3 +1,4 @@
+import React from "@moonlight-mod/wp/react";
 import {
   ModalRoot,
   ModalSize,
@@ -5,14 +6,13 @@ import {
   ModalCloseButton,
   ModalContent,
   ModalFooter,
-  openModal,
   Text,
   Tooltip,
   FormTitle,
   FormText,
   Button
 } from "@moonlight-mod/wp/discord/components/common/index";
-import React from "@moonlight-mod/wp/react";
+import { openModal } from "@moonlight-mod/wp/discord/modules/modals/Modals";
 import { useStateFromStores } from "@moonlight-mod/wp/discord/packages/flux";
 import { DecorAuthStore, DecorCacheStore, DecorDecorationStore } from "@moonlight-mod/wp/decor_stores";
 import Flex from "@moonlight-mod/wp/discord/uikit/Flex";
@@ -54,7 +54,7 @@ function SectionHeader({ section }: { section: Section }) {
     if (!section.authorIds) return;
 
     for (const authorId of section.authorIds) {
-      const author = UserStore.getUser(authorId) ?? null;
+      const author = UserStore.getUser(authorId);
       if (author == null) continue;
       setAuthors((authors) => [...authors, author]);
     }
@@ -71,9 +71,8 @@ function SectionHeader({ section }: { section: Section }) {
             guildId={undefined}
             renderIcon={false}
             max={5}
-            showDefaultAvatarsForNullUsers
             size={16}
-            showUserPopout
+            showUserPopout={true}
             className={Margins.marginBottom8}
           />
         )}

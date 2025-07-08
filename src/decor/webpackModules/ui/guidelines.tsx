@@ -8,9 +8,9 @@ import {
   ModalFooter,
   Text,
   FormText,
-  openModal,
   Button
 } from "@moonlight-mod/wp/discord/components/common/index";
+import { openModal } from "@moonlight-mod/wp/discord/modules/modals/Modals";
 import { DecorationModalStyles } from "./components";
 import { DecorAuthStore } from "@moonlight-mod/wp/decor_stores";
 import openCreateDecorationModal from "./create";

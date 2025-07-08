@@ -24,9 +24,9 @@ export const patches: Patch[] = [
     }
   },
   {
-    find: "renderAvatarWithPopout(){",
+    find: '("Account")',
     replace: {
-      match: /(\i)=\(0,\i.\i\)\({avatarDecoration:\i,size:.+?\.SIZE_32\)}\),/,
+      match: /(\i)=\(0,\i\.\i\)\({avatarDecoration:\i,size:.+?\.SIZE_32\)}\),/,
       replacement: (orig, avatarDecoration) =>
         `${orig}
         __decorDecoration = require("decor_ui").useDecorDecoration(arguments[0].currentUser?.id);

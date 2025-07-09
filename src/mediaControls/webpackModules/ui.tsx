@@ -152,11 +152,11 @@ function MediaControlsUI() {
         {state.cover != null ? <img src={state.cover} className="mediaControls-cover" /> : null}
 
         <div className="mediaControls-labels">
-          <TextWithOverflow variant="text-sm/bold" className="mediaControls-label" color="text-normal">
+          <TextWithOverflow variant="text-sm/bold" className="mediaControls-label" color="text-default">
             {state.title}
           </TextWithOverflow>
 
-          <TextWithOverflow variant="text-xs/normal" className="mediaControls-label" color="text-normal">
+          <TextWithOverflow variant="text-xs/normal" className="mediaControls-label" color="text-default">
             {artistAndAlbum}
           </TextWithOverflow>
         </div>

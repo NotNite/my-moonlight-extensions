@@ -299,10 +299,12 @@ export default function ImageViewer({
       </div>
       <div className="imageViewer-toolbar theme-dark">
         <div className="imageViewer-toolbar-buttons" onClick={stopPropagation}>
+          {/* @ts-expect-error this type somehow got set to PropsWithChildren guh */}
           <HeaderBar.Icon tooltip={"Close"} tooltipPosition="top" icon={XLargeIcon} onClick={close} />
 
           <HeaderBar.Divider />
 
+          {/* @ts-expect-error this type somehow got set to PropsWithChildren guh */}
           <HeaderBar.Icon
             tooltip={"Open in Browser"}
             tooltipPosition="top"
@@ -311,6 +313,7 @@ export default function ImageViewer({
               window.open(original);
             }}
           />
+          {/* @ts-expect-error this type somehow got set to PropsWithChildren guh */}
           <HeaderBar.Icon
             tooltip="Copy Link"
             tooltipPosition="top"
@@ -327,6 +330,7 @@ export default function ImageViewer({
           />
           {/* @ts-expect-error missing typing for window.DiscordNative */}
           {!isVideo && !animated && window.DiscordNative != null ? (
+            /* @ts-expect-error this type somehow got set to PropsWithChildren guh */
             <HeaderBar.Icon
               tooltip={"Copy Image"}
               tooltipPosition="top"
@@ -345,6 +349,7 @@ export default function ImageViewer({
 
           <HeaderBar.Divider />
 
+          {/* @ts-expect-error this type somehow got set to PropsWithChildren guh */}
           <HeaderBar.Icon
             tooltip="Recenter"
             tooltipPosition="top"
@@ -357,6 +362,7 @@ export default function ImageViewer({
               setZoom(initialZoom);
             }}
           />
+          {/* @ts-expect-error this type somehow got set to PropsWithChildren guh */}
           <HeaderBar.Icon
             tooltip="Zoom In"
             tooltipPosition="top"
@@ -365,6 +371,7 @@ export default function ImageViewer({
               setZoom((zoom) => Math.min(MAX_ZOOM, zoom + STEP_MAX));
             }}
           />
+          {/* @ts-expect-error this type somehow got set to PropsWithChildren guh */}
           <HeaderBar.Icon
             tooltip="Zoom Out"
             tooltipPosition="top"
@@ -376,6 +383,7 @@ export default function ImageViewer({
 
           <HeaderBar.Divider />
 
+          {/* @ts-expect-error this type somehow got set to PropsWithChildren guh */}
           <HeaderBar.Icon
             tooltip="Rotate Counter-clockwise"
             tooltipPosition="top"
@@ -387,6 +395,7 @@ export default function ImageViewer({
               }
             }}
           />
+          {/* @ts-expect-error this type somehow got set to PropsWithChildren guh */}
           <HeaderBar.Icon
             tooltip="Rotate Clockwise"
             tooltipPosition="top"
@@ -403,7 +412,7 @@ export default function ImageViewer({
         {altText ? (
           <div className="imageViewer-altText">
             <Text variant="text-sm/medium">{'"'}</Text>
-            <TextWithOverflow variant="text-sm/medium" color="text-normal">
+            <TextWithOverflow variant="text-sm/medium" color="text-default">
               {altText}
             </TextWithOverflow>
             <Text variant="text-sm/medium">{'"'}</Text>
@@ -411,7 +420,7 @@ export default function ImageViewer({
         ) : null}
 
         <div className="imageViewer-toolbar-label" onClick={stopPropagation}>
-          <TextWithOverflow variant="text-sm/medium" color="text-normal">
+          <TextWithOverflow variant="text-sm/medium" color="text-default">
             {filename}
           </TextWithOverflow>
 

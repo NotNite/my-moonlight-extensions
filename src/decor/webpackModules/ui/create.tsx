@@ -11,9 +11,9 @@ import {
   HelpMessage,
   HelpMessageTypes,
   FormSection,
-  FormText,
-  Button
+  FormText
 } from "@moonlight-mod/wp/discord/components/common/index";
+import { Button } from "@moonlight-mod/wp/discord/uikit/legacy/Button";
 import { openModal } from "@moonlight-mod/wp/discord/modules/modals/Modals";
 import { UserStore } from "@moonlight-mod/wp/common_stores";
 import { DecorAuthStore, DecorDecorationStore } from "@moonlight-mod/wp/decor_stores";

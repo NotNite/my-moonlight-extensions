@@ -1,7 +1,7 @@
 import React from "@moonlight-mod/wp/react";
 import { useStateFromStores } from "@moonlight-mod/wp/discord/packages/flux";
 import { DecorAuthStore, DecorCacheStore, DecorDecorationStore } from "@moonlight-mod/wp/decor_stores";
-import { Button } from "@moonlight-mod/wp/discord/components/common/index";
+import { Button } from "@moonlight-mod/wp/discord/uikit/legacy/Button";
 import { CustomizationSection } from "./components";
 import Flex from "@moonlight-mod/wp/discord/uikit/Flex";
 import openChangeDecorationModal from "./change";

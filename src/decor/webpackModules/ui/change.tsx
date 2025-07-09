@@ -9,9 +9,9 @@ import {
   Text,
   Tooltip,
   FormTitle,
-  FormText,
-  Button
+  FormText
 } from "@moonlight-mod/wp/discord/components/common/index";
+import { Button } from "@moonlight-mod/wp/discord/uikit/legacy/Button";
 import { openModal } from "@moonlight-mod/wp/discord/modules/modals/Modals";
 import { useStateFromStores } from "@moonlight-mod/wp/discord/packages/flux";
 import { DecorAuthStore, DecorCacheStore, DecorDecorationStore } from "@moonlight-mod/wp/decor_stores";

@@ -9,11 +9,11 @@ function set() {
   const hue = Math.floor((seconds / 86400) * 360);
   if (hue !== lastHue) {
     lastHue = hue;
-    obj.innerText = `
+    obj.innerHTML = `
 :root {
-  --theme-base-color: hsl(${hue}, 100%, 90%);
-  --theme-base-color-amount: 100%;
-  --theme-base-color-hsl: ${hue} 100% 90%;
+  --custom-theme-base-color: hsl(${hue}, 100%, 90%);
+  --custom-theme-base-color-amount: 100%;
+  --custom-theme-base-color-hsl: ${hue} 100% 90%;
 }
 `.trim();
   }

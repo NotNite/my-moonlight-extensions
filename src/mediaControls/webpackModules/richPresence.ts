@@ -115,17 +115,28 @@ enum ActivityFlags {
   EMBEDDED = 1 << 8
 }
 
+enum ActivityStatusDisplayType {
+  NAME,
+  STATE,
+  DETAILS
+}
+
 type Activity = {
   application_id?: string;
   name: string;
   type: ActivityTypes;
+  status_display_type?: ActivityStatusDisplayType;
   details: string;
+  details_url?: string;
   state?: string;
+  state_url?: string;
   assets?: {
     large_image?: string;
     large_text?: string;
+    large_url?: string;
     small_image?: string;
     small_text?: string;
+    small_url?: string;
   };
   party?: {
     id?: string;
@@ -360,10 +371,16 @@ async function updatePresence(state: MediaState) {
     title = title.substring(0, 127) + "…";
   }
 
+  let displayType = ["name", "state", "details"].indexOf(
+    moonlight.getConfigOption<string>("mediaControls", "richPresenceDisplayType") ?? "name"
+  );
+  if (displayType === -1) displayType = 0;
+
   const activity: Activity = {
     application_id: appId,
     name,
     type: ActivityTypes.LISTENING,
+    status_display_type: displayType,
     details: title,
     state: artist,
     assets: {
@@ -382,6 +399,30 @@ async function updatePresence(state: MediaState) {
   ) {
     activity.assets!.small_image = playing ? playingAsset : pausedAsset;
     activity.assets!.small_text = playing ? "Playing" : "Paused";
+  }
+
+  if (moonlight.getConfigOption<boolean>("mediaControls", "richPresenceLastFmLinks") ?? true) {
+    if (moonlight.getConfigOption<boolean>("mediaControls", "richPresenceGramophone") ?? false) {
+      if (state.artist || state.album_artist) {
+        activity.state_url = `https://bignutty.gitlab.io/gramophone/artists/${encodeURIComponent(state.album_artist ?? state.artist)}`;
+        if (state.album && state.album !== "") {
+          activity.assets!.large_url = `https://bignutty.gitlab.io/gramophone/albums/${encodeURIComponent(state.album_artist ?? state.artist)}/${encodeURIComponent(state.album)}`;
+          activity.details_url = `https://bignutty.gitlab.io/gramophone/tracks/${encodeURIComponent(state.album_artist ?? state.artist)}/${encodeURIComponent(state.album)}/${encodeURIComponent(state.title)}`;
+        } else {
+          activity.details_url = `https://bignutty.gitlab.io/gramophone/tracks/${encodeURIComponent(state.album_artist ?? state.artist)}/${encodeURIComponent(state.title)}`;
+        }
+      }
+    } else {
+      if (state.artist || state.album_artist) {
+        activity.state_url = `https://last.fm/music/${encodeURIComponent(state.album_artist ?? state.artist)}`;
+        if (state.album && state.album !== "") {
+          activity.assets!.large_url = `https://last.fm/music/${encodeURIComponent(state.album_artist ?? state.artist)}/${encodeURIComponent(state.album)}`;
+          activity.details_url = `https://last.fm/music/${encodeURIComponent(state.album_artist ?? state.artist)}/${encodeURIComponent(state.album)}/${encodeURIComponent(state.title)}`;
+        } else {
+          activity.details_url = `https://last.fm/music/${encodeURIComponent(state.album_artist ?? state.artist)}/_/${encodeURIComponent(state.title)}`;
+        }
+      }
+    }
   }
 
   const position = Math.floor(state.elapsed * 1000);

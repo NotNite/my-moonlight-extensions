@@ -42,25 +42,13 @@ export const patches: Patch[] = [
 export const webpackModules: Record<string, ExtensionWebpackModule> = {
   imageViewer: {
     dependencies: [
-      {
-        ext: "spacepack",
-        id: "spacepack"
-      },
-      {
-        id: "react"
-      },
-      {
-        id: "discord/components/common/index"
-      },
-      {
-        id: "discord/uikit/HeaderBar"
-      },
-      {
-        id: "discord/utils/ClipboardUtils"
-      },
-      {
-        id: "discord/modules/modals/Modals"
-      }
+      { ext: "spacepack", id: "spacepack" },
+      { id: "react" },
+      { id: "discord/components/common/index" },
+      { id: "discord/components/common/BaseHeaderBar" },
+      { id: "discord/uikit/TextInput" },
+      { id: "discord/utils/ClipboardUtils" },
+      { id: "discord/modules/modals/Modals" }
     ]
   }
 };

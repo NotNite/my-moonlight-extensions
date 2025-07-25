@@ -3,7 +3,6 @@ import React from "@moonlight-mod/wp/react";
 import {
   Image,
   Text,
-  TextInput,
   XLargeIcon,
   CopyIcon,
   LinkIcon,
@@ -19,6 +18,7 @@ import {
 } from "@moonlight-mod/wp/discord/components/common/index";
 import { useModalsStore, closeModal } from "@moonlight-mod/wp/discord/modules/modals/Modals";
 import { copy } from "@moonlight-mod/wp/discord/utils/ClipboardUtils";
+import TextInput from "@moonlight-mod/wp/discord/uikit/TextInput";
 
 const i18n = spacepack.require("discord/intl");
 const HeaderBar = spacepack.require("discord/components/common/BaseHeaderBar");
@@ -440,7 +440,6 @@ export default function ImageViewer({
           {editingZoom ? (
             <TextInput
               className="imageViewer-edit-zoom"
-              size={TextInput.Sizes.MINI}
               type="number"
               autoFocus={true}
               value={zoomEdit.toString()}

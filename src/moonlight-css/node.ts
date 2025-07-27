@@ -13,7 +13,7 @@ let lastRecurseDirectory = moonlightNode.getConfigOption<boolean>("moonlight-css
 
 const HOME_PREFIX = /^(@(dark|light)\s+)?~/;
 function canonicalizePath(path: string) {
-  if (HOME_PREFIX.test(path)) path = path.replace(HOME_PREFIX, (_, themePrefix) => `${themePrefix ?? ""}${homedir()}`);
+  if (HOME_PREFIX.test(path)) path = path.replace(HOME_PREFIX, homedir());
 
   return path;
 }
@@ -26,7 +26,7 @@ async function cancelWatcher(path: string, callback: CSSEventCallback) {
 
     // Technically we probably already emitted this in the diff earlier
     const isDir = await fs
-      .stat(path)
+      .stat(canonicalizePath(path))
       .then((s) => s.isDirectory())
       .catch(() => false);
 
@@ -42,13 +42,13 @@ async function watch(root: string, callback: CSSEventCallback) {
   let theme = "none" as CSSTheme;
   const themePrefixMatch = root.match(THEME_PREFIX);
   if (themePrefixMatch?.[1]) {
-    root = root.replace(THEME_PREFIX, "");
     theme = themePrefixMatch[1] as CSSTheme;
   }
 
-  root = canonicalizePath(root);
-  // there's technically a race condition possible here but w/e
-  const isDir = (await fs.stat(root)).isDirectory();
+  const canon = canonicalizePath(root);
+
+  // there's technically a race condition possible from here onwards but w/e
+  const isDir = await fs.stat(canon).then((s) => s.isDirectory());
 
   async function addFile(file: string) {
     const fileType = determineFileType(path.basename(file));
@@ -58,8 +58,8 @@ async function watch(root: string, callback: CSSEventCallback) {
     await callback({
       type: "add",
       file: {
-        path: (theme !== "none" ? `@${theme} ` : "") + file,
-        parent: isDir ? root : undefined,
+        path: file,
+        parent: isDir ? canon : undefined,
         src,
         fileType,
         theme
@@ -77,7 +77,7 @@ async function watch(root: string, callback: CSSEventCallback) {
   await cancelWatcher(root, callback);
 
   const watcher = chokidar
-    .watch(root, {
+    .watch(canon, {
       depth: lastRecurseDirectory ? undefined : 0,
       ignoreInitial: true // we already registered all of the initial files
     })

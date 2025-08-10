@@ -33,7 +33,7 @@ module.exports = {
 
         try {
           const request: KRunnerRequest = JSON.parse(str);
-          logger.debug("Handling request:", request);
+          //logger.debug("Handling request:", request);
           callback(request);
         } catch (e) {
           logger.error("Failed to handle runner request", e);
@@ -51,7 +51,7 @@ module.exports = {
   },
 
   sendResults(results) {
-    logger.debug("Sending results:", results);
+    //logger.debug("Sending results:", results);
     pluginProcess?.stdin?.write(JSON.stringify(results) + "\n");
   }
 } satisfies KRunnerNatives;

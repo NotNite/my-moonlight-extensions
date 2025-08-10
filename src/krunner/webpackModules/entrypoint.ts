@@ -190,7 +190,7 @@ function handleResults(search: string, results: QuickSwitcherSearchResult[]) {
       case "GROUP_DM": {
         mapped.push({
           type: "GroupDM",
-          title: result.record.name,
+          title: result.record.name === "" ? result.comparator : result.record.name,
           icon: result.record.icon
             ? `https://cdn.discordapp.com/channel-icons/${result.record.id}/${result.record.icon}.${iconFormat}?size=${iconSize}`
             : undefined,

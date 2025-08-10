@@ -1,0 +1,15 @@
+[package]
+name = "moonlight-krunner"
+description = "Quick switcher integration with KRunner"
+authors = ["NotNite <hi@notnite.com>"]
+license = "MIT"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+eyre = "0.6.12"
+serde = { version = "1.0.219", features = ["derive"] }
+serde_json = "1.0.142"
+tokio = { version = "1.47.1", features = ["full"] }
+zbus = { version = "5.9.0", default-features = false, features = ["tokio"] }
+zvariant = "5.6.0"

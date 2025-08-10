@@ -1,0 +1,35 @@
+{
+  "$schema": "https://moonlight-mod.github.io/manifest.schema.json",
+  "id": "krunner",
+  "version": "1.0.0",
+  "apiLevel": 2,
+  "meta": {
+    "name": "KRunner",
+    "tagline": "Quick switcher integration with KRunner",
+    "description": "**Configuration required!**\nFollow [these instructions](github.com/NotNite/my-moonlight-extensions/blob/main/src/krunner/README.md) to setup the KRunner plugin.",
+    "authors": ["NotNite"],
+    "source": "https://github.com/NotNite/my-moonlight-extensions",
+    "donate": "https://notnite.com/givememoney"
+  },
+  "dependencies": ["common", "spacepack"],
+  "settings": {
+    "nativePath": {
+      "displayName": "Native plugin path",
+      "description": "Path to the krunner-plugin executable on your system",
+      "type": "string",
+      "advice": "reload"
+    },
+    "resolverDelay": {
+      "displayName": "Resolver delay",
+      "type": "number",
+      "default": 500,
+      "advice": "none"
+    },
+    "resolverDebounce": {
+      "displayName": "Resolver debounce",
+      "type": "number",
+      "default": 250,
+      "advice": "none"
+    }
+  }
+}

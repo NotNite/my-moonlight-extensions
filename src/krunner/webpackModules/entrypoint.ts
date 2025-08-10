@@ -29,7 +29,7 @@ type QuickSwitcherSearchResult = QuickSwitcherSearchResultBase &
           id: string;
           globalName: string | null;
           username: string;
-          avatar: string;
+          getAvatarURL: (size: number) => string;
         };
       }
     | {
@@ -151,6 +151,8 @@ function handleResults(search: string, results: QuickSwitcherSearchResult[]) {
   const maxScore = 15000;
 
   for (let i = 0; i < results.length; i++) {
+    if (mapped.length >= 5) break;
+
     const id = `${nonce}-${i}`;
     const result = results[i];
 
@@ -164,12 +166,13 @@ function handleResults(search: string, results: QuickSwitcherSearchResult[]) {
     switch (result.type) {
       case "USER": {
         const name = (RelationshipStore.getNickname(result.record.id) as string | null) ?? result.record.globalName;
+        const icon = new URL(result.record.getAvatarURL(iconSize), window.location.href).toString();
 
         mapped.push({
           type: "User",
           title: name ?? result.record.username,
           subtitle: name ? result.record.username : undefined,
-          icon: `https://cdn.discordapp.com/avatars/${result.record.id}/${result.record.avatar}.${iconFormat}?size=${iconSize}`,
+          icon,
           ...base
         });
         break;

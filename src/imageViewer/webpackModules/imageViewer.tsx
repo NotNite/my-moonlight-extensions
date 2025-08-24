@@ -174,10 +174,26 @@ export default function ImageViewer({
     if (animated && sourceMetadata?.message != null) {
       const embedIdx = sourceMetadata.identifier?.embedIndex ?? -1;
       const embedProxyUrl = sourceMetadata.message.embeds?.[embedIdx]?.video?.proxyURL;
-      if (embedProxyUrl != null) return embedProxyUrl;
+      if (embedProxyUrl != null) {
+        const urlObj = new URL(embedProxyUrl);
+        urlObj.searchParams.set("quality", "lossless");
+        return urlObj.toString();
+      }
     }
 
-    return proxyUrl ?? url;
+    if (proxyUrl != null) {
+      const urlObj = new URL(proxyUrl);
+      urlObj.searchParams.set("quality", "lossless");
+      return urlObj.toString();
+    } else {
+      if (original) {
+        const urlObj = new URL(original);
+        if (urlObj.hostname === "cdn.discordapp.com") return original;
+      }
+      const urlObj = new URL(url);
+      if (urlObj.hostname === "media.discordapp.net") urlObj.searchParams.set("quality", "lossless");
+      return urlObj.toString();
+    }
   })();
   const filename = new URL(src).pathname.split("/").pop();
   const poster = (() => {

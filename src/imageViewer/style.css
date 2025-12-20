@@ -2,7 +2,7 @@
   margin: 0 !important;
   padding: 1rem;
 
-  [class^="galleryContainer_"] {
+  [class*="-galleryContainer"] {
     z-index: 10;
     width: min-content;
     grid-row: 1;

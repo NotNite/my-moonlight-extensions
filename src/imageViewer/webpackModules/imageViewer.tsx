@@ -27,7 +27,7 @@ const RawVideo = spacepack.findByCode(
   'MOSAIC?{width:"100%",height:"100%",' + 'maxHeight:"inherit",objectFit:"contain"}'
 )[0].exports.Z;
 const Video = spacepack.findByCode(".VIDEO,", ",onVolume" + "Change:")[0].exports.Z;
-const TextWithOverflow = spacepack.findByCode(/variant:\i,color:"none",className:/)[0].exports.Z;
+const { default: OverflowTooltip } = spacepack.require("discord/uikit/OverflowTooltip");
 
 type SourceMetadata = {
   identifier: {
@@ -428,17 +428,17 @@ export default function ImageViewer({
         {altText ? (
           <div className="imageViewer-altText">
             <Text variant="text-sm/medium">{'"'}</Text>
-            <TextWithOverflow variant="text-sm/medium" color="text-default">
-              {altText}
-            </TextWithOverflow>
+            <Text variant="text-sm/medium" color="text-default">
+              <OverflowTooltip>{altText}</OverflowTooltip>
+            </Text>
             <Text variant="text-sm/medium">{'"'}</Text>
           </div>
         ) : null}
 
         <div className="imageViewer-toolbar-label" onClick={stopPropagation}>
-          <TextWithOverflow variant="text-sm/medium" color="text-default">
-            {filename}
-          </TextWithOverflow>
+          <Text variant="text-sm/medium" color="text-default">
+            <OverflowTooltip>{filename}</OverflowTooltip>
+          </Text>
 
           <HeaderBar.Divider />
 

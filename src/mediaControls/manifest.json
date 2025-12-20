@@ -1,7 +1,7 @@
 {
   "$schema": "https://moonlight-mod.github.io/manifest.schema.json",
   "id": "mediaControls",
-  "version": "1.0.18",
+  "version": "1.0.19",
   "apiLevel": 2,
   "meta": {
     "name": "Media Controls",
@@ -10,7 +10,7 @@
     "authors": ["NotNite", "Cynosphere"],
     "source": "https://github.com/NotNite/my-moonlight-extensions",
     "donate": "https://notnite.com/givememoney",
-    "changelog": "Rich Presence: Add options for new rich presence fields\n(display type and state/details/large image URLs which link back to last.fm)"
+    "changelog": "Fix text not rendering and styles"
   },
   "dependencies": ["spacepack", "appPanels", "common", "contextMenu"],
   "settings": {

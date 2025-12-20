@@ -60,6 +60,6 @@
   flex-basis: auto;
 }
 
-.mediaControls [class^="mediaBarInteraction"] {
+.mediaControls div[class$="-mediaBarInteraction"] {
   margin: var(--space-xs) 3px 0;
 }

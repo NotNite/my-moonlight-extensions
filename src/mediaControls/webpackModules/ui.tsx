@@ -3,7 +3,7 @@ import React from "@moonlight-mod/wp/react";
 import { MediaControlsStore } from "@moonlight-mod/wp/mediaControls_stores";
 import { useStateFromStores } from "@moonlight-mod/wp/discord/packages/flux";
 import AppPanels from "@moonlight-mod/wp/appPanels_appPanels";
-import { PlayIcon, PauseIcon, Menu } from "@moonlight-mod/wp/discord/components/common/index";
+import { PlayIcon, PauseIcon, Menu, Text } from "@moonlight-mod/wp/discord/components/common/index";
 import {
   MenuItem,
   MenuGroup,
@@ -16,8 +16,8 @@ import { NextTrackIcon } from "./NextTrackIcon";
 import { PreviousTrackIcon } from "./PreviousTrackIcon";
 import NativeUtils from "@moonlight-mod/wp/discord/utils/NativeUtils";
 
+const { default: OverflowTooltip } = spacepack.require("discord/uikit/OverflowTooltip");
 const ContextMenuActionCreators = spacepack.require("discord/actions/ContextMenuActionCreators");
-const TextWithOverflow = spacepack.findByCode(/variant:\i,color:"none",className:/)[0].exports.Z;
 let MediaBar: React.ComponentType<any> & { Types: { DURATION: "DURATION"; VOLUME: "VOLUME" } };
 let PanelButton: (typeof import("@moonlight-mod/wp/discord/components/common/PanelButton"))["default"];
 
@@ -152,13 +152,13 @@ function MediaControlsUI() {
         {state.cover != null ? <img src={state.cover} className="mediaControls-cover" /> : null}
 
         <div className="mediaControls-labels">
-          <TextWithOverflow variant="text-sm/bold" className="mediaControls-label" color="text-default">
-            {state.title}
-          </TextWithOverflow>
+          <Text variant="text-sm/bold" className="mediaControls-label" color="text-default">
+            <OverflowTooltip>{state.title}</OverflowTooltip>
+          </Text>
 
-          <TextWithOverflow variant="text-xs/normal" className="mediaControls-label" color="text-default">
-            {artistAndAlbum}
-          </TextWithOverflow>
+          <Text variant="text-xs/normal" className="mediaControls-label" color="text-default">
+            <OverflowTooltip>{artistAndAlbum}</OverflowTooltip>
+          </Text>
         </div>
 
         <div className="mediaControls-interact">

@@ -1,12 +1,12 @@
 .imageViewer-modal {
   margin: 0 !important;
   padding: 1rem;
+}
 
-  [class*="-galleryContainer"] {
-    z-index: 10;
-    width: min-content;
-    grid-row: 1;
-  }
+.imageViewer-modal > div[class*="-galleryContainer"] {
+  z-index: 10;
+  width: min-content;
+  grid-row: 1;
 }
 
 .imageViewer {
@@ -99,8 +99,4 @@
     padding: 4px 7px;
     height: 26px !important;
   }
-}
-
-[class*="modalCarouselWrapper"] {
-  cursor: auto !important;
 }

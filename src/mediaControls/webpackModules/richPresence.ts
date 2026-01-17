@@ -403,13 +403,14 @@ async function updatePresence(state: MediaState) {
 
   if (moonlight.getConfigOption<boolean>("mediaControls", "richPresenceLastFmLinks") ?? true) {
     if (moonlight.getConfigOption<boolean>("mediaControls", "richPresenceGramophone") ?? false) {
+      const baseUrl = "https://gramophone.bignut.zip";
       if (state.artist || state.album_artist) {
-        activity.state_url = `https://bignutty.gitlab.io/gramophone/artists/${encodeURIComponent(state.album_artist ?? state.artist)}`;
+        activity.state_url = `${baseUrl}/artists/${encodeURIComponent(state.album_artist ?? state.artist)}`;
         if (state.album && state.album !== "") {
-          activity.assets!.large_url = `https://bignutty.gitlab.io/gramophone/albums/${encodeURIComponent(state.album_artist ?? state.artist)}/${encodeURIComponent(state.album)}`;
-          activity.details_url = `https://bignutty.gitlab.io/gramophone/tracks/${encodeURIComponent(state.album_artist ?? state.artist)}/${encodeURIComponent(state.album)}/${encodeURIComponent(state.title)}`;
+          activity.assets!.large_url = `${baseUrl}/albums/${encodeURIComponent(state.album_artist ?? state.artist)}/${encodeURIComponent(state.album)}`;
+          activity.details_url = `${baseUrl}/tracks/${encodeURIComponent(state.album_artist ?? state.artist)}/${encodeURIComponent(state.album)}/${encodeURIComponent(state.title)}`;
         } else {
-          activity.details_url = `https://bignutty.gitlab.io/gramophone/tracks/${encodeURIComponent(state.album_artist ?? state.artist)}/${encodeURIComponent(state.title)}`;
+          activity.details_url = `${baseUrl}/tracks/${encodeURIComponent(state.album_artist ?? state.artist)}/${encodeURIComponent(state.title)}`;
         }
       }
     } else {

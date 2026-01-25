@@ -3,7 +3,7 @@
   padding: 1rem;
 }
 
-.imageViewer-modal > div[class*="-galleryContainer"] {
+.imageViewer-modal > div[class*="galleryContainer_"] {
   z-index: 10;
   width: min-content;
   grid-row: 1;
@@ -99,4 +99,8 @@
     padding: 4px 7px;
     height: 26px !important;
   }
+}
+
+div[class^="carouselModal_"]:has(> .imageViewer) {
+  margin: 0;
 }

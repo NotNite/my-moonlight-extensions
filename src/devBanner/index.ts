@@ -2,7 +2,7 @@ import type { ExtensionWebExports } from "@moonlight-mod/types";
 
 export const patches: ExtensionWebExports["patches"] = [
   {
-    find: ".devBanner,",
+    find: ".uyrfYF",
     replace: [
       {
         match: '"staging"===window.GLOBAL_ENV.RELEASE_CHANNEL',

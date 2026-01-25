@@ -82,7 +82,7 @@ function MediaControlsContextMenu() {
 
 function MediaControlsUI() {
   if (!MediaBar) {
-    MediaBar = spacepack.findByCode(".mediaBarInteractionVolume:null")[0].exports.Z;
+    MediaBar = spacepack.findByCode('{DURATION:"DURATION",VOLUME:"VOLUME"}')[0]?.exports?.A ?? (() => {});
     PanelButton = spacepack.require("discord/components/common/PanelButton").default;
   }
 
@@ -173,7 +173,7 @@ function MediaControlsUI() {
       </div>
       {disableBar ? null : (
         <MediaBar
-          type={MediaBar.Types.DURATION}
+          type={MediaBar?.Types?.DURATION}
           value={state.duration === 0 ? 1 : state.duration}
           ref={barRef}
           onDragStart={onDragStart}

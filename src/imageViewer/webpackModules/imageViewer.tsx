@@ -22,11 +22,11 @@ import TextInput from "@moonlight-mod/wp/discord/uikit/TextInput";
 
 const i18n = spacepack.require("discord/intl");
 const HeaderBar = spacepack.require("discord/components/common/BaseHeaderBar");
-const NativeUtils = spacepack.findByCode("Data fetch" + " unsuccessful")[0].exports.ZP;
+const NativeUtils = spacepack.findByCode("Data fetch" + " unsuccessful")[0].exports.Ay;
 const RawVideo = spacepack.findByCode(
   'MOSAIC?{width:"100%",height:"100%",' + 'maxHeight:"inherit",objectFit:"contain"}'
-)[0].exports.Z;
-const Video = spacepack.findByCode(".VIDEO,", ",onVolume" + "Change:")[0].exports.Z;
+)[0].exports.A;
+const Video = spacepack.findByCode(".VIDEO,", ",onVolume" + "Change:")[0].exports.A;
 const { default: OverflowTooltip } = spacepack.require("discord/uikit/OverflowTooltip");
 
 type SourceMetadata = {

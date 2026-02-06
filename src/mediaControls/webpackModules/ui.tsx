@@ -174,7 +174,7 @@ function MediaControlsUI() {
       {disableBar ? null : (
         <MediaBar
           type={MediaBar?.Types?.DURATION}
-          value={state.duration === 0 ? 1 : state.duration}
+          value={state.duration === 0 ? 1 : elapsed}
           ref={barRef}
           onDragStart={onDragStart}
           onDrag={onDrag}

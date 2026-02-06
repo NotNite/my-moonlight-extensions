@@ -16,7 +16,7 @@ import { NextTrackIcon } from "./NextTrackIcon";
 import { PreviousTrackIcon } from "./PreviousTrackIcon";
 import NativeUtils from "@moonlight-mod/wp/discord/utils/NativeUtils";
 
-const { default: OverflowTooltip } = spacepack.require("discord/uikit/OverflowTooltip");
+const OverflowTooltip = spacepack.findByCode(/position:\i,delay:\i,\.\.\./)[0].exports.A;
 const ContextMenuActionCreators = spacepack.require("discord/actions/ContextMenuActionCreators");
 let MediaBar: React.ComponentType<any> & { Types: { DURATION: "DURATION"; VOLUME: "VOLUME" } };
 let PanelButton: (typeof import("@moonlight-mod/wp/discord/components/common/PanelButton"))["default"];

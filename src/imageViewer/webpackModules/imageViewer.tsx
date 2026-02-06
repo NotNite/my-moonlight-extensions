@@ -27,7 +27,7 @@ const RawVideo = spacepack.findByCode(
   'MOSAIC?{width:"100%",height:"100%",' + 'maxHeight:"inherit",objectFit:"contain"}'
 )[0].exports.A;
 const Video = spacepack.findByCode(".VIDEO,", ",onVolume" + "Change:")[0].exports.A;
-const { default: OverflowTooltip } = spacepack.require("discord/uikit/OverflowTooltip");
+const OverflowTooltip = spacepack.findByCode(/position:\i,delay:\i,\.\.\./)[0].exports.A;
 
 type SourceMetadata = {
   identifier: {

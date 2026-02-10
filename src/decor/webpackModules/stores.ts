@@ -1,10 +1,10 @@
-import Flux, { Store } from "@moonlight-mod/wp/discord/packages/flux";
-import Dispatcher from "@moonlight-mod/wp/discord/Dispatcher";
 import { Snowflake } from "@moonlight-mod/types";
-import spacepack from "@moonlight-mod/wp/spacepack_spacepack";
 import { UserStore } from "@moonlight-mod/wp/common_stores";
-import { Decoration, NewDecoration, Preset } from "../types";
+import Dispatcher from "@moonlight-mod/wp/discord/Dispatcher";
 import { openOAuth2Modal } from "@moonlight-mod/wp/discord/modules/oauth2/index";
+import Flux, { Store } from "@moonlight-mod/wp/discord/packages/flux";
+import spacepack from "@moonlight-mod/wp/spacepack_spacepack";
+import { Decoration, NewDecoration, Preset } from "../types";
 
 const logger = moonlight.getLogger("decor/stores");
 const FOUR_HOURS = 1000 * 60 * 60 * 4;
@@ -62,7 +62,7 @@ class DecorAuthStore extends Flux.PersistedStore<any> {
         {
           scopes: ["identify"],
           responseType: "code",
-          redirectUri: moonlight.getConfigOption<string>("decor", "baseUrl")! + "api/authorize",
+          redirectUri: `${moonlight.getConfigOption<string>("decor", "baseUrl")!}api/authorize`,
           permissions: 0n,
           clientId: moonlight.getConfigOption<string>("decor", "appId")!,
           cancelCompletesFlow: false,
@@ -110,7 +110,7 @@ class DecorAuthStore extends Flux.PersistedStore<any> {
   private async fetchApi(path: URL, options?: RequestInit) {
     logger.trace("Fetching:", path);
     const headers = { ...options?.headers } as Record<string, string>;
-    if (this.token != null) headers["Authorization"] = `Bearer ${this.token}`;
+    if (this.token != null) headers.Authorization = `Bearer ${this.token}`;
 
     const res = await fetch(path, {
       ...options,
@@ -259,7 +259,7 @@ class DecorCacheStore extends Store<any> {
     if (hash !== undefined) {
       if (hash == null) return null;
       if (canAnimate === false) hash = hash.replace("a_", "");
-      return moonlight.getConfigOption<string>("decor", "cdnUrl")! + hash + ".png";
+      return `${moonlight.getConfigOption<string>("decor", "cdnUrl")! + hash}.png`;
     }
 
     if (!this.queuedUsers.has(id)) {

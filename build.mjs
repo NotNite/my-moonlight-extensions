@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import { watchExt, buildExt } from "@moonlight-mod/esbuild-config";
+import { buildExt, watchExt } from "@moonlight-mod/esbuild-config";
 
 const esm = [];
 
@@ -18,7 +18,8 @@ if (clean) {
       ext,
       entry: path.resolve(path.join("src", ext)),
       output: path.resolve(path.join("dist", ext)),
-      esm: esm.includes(ext)
+      esm: esm.includes(ext),
+      extraExternal: ["node:path"]
     };
 
     if (watch) {

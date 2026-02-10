@@ -8,7 +8,7 @@
 
 import { NodeEventType } from "@moonlight-mod/types/core/event";
 import type { CSSEvent, CSSEventCallback, CSSFile, CSSNativesInit, CSSNodeNatives, CSSState, CSSTheme } from "./types";
-import { THEME_PREFIX, determineFileType, diffSets, fetchCss, isValidString, parseUrl, scuffedBasename } from "./utils";
+import { determineFileType, diffSets, fetchCss, isValidString, parseUrl, scuffedBasename, THEME_PREFIX } from "./utils";
 
 const logger = moonlightNode.getLogger("moonlight-css/natives");
 
@@ -16,7 +16,7 @@ export async function getFiles(dir: string, recursive: boolean): Promise<string[
   const fs = moonlightNodeSandboxed.fs;
 
   if (!(await fs.exists(dir)) || !(await fs.isDir(dir))) {
-    throw new Error("Tried to recursively search invalid path: " + dir);
+    throw new Error(`Tried to recursively search invalid path: ${dir}`);
   }
 
   const result = [];

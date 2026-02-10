@@ -1,11 +1,11 @@
-import createNatives from "./natives";
-import type { CSSEventCallback, CSSNodeNatives, CSSTheme } from "./natives/types";
-import { THEME_PREFIX, determineFileType, diffSets } from "./natives/utils";
 import * as fs from "node:fs/promises";
+import { homedir } from "node:os";
 import * as path from "node:path";
 import chokidar, { type FSWatcher } from "chokidar";
 import { compileAsync } from "sass";
-import { homedir } from "node:os";
+import createNatives from "./natives";
+import type { CSSEventCallback, CSSNodeNatives, CSSTheme } from "./natives/types";
+import { determineFileType, diffSets, THEME_PREFIX } from "./natives/utils";
 
 const logger = moonlightNode.getLogger("moonlight-css/node");
 const watchers = new Map<string, FSWatcher>();

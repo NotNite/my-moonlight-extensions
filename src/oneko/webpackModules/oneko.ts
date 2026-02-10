@@ -103,7 +103,7 @@ enum Oneko {
 
     const skin = moonlight.getConfigOption<string>("oneko", "skin");
 
-    let nekoFile;
+    let nekoFile = "";
 
     const DEFAULT_NEKO =
       "https://raw.githubusercontent.com/danielah05/oneko.js-skins/3184df1aff638711ea5aa5561d184a1e673cda90/neko.gif";
@@ -139,14 +139,14 @@ enum Oneko {
     }
 
     const curScript = document.currentScript;
-    if (curScript && curScript.dataset.cat) {
+    if (curScript?.dataset?.cat) {
       nekoFile = curScript.dataset.cat;
     }
     nekoEl.style.backgroundImage = `url(${nekoFile})`;
 
     document.body.appendChild(nekoEl);
 
-    document.addEventListener("mousemove", function (event) {
+    document.addEventListener("mousemove", (event) => {
       mousePosX = event.clientX;
       mousePosY = event.clientY;
     });
@@ -252,7 +252,7 @@ enum Oneko {
       return;
     }
 
-    let direction;
+    let direction: string;
     direction = diffY / distance > 0.5 ? "N" : "";
     direction += diffY / distance < -0.5 ? "S" : "";
     direction += diffX / distance > 0.5 ? "W" : "";

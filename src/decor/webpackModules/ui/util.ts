@@ -21,7 +21,7 @@ export function joinGuild() {
 
 export function copy(str: string) {
   const ClipboardUtils = spacepack.require("discord/utils/ClipboardUtils");
-  const copy = Object.entries(ClipboardUtils).find(([key, value]) => typeof value !== "boolean")?.[1] as (
+  const copy = Object.entries(ClipboardUtils).find(([_key, value]) => typeof value !== "boolean")?.[1] as (
     text: string
   ) => void;
   copy(str);

@@ -1,12 +1,12 @@
-import React from "@moonlight-mod/wp/react";
-import { useStateFromStores } from "@moonlight-mod/wp/discord/packages/flux";
-import { DecorAuthStore, DecorCacheStore, DecorDecorationStore } from "@moonlight-mod/wp/decor_stores";
-import { Button } from "@moonlight-mod/wp/discord/uikit/legacy/Button";
-import { CustomizationSection } from "./components";
-import Flex from "@moonlight-mod/wp/discord/uikit/Flex";
-import openChangeDecorationModal from "./change";
 import { Snowflake } from "@moonlight-mod/types";
+import { DecorAuthStore, DecorCacheStore, DecorDecorationStore } from "@moonlight-mod/wp/decor_stores";
+import { useStateFromStores } from "@moonlight-mod/wp/discord/packages/flux";
+import Flex from "@moonlight-mod/wp/discord/uikit/Flex";
+import { Button } from "@moonlight-mod/wp/discord/uikit/legacy/Button";
+import React from "@moonlight-mod/wp/react";
 import { DiscordDecoration, RAW_SKU_ID, SKU_ID } from "../../types";
+import openChangeDecorationModal from "./change";
+import { CustomizationSection } from "./components";
 
 export function DecorSection() {
   const { authorized, selectedDecoration } = useStateFromStores([DecorAuthStore, DecorDecorationStore], () => ({
@@ -73,7 +73,7 @@ export function getDecorAvatarDecorationURL({
     const parts = avatarDecoration.asset.split("_");
     // Remove a_ prefix if it's animated and animation is disabled
     if (avatarDecoration.asset.startsWith("a_") && !canAnimate) parts.shift();
-    return moonlight.getConfigOption<string>("decor", "cdnUrl")! + `${parts.join("_")}.png`;
+    return `${moonlight.getConfigOption<string>("decor", "cdnUrl")!}${parts.join("_")}.png`;
   } else if (avatarDecoration?.skuId === RAW_SKU_ID) {
     return avatarDecoration.asset;
   }

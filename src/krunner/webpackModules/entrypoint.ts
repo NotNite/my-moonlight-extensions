@@ -1,10 +1,10 @@
-import spacepack from "@moonlight-mod/wp/spacepack_spacepack";
 import {
   AuthenticationStore,
   GuildStore,
-  SelectedGuildStore,
-  RelationshipStore
+  RelationshipStore,
+  SelectedGuildStore
 } from "@moonlight-mod/wp/common_stores";
+import spacepack from "@moonlight-mod/wp/spacepack_spacepack";
 import type { KRunnerNatives, KRunnerSearchResult } from "../types";
 
 interface QuickSwitcherSearchResultBase {
@@ -107,9 +107,9 @@ function search(input: string) {
     }
 
     // basically a reimplementation of what QuickSwitcherStore does
-    const blacklist = new Set(["user:" + AuthenticationStore.getId()]);
+    const blacklist = new Set([`user:${AuthenticationStore.getId()}`]);
     const guildId = SelectedGuildStore.getGuildId();
-    if (guildId) blacklist.add("guild:" + guildId);
+    if (guildId) blacklist.add(`guild:${guildId}`);
 
     const searcher = new QuickSwitcherSearch(
       (newResults) => {
@@ -274,8 +274,8 @@ natives?.registerCallback((req) => {
       const [nonce, idxStr] = req.id.split("-");
       if (lastResults.nonce !== nonce) break;
 
-      const idx = parseInt(idxStr);
-      if (isNaN(idx) || idx < 0 || idx >= lastResults.results.length) break;
+      const idx = parseInt(idxStr, 10);
+      if (Number.isNaN(idx) || idx < 0 || idx >= lastResults.results.length) break;
 
       const result = lastResults.results[idx];
       selectResult(result);

@@ -1,10 +1,10 @@
-import React from "@moonlight-mod/wp/react";
-import * as Components from "@moonlight-mod/wp/discord/components/common/index";
-import spacepack from "@moonlight-mod/wp/spacepack_spacepack";
-import MarkupUtils from "@moonlight-mod/wp/discord/modules/markup/MarkupUtils";
-import Dispatcher from "@moonlight-mod/wp/discord/Dispatcher";
-import Commands from "@moonlight-mod/wp/commands_commands";
 import { CommandType, InputType } from "@moonlight-mod/types/coreExtensions/commands";
+import Commands from "@moonlight-mod/wp/commands_commands";
+import * as Components from "@moonlight-mod/wp/discord/components/common/index";
+import Dispatcher from "@moonlight-mod/wp/discord/Dispatcher";
+import MarkupUtils from "@moonlight-mod/wp/discord/modules/markup/MarkupUtils";
+import React from "@moonlight-mod/wp/react";
+import spacepack from "@moonlight-mod/wp/spacepack_spacepack";
 
 const { showToast, createToast, popToast, Text } = Components;
 const MarkupClasses = spacepack.findByCode("markup:", "inlineFormat:")[0].exports;

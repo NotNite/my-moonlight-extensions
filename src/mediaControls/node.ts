@@ -1,5 +1,5 @@
-import type { MediaControlsNatives } from "./types";
 import * as child_process from "node:child_process";
+import type { MediaControlsNatives } from "./types";
 
 const logger = moonlightNode.getLogger("mediaControls/node");
 let mediaFetcherProcess: child_process.ChildProcess | null = null;
@@ -47,7 +47,7 @@ const natives: MediaControlsNatives = {
 
   sendMediaFetcherRequest(request) {
     if (mediaFetcherProcess == null) return;
-    mediaFetcherProcess.stdin!.write(JSON.stringify(request) + "\n");
+    mediaFetcherProcess.stdin!.write(`${JSON.stringify(request)}\n`);
   }
 };
 

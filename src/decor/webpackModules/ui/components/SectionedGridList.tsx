@@ -1,6 +1,6 @@
+import * as ScrollerClasses from "@moonlight-mod/wp/discord/components/common/Scroller.css";
 import React from "@moonlight-mod/wp/react";
 import Grid, { GridProps } from "./Grid";
-import * as ScrollerClasses from "@moonlight-mod/wp/discord/components/common/Scroller.css";
 
 type Section<SectionT, ItemT> = SectionT & {
   items: Array<ItemT>;
@@ -8,7 +8,7 @@ type Section<SectionT, ItemT> = SectionT & {
 
 interface SectionedGridListProps<ItemT, SectionT, SectionU = Section<SectionT, ItemT>>
   extends Omit<GridProps<ItemT>, "items"> {
-  renderSectionHeader: (section: SectionU) => JSX.Element;
+  renderSectionHeader: (section: SectionU) => React.ReactNode;
   getSectionKey: (section: SectionU) => string;
   sections: SectionU[];
 }

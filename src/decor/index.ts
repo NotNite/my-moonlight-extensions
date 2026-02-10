@@ -1,4 +1,4 @@
-import type { Patch, ExtensionWebpackModule } from "@moonlight-mod/types";
+import type { ExtensionWebpackModule, Patch } from "@moonlight-mod/types";
 import { SKU_ID } from "./types";
 
 export const patches: Patch[] = [

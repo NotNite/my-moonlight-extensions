@@ -1,5 +1,5 @@
-import React from "@moonlight-mod/wp/react";
 import { DecorAuthStore } from "@moonlight-mod/wp/decor_stores";
+import React from "@moonlight-mod/wp/react";
 import spacepack from "@moonlight-mod/wp/spacepack_spacepack";
 import { Preset } from "../../../types";
 

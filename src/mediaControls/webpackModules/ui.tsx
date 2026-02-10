@@ -1,25 +1,25 @@
-import spacepack from "@moonlight-mod/wp/spacepack_spacepack";
-import React from "@moonlight-mod/wp/react";
-import { MediaControlsStore } from "@moonlight-mod/wp/mediaControls_stores";
-import { useStateFromStores } from "@moonlight-mod/wp/discord/packages/flux";
 import AppPanels from "@moonlight-mod/wp/appPanels_appPanels";
-import { PlayIcon, PauseIcon, Menu, Text } from "@moonlight-mod/wp/discord/components/common/index";
 import {
-  MenuItem,
-  MenuGroup,
-  MenuRadioItem,
   MenuCheckboxItem,
+  MenuGroup,
+  MenuItem,
+  MenuRadioItem,
   MenuSeparator
 } from "@moonlight-mod/wp/contextMenu_contextMenu";
+import { Menu, PauseIcon, PlayIcon, Text } from "@moonlight-mod/wp/discord/components/common/index";
+import { useStateFromStores } from "@moonlight-mod/wp/discord/packages/flux";
+import NativeUtils from "@moonlight-mod/wp/discord/utils/NativeUtils";
+import { MediaControlsStore } from "@moonlight-mod/wp/mediaControls_stores";
+import React from "@moonlight-mod/wp/react";
+import spacepack from "@moonlight-mod/wp/spacepack_spacepack";
 import { RepeatMode } from "../types";
 import { NextTrackIcon } from "./NextTrackIcon";
 import { PreviousTrackIcon } from "./PreviousTrackIcon";
-import NativeUtils from "@moonlight-mod/wp/discord/utils/NativeUtils";
 
 const OverflowTooltip = spacepack.findByCode(/position:\i,delay:\i,\.\.\./)[0].exports.A;
 const ContextMenuActionCreators = spacepack.require("discord/actions/ContextMenuActionCreators");
 let MediaBar: React.ComponentType<any> & { Types: { DURATION: "DURATION"; VOLUME: "VOLUME" } };
-let PanelButton: (typeof import("@moonlight-mod/wp/discord/components/common/PanelButton"))["default"];
+let PanelButton: typeof import("@moonlight-mod/wp/discord/components/common/PanelButton")["default"];
 
 function MediaControlsContextMenu() {
   const state = useStateFromStores([MediaControlsStore], () => MediaControlsStore.getState());
@@ -136,7 +136,7 @@ function MediaControlsUI() {
     MediaControlsStore.seek(time);
   }, [setDragging, seekPercent, state, MediaControlsStore]);
 
-  if (state == null) return <></>;
+  if (state == null) return;
 
   const artistAndAlbum = `${state.artist}${state.album && state.album !== "" ? ` • ${state.album}` : ""}`;
 

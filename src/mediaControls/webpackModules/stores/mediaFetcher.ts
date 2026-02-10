@@ -1,9 +1,9 @@
 import {
+  type MediaControlsNatives,
   MediaFetcherRequestType,
-  MediaFetcherResponseType,
   type MediaFetcherResponsePlaybackStatus,
-  type RepeatMode,
-  type MediaControlsNatives
+  MediaFetcherResponseType,
+  type RepeatMode
 } from "../../types";
 import MediaControlsBaseStore from "./base";
 

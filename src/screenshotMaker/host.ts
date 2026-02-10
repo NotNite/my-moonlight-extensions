@@ -1,7 +1,7 @@
-import { app, globalShortcut } from "electron";
-import type { BrowserWindow } from "electron";
 import * as fs from "node:fs/promises";
 import * as path from "node:path";
+import type { BrowserWindow } from "electron";
+import { app, globalShortcut } from "electron";
 
 moonlightHost.events.on("window-created", (window: BrowserWindow, isMainWindow: boolean) => {
   if (!isMainWindow) return;

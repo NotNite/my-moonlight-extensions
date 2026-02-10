@@ -1,20 +1,20 @@
-import React from "@moonlight-mod/wp/react";
+import type { ModalProps } from "@moonlight-mod/mappings/types/discord/components/common/index";
+import { DecorAuthStore } from "@moonlight-mod/wp/decor_stores";
 import {
-  ModalRoot,
-  ModalSize,
-  ModalHeader,
+  FormText,
   ModalCloseButton,
   ModalContent,
   ModalFooter,
-  Text,
-  FormText
+  ModalHeader,
+  ModalRoot,
+  ModalSize,
+  Text
 } from "@moonlight-mod/wp/discord/components/common/index";
-import { Button } from "@moonlight-mod/wp/discord/uikit/legacy/Button";
 import { openModal } from "@moonlight-mod/wp/discord/modules/modals/Modals";
+import { Button } from "@moonlight-mod/wp/discord/uikit/legacy/Button";
+import React from "@moonlight-mod/wp/react";
 import { DecorationModalStyles } from "./components";
-import { DecorAuthStore } from "@moonlight-mod/wp/decor_stores";
 import openCreateDecorationModal from "./create";
-import type { ModalProps } from "@moonlight-mod/mappings/types/discord/components/common/index";
 
 function GuidelinesModal(props: ModalProps) {
   return (

@@ -5,7 +5,7 @@ export const THEME_PREFIX = /^@(dark|light)\s+/;
 // FIXME: this is so stupidly jank, remove this in favor of MoonlightFS when the update comes out
 // https://github.com/moonlight-mod/moonlight/commit/43706cecd3d69738bbb7b33daf554625c42e02d7
 export function scuffedBasename(path: string) {
-  const nodePath = moonlightNode.isBrowser ? null : (require("path") as typeof import("node:path"));
+  const nodePath = moonlightNode.isBrowser ? null : (require("node:path") as typeof import("node:path"));
 
   if (nodePath != null) {
     return nodePath.basename(path);

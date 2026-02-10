@@ -1,6 +1,6 @@
+import spacepack from "@moonlight-mod/wp/spacepack_spacepack";
 import { RepeatMode } from "../../types";
 import MediaControlsBaseStore from "./base";
-import spacepack from "@moonlight-mod/wp/spacepack_spacepack";
 
 // TODO: types
 const SpotifyStore = spacepack.require("discord/modules/spotify/SpotifyStore").default;
@@ -29,10 +29,6 @@ type SpotifyPlayerState = {
 
 export class MediaControlsSpotifyStore extends MediaControlsBaseStore {
   private state: SpotifyPlayerState | null = null;
-
-  constructor(...args: any[]) {
-    super(...args);
-  }
 
   getState() {
     if (this.state == null) return null;
@@ -65,7 +61,7 @@ export class MediaControlsSpotifyStore extends MediaControlsBaseStore {
 
   playPause() {
     if (this.state == null) return;
-    this.request("PUT", "/me/player/" + (this.state.isPlaying ? "pause" : "play"));
+    this.request("PUT", `/me/player/${this.state.isPlaying ? "pause" : "play"}`);
     if (this.state != null) {
       this.state.isPlaying = !this.state.isPlaying;
     }
@@ -113,9 +109,9 @@ export class MediaControlsSpotifyStore extends MediaControlsBaseStore {
     // @ts-expect-error jank but it works
     const fetcher = HTTP[method.toLowerCase()] as (typeof HTTP)["get"];
     return fetcher({
-      url: "https://api.spotify.com/v1" + url,
+      url: `https://api.spotify.com/v1${url}`,
       headers: {
-        Authorization: "Bearer " + socket.accessToken
+        Authorization: `Bearer ${socket.accessToken}`
       },
       ...data
     });

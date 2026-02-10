@@ -1,4 +1,4 @@
-import type { homedir } from "os";
+import type { homedir } from "node:os";
 
 export type CSSEvent =
   | {

@@ -1,9 +1,9 @@
-import { MediaControlsStore } from "@moonlight-mod/wp/mediaControls_stores";
-import Dispatcher from "@moonlight-mod/wp/discord/Dispatcher";
-import type { MediaState } from "../types";
-import spacepack from "@moonlight-mod/wp/spacepack_spacepack";
-
 import { SpotifyStore } from "@moonlight-mod/wp/common_stores";
+import Dispatcher from "@moonlight-mod/wp/discord/Dispatcher";
+import { MediaControlsStore } from "@moonlight-mod/wp/mediaControls_stores";
+import spacepack from "@moonlight-mod/wp/spacepack_spacepack";
+import type { MediaState } from "../types";
+
 const { SpotifyAPI } = spacepack.require("discord/modules/spotify/SpotifyActionCreators");
 const { Endpoints } = spacepack.require("discord/Constants");
 const { HTTP } = spacepack.require("discord/utils/HTTPUtils");
@@ -69,7 +69,7 @@ async function getArtworkFromLastFm(
 
   if (cached) return cached;
 
-  let url;
+  let url: string | undefined;
 
   if (!url && albumArtist && albumArtist !== "")
     url = await fetchArtworkFromLastFm("album.getinfo", album, albumArtist);
@@ -238,7 +238,7 @@ async function updatePresence(state: MediaState) {
   const playing = state.playing;
   const pausedSuffix = moonlight.getConfigOption<string>("mediaControls", "richPresencePausedSuffix") ?? "[paused]";
   if (!playing && pausedSuffix !== "") {
-    name += " " + pausedSuffix;
+    name += ` ${pausedSuffix}`;
   }
 
   const defaultAsset = moonlight.getConfigOption<string>("mediaControls", "richPresenceAssetDefault");
@@ -260,7 +260,7 @@ async function updatePresence(state: MediaState) {
     try {
       let query = buildSpotifyQuery(state.title, state.artist, state.album_artist, state.album);
 
-      let spotifyData;
+      let spotifyData: any;
       if (spotifyCache.has(query)) {
         spotifyData = spotifyCache.get(query);
       } else {
@@ -317,7 +317,7 @@ async function updatePresence(state: MediaState) {
           oldFormErrors: true
         });
 
-        artworkUrl = "mp:" + body[0].external_asset_path;
+        artworkUrl = `mp:${body[0].external_asset_path}`;
       } catch (err) {
         logger.error("Failed to push external assets:", err);
       }
@@ -340,7 +340,7 @@ async function updatePresence(state: MediaState) {
     if (albumArtist && albumArtist !== "" && albumArtist.length <= MAX_ARTIST_LENGTH) {
       artist = albumArtist;
     } else {
-      artist = artist.substring(0, MAX_ARTIST_LENGTH - 1) + "…";
+      artist = `${artist.substring(0, MAX_ARTIST_LENGTH - 1)}…`;
     }
   } else if (
     (moonlight.getConfigOption<boolean>("mediaControls", "richPresenceAlbumArtist") ?? true) &&
@@ -360,7 +360,7 @@ async function updatePresence(state: MediaState) {
   let album = state.album;
   if (album && album !== "") {
     if (album.length > MAX_ALBUM_LENGTH) {
-      album = album.substring(0, MAX_ALBUM_LENGTH - 1) + "…";
+      album = `${album.substring(0, MAX_ALBUM_LENGTH - 1)}…`;
     }
     album = albumPrefix + album;
   }
@@ -368,7 +368,7 @@ async function updatePresence(state: MediaState) {
   let title = state.title;
   // TODO?: maybe add an option to show song length next to title
   if (title.length > 128) {
-    title = title.substring(0, 127) + "…";
+    title = `${title.substring(0, 127)}…`;
   }
 
   let displayType = ["name", "state", "details"].indexOf(

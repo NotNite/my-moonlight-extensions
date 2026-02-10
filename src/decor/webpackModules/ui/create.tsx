@@ -1,26 +1,27 @@
-import React from "@moonlight-mod/wp/react";
+import type { ModalProps } from "@moonlight-mod/mappings/types/discord/components/common/index";
+import { UserStore } from "@moonlight-mod/wp/common_stores";
+import { DecorAuthStore, DecorDecorationStore } from "@moonlight-mod/wp/decor_stores";
 import {
-  ModalRoot,
-  ModalHeader,
-  ModalSize,
+  FormSection,
+  FormText,
+  HelpMessage,
+  HelpMessageTypes,
   ModalCloseButton,
   ModalContent,
   ModalFooter,
+  ModalHeader,
+  ModalRoot,
+  ModalSize,
   Text,
-  TextInput,
-  HelpMessage,
-  HelpMessageTypes,
-  FormSection,
-  FormText
+  // @ts-expect-error FIXME everything in this extension is broken lol
+  TextInput
 } from "@moonlight-mod/wp/discord/components/common/index";
-import { Button } from "@moonlight-mod/wp/discord/uikit/legacy/Button";
 import { openModal } from "@moonlight-mod/wp/discord/modules/modals/Modals";
-import { UserStore } from "@moonlight-mod/wp/common_stores";
-import { DecorAuthStore, DecorDecorationStore } from "@moonlight-mod/wp/decor_stores";
-import { AvatarDecorationModalPreview, DecorationModalStyles, Margins } from "./components";
-import { Decoration, GUILD_INVITE, RAW_SKU_ID } from "../../types";
-import type { ModalProps } from "@moonlight-mod/mappings/types/discord/components/common/index";
+import { Button } from "@moonlight-mod/wp/discord/uikit/legacy/Button";
+import React from "@moonlight-mod/wp/react";
 import spacepack from "@moonlight-mod/wp/spacepack_spacepack";
+import { Decoration, GUILD_INVITE, RAW_SKU_ID } from "../../types";
+import { AvatarDecorationModalPreview, DecorationModalStyles, Margins } from "./components";
 
 import { joinGuild } from "./util";
 
@@ -31,7 +32,9 @@ spacepack
     /Promise\.all\((\[\i\.\i\("\d+"\).+?\])\)\.then\(\i\.bind\(\i,(\d+)\)\)/,
     /\.bind\(\i,(\d+)\)\);/
   )
-  .then(() => (FileUpload = spacepack.require("discord/components/common/FileUpload").default));
+  .then(() => {
+    FileUpload = spacepack.require("discord/components/common/FileUpload").default;
+  });
 
 function useObjectURL(object: Blob | MediaSource | null) {
   const [url, setUrl] = React.useState<string | null>(null);

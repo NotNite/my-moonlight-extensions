@@ -1,7 +1,7 @@
-import createNatives from "../natives";
-import type { CSSEvent, CSSFileType, CSSNativesInit, CSSTheme } from "../natives/types";
 import { ThemeStore } from "@moonlight-mod/wp/common_stores";
 import Dispatcher from "@moonlight-mod/wp/discord/Dispatcher";
+import createNatives from "../natives";
+import type { CSSEvent, CSSFileType, CSSNativesInit, CSSTheme } from "../natives/types";
 
 const logger = moonlight.getLogger("moonlight-css");
 
@@ -50,7 +50,7 @@ async function callback(event: CSSEvent) {
       // lmao this is jank
       const safePath = event.file.path.replaceAll("\n", "").replaceAll("*", "");
       const pathBanner = `/* loaded by moonlight-css from ${safePath} */`;
-      existing.element.textContent = pathBanner + "\n" + event.file.src;
+      existing.element.textContent = `${pathBanner}\n${event.file.src}`;
 
       if (existing.theme !== "none" && currentTheme !== existing.theme && existing.element.parentNode != null)
         parent.removeChild(existing.element);
@@ -95,7 +95,7 @@ loadNatives().catch((err) => {
   logger.error("Failed to load", err);
 });
 
-Dispatcher.subscribe("USER_SETTINGS_PROTO_UPDATE", function () {
+Dispatcher.subscribe("USER_SETTINGS_PROTO_UPDATE", () => {
   try {
     const currentTheme = ThemeStore.theme === "light" ? "light" : "dark";
     const parent = document.documentElement;

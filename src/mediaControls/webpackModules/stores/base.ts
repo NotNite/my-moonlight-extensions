@@ -1,5 +1,5 @@
-import { Store } from "@moonlight-mod/wp/discord/packages/flux";
 import Dispatcher from "@moonlight-mod/wp/discord/Dispatcher";
+import { Store } from "@moonlight-mod/wp/discord/packages/flux";
 import type { MediaState, RepeatMode } from "../../types";
 
 export default abstract class MediaControlsBaseStore extends Store<any> {

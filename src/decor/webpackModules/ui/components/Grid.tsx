@@ -1,7 +1,7 @@
 import React from "@moonlight-mod/wp/react";
 
 export interface GridProps<ItemT> {
-  renderItem: (item: ItemT) => JSX.Element;
+  renderItem: (item: ItemT) => React.ReactNode;
   getItemKey: (item: ItemT) => string;
   itemKeyPrefix?: string;
   items: Array<ItemT>;

@@ -1,24 +1,24 @@
-import spacepack from "@moonlight-mod/wp/spacepack_spacepack";
-import React from "@moonlight-mod/wp/react";
 import {
-  Image,
-  Text,
-  XLargeIcon,
-  CopyIcon,
-  LinkIcon,
-  PlusLargeIcon,
-  MinusIcon,
-  FullscreenEnterIcon,
   ArrowAngleLeftUpIcon,
   ArrowAngleRightUpIcon,
-  WindowLaunchIcon,
-  showToast,
+  CopyIcon,
   createToast,
-  ToastType
+  FullscreenEnterIcon,
+  Image,
+  LinkIcon,
+  MinusIcon,
+  PlusLargeIcon,
+  showToast,
+  Text,
+  ToastType,
+  WindowLaunchIcon,
+  XLargeIcon
 } from "@moonlight-mod/wp/discord/components/common/index";
-import { useModalsStore, closeModal } from "@moonlight-mod/wp/discord/modules/modals/Modals";
-import { copy } from "@moonlight-mod/wp/discord/utils/ClipboardUtils";
+import { closeModal, useModalsStore } from "@moonlight-mod/wp/discord/modules/modals/Modals";
 import TextInput from "@moonlight-mod/wp/discord/uikit/TextInput";
+import { copy } from "@moonlight-mod/wp/discord/utils/ClipboardUtils";
+import React from "@moonlight-mod/wp/react";
+import spacepack from "@moonlight-mod/wp/spacepack_spacepack";
 
 const i18n = spacepack.require("discord/intl");
 const HeaderBar = spacepack.require("discord/components/common/BaseHeaderBar");
@@ -93,7 +93,7 @@ function stopPropagation(event: any) {
 const units = ["KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
 function bytesToHumanReadable(bytes: number): string {
   if (Math.abs(bytes) < 1024) {
-    return bytes + " B";
+    return `${bytes} B`;
   }
 
   let u = -1;
@@ -102,7 +102,7 @@ function bytesToHumanReadable(bytes: number): string {
     ++u;
   } while (Math.round(Math.abs(bytes) * 100) / 100 >= 1024 && u < units.length - 1);
 
-  return bytes.toFixed(2) + " " + units[u];
+  return `${bytes.toFixed(2)} ${units[u]}`;
 }
 
 // overengineered style manipulation
@@ -129,7 +129,7 @@ function getProperty(element: HTMLElement, prop: ImageViewerCSSProperty) {
 
   const valueStr = res.slice(0, res.length - suffix.length);
   const value = parseFloat(valueStr);
-  if (isNaN(value)) return null;
+  if (Number.isNaN(value)) return null;
 
   return value;
 }

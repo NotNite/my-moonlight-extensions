@@ -1,5 +1,5 @@
-import type { KRunnerNatives, KRunnerRequest } from "./types";
 import * as child_process from "node:child_process";
+import type { KRunnerNatives, KRunnerRequest } from "./types";
 
 const logger = moonlightNode.getLogger("krunner/node");
 let pluginProcess: child_process.ChildProcess | undefined;
@@ -52,6 +52,6 @@ module.exports = {
 
   sendResults(results) {
     //logger.debug("Sending results:", results);
-    pluginProcess?.stdin?.write(JSON.stringify(results) + "\n");
+    pluginProcess?.stdin?.write(`${JSON.stringify(results)}\n`);
   }
 } satisfies KRunnerNatives;

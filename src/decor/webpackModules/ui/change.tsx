@@ -1,29 +1,25 @@
-import React from "@moonlight-mod/wp/react";
+import type { ModalProps } from "@moonlight-mod/mappings/types/discord/components/common/index";
+import { UserStore } from "@moonlight-mod/wp/common_stores";
+import { DecorAuthStore, DecorCacheStore, DecorDecorationStore } from "@moonlight-mod/wp/decor_stores";
 import {
-  ModalRoot,
-  ModalSize,
-  ModalHeader,
+  FormText,
+  FormTitle,
   ModalCloseButton,
   ModalContent,
   ModalFooter,
+  ModalHeader,
+  ModalRoot,
+  ModalSize,
   Text,
-  Tooltip,
-  FormTitle,
-  FormText
+  Tooltip
 } from "@moonlight-mod/wp/discord/components/common/index";
-import { Button } from "@moonlight-mod/wp/discord/uikit/legacy/Button";
+import MarkupUtils from "@moonlight-mod/wp/discord/modules/markup/MarkupUtils";
 import { openModal } from "@moonlight-mod/wp/discord/modules/modals/Modals";
 import { useStateFromStores } from "@moonlight-mod/wp/discord/packages/flux";
-import { DecorAuthStore, DecorCacheStore, DecorDecorationStore } from "@moonlight-mod/wp/decor_stores";
 import Flex from "@moonlight-mod/wp/discord/uikit/Flex";
-import { UserStore } from "@moonlight-mod/wp/common_stores";
-
+import { Button } from "@moonlight-mod/wp/discord/uikit/legacy/Button";
+import React from "@moonlight-mod/wp/react";
 import { Decoration } from "../../types";
-import { alert, copy, decorationToAvatarDecoration, joinGuild } from "./util";
-import SectionedGridList from "./components/SectionedGridList";
-import DecorationGridNone from "./components/DecorationGridNone";
-import DecorationGridCreate from "./components/DecorationGridCreate";
-import DecorDecorationGridDecoration from "./components/DecorDecorationGridDecoration";
 import {
   AvatarDecorationModalPreview,
   DecorationModalStyles,
@@ -31,10 +27,13 @@ import {
   UserSummaryItem,
   usePresets
 } from "./components";
-import openGuidelinesModal from "./guidelines";
+import DecorationGridCreate from "./components/DecorationGridCreate";
+import DecorationGridNone from "./components/DecorationGridNone";
+import DecorDecorationGridDecoration from "./components/DecorDecorationGridDecoration";
+import SectionedGridList from "./components/SectionedGridList";
 import openCreateDecorationModal from "./create";
-import MarkupUtils from "@moonlight-mod/wp/discord/modules/markup/MarkupUtils";
-import type { ModalProps } from "@moonlight-mod/mappings/types/discord/components/common/index";
+import openGuidelinesModal from "./guidelines";
+import { alert, copy, decorationToAvatarDecoration, joinGuild } from "./util";
 
 type Section = {
   title: string;
@@ -230,7 +229,7 @@ function ChangeDecorationModal(props: ModalProps) {
               <Text key={`createdBy-${activeSelectedDecoration.authorId}`} variant="text-sm/normal">
                 Created by{" "}
                 {MarkupUtils.parse(
-                  `<@${activeSelectedDecoration.authorId}>` + (decorationAuthor == null ? " (hover to lookup)" : ""),
+                  `<@${activeSelectedDecoration.authorId}>${decorationAuthor == null ? " (hover to lookup)" : ""}`,
                   true
                 )}
               </Text>

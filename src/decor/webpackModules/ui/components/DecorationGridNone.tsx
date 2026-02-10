@@ -1,6 +1,6 @@
+import { Text, XLargeIcon } from "@moonlight-mod/wp/discord/components/common/index";
 import React from "@moonlight-mod/wp/react";
 import { DecorationGridItem } from ".";
-import { Text, XLargeIcon } from "@moonlight-mod/wp/discord/components/common/index";
 
 type DecorationGridNoneProps = React.HTMLProps<HTMLDivElement> & {
   isSelected: boolean;

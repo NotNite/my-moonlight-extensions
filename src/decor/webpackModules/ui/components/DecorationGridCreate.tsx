@@ -1,6 +1,6 @@
+import { PlusLargeIcon, Text } from "@moonlight-mod/wp/discord/components/common/index";
 import React from "@moonlight-mod/wp/react";
 import { DecorationGridItem } from ".";
-import { Text, PlusLargeIcon } from "@moonlight-mod/wp/discord/components/common/index";
 
 type DecorationGridCreateProps = React.HTMLProps<HTMLDivElement> & {
   onSelect: () => void;

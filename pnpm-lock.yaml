@@ -9,11 +9,11 @@ importers:
   .:
     dependencies:
       '@moonlight-mod/mappings':
-        specifier: ^2026.2.0
-        version: 2026.2.0(@moonlight-mod/lunast@1.0.1)(@moonlight-mod/moonmap@1.0.7)
+        specifier: ^2026.3.2
+        version: 2026.3.2(@moonlight-mod/lunast@1.0.1)(@moonlight-mod/moonmap@1.0.7)
       '@moonlight-mod/types':
-        specifier: ^2026.2.0
-        version: 2026.2.0
+        specifier: ^2026.3.2
+        version: 2026.3.2
       chokidar:
         specifier: ^4.0.3
         version: 4.0.3
@@ -241,8 +241,8 @@ packages:
   '@moonlight-mod/lunast@1.0.1':
     resolution: {integrity: sha512-K3vxzDlfFuYKjciIW2FMlcZ1qrrkAGDGpSBlNqYGtJ0sMt9bRCd2lpSpg6AX/giSljDtmAUXa/5mOfUoDQxjBA==}
 
-  '@moonlight-mod/mappings@2026.2.0':
-    resolution: {integrity: sha512-JgGpkhpOA4wpcYRv0AmBam1Ed/BXOuI9F6xr6vhxcFRBIIK1ZNdI5k4Egmf5gUNfHrDDyNw0leZkDiVGnd/+pA==}
+  '@moonlight-mod/mappings@2026.3.2':
+    resolution: {integrity: sha512-i5Hq4YSHGKW1qib/IGL5Ik92CSSg3iQLyKxqt319g79SGJiXE6pzPFXi8fReTyUSrIy1FSGu3BZRm2dbXxzTfQ==}
     engines: {node: '>=22', npm: pnpm, pnpm: '>=10', yarn: pnpm}
     peerDependencies:
       '@moonlight-mod/lunast': ^1.0.1
@@ -252,8 +252,8 @@ packages:
     resolution: {integrity: sha512-K4TXEHYPgAtPjWSPWtO9+jzs7+/OYAF1GGkh1BtXrkeVT8vEFlNMztbZYy+N0bJLWzwytS4mrheMdSaBfJw6fw==}
     engines: {node: '>=22', npm: pnpm, pnpm: '>=10', yarn: pnpm}
 
-  '@moonlight-mod/types@2026.2.0':
-    resolution: {integrity: sha512-W2WKp5z7YMZa67jaSpYigfZYJOoabGcVRDRCbbb8Q5N++6g5vlhRt1PqkBYpeCdn3vpVg1K4+aywJ9s0ky60Cg==}
+  '@moonlight-mod/types@2026.3.2':
+    resolution: {integrity: sha512-iVbcYA7gHsqQ85yVYzXA4vEMO44XbFi1qbimy2kJJBlRCA/ykSq93oveUlJCaF+VMJ5lwSw7wxRllIseQXbCmw==}
     engines: {node: '>=22', npm: pnpm, pnpm: '>=10', yarn: pnpm}
 
   '@parcel/watcher-android-arm64@2.5.1':
@@ -338,8 +338,8 @@ packages:
     resolution: {integrity: sha512-dfUnCxiN9H4ap84DvD2ubjw+3vUNpstxa0TneY/Paat8a3R4uQZDLSvWjmznAY/DoahqTHl9V46HF/Zs3F29pg==}
     engines: {node: '>= 10.0.0'}
 
-  '@types/chroma-js@3.1.1':
-    resolution: {integrity: sha512-SFCr4edNkZ1bGaLzGz7rgR1bRzVX4MmMxwsIa3/Bh6ose8v+hRpneoizHv0KChdjxaXyjRtaMq7sCuZSzPomQA==}
+  '@types/chroma-js@3.1.2':
+    resolution: {integrity: sha512-YBTQqArPN8A0niHXCwrO1z5x++a+6l0mLBykncUpr23oIPW7L4h39s6gokdK/bDrPmSh8+TjMmrhBPnyiaWPmQ==}
 
   '@types/estree-jsx@1.0.5':
     resolution: {integrity: sha512-52CcUVNFyfb1A2ALocQw/Dd1BQFNmSdkuC3BkZ6iqhdMfQz7JWOFRuJFloOzjk+6WijU56m9oKXFAXc7o3Towg==}
@@ -350,14 +350,14 @@ packages:
   '@types/fbemitter@2.0.35':
     resolution: {integrity: sha512-Xem6d7qUfmouCHntCrRYgDBwbf+WWRd6G+7WEFlEZFZ67LZXiYRvT2LV8wcZa6mIaAil95+ABQdKgB6hPIsnng==}
 
-  '@types/flux@3.1.14':
-    resolution: {integrity: sha512-WRXN0kQPCnqxN0/PgNgc7WBF6c8rbSHsEep3/qBLpsQ824RONdOmTs0TV7XhIW2GDNRAHO2CqCgAFLR5PChosw==}
+  '@types/flux@3.1.15':
+    resolution: {integrity: sha512-CfmpQUUh7y0hFhrekHoBGZiVX7V5UCNvxUsTqBMA/JOyO72Vh2pGIID/i0YEfLAVx4yAzAhlmTUlgFNVjZF5UQ==}
 
   '@types/highlightjs@9.12.6':
     resolution: {integrity: sha512-Qfd1DUrwE851Hc3tExADJY4qY8yeZMt06Xw9AJm/UtpneepJS3MZY29c33BY0wP899veaaHD4gZzYiSuQm84Fg==}
 
-  '@types/lodash@4.17.20':
-    resolution: {integrity: sha512-H3MHACvFUEiujabxhaI/ImO6gUrd8oOurg7LQtS7mbwIXA/cUqWrvBsaeJ23aZEPk1TAYkurjfMbSELfoCXlGA==}
+  '@types/lodash@4.17.24':
+    resolution: {integrity: sha512-gIW7lQLZbue7lRSWEFql49QJJWThrTFFeIMJdp3eH4tKoxm1OvEPg02rm4wCCSHS0cL3/Fizimb35b7k8atwsQ==}
 
   '@types/node@18.19.86':
     resolution: {integrity: sha512-fifKayi175wLyKyc5qUfyENhQ1dCNI1UNjp653d8kuYcPQN5JhX3dGuP/XmvPTg/xRBn1VTLpbmi+H/Mr7tLfQ==}
@@ -502,8 +502,8 @@ packages:
   wrappy@1.0.2:
     resolution: {integrity: sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==}
 
-  zustand@5.0.6:
-    resolution: {integrity: sha512-ihAqNeUVhe0MAD+X8M5UzqyZ9k3FFZLBTtqo6JLPwV53cbRB/mJwBI0PxcIgqhBBHlEs8G45OTDTMq3gNcLq3A==}
+  zustand@5.0.12:
+    resolution: {integrity: sha512-i77ae3aZq4dhMlRhJVCYgMLKuSiZAaUPAct2AksxQ+gOtimhGMdXljRT21P5BNpeT4kXlLIckvkPM029OljD7g==}
     engines: {node: '>=12.20.0'}
     peerDependencies:
       '@types/react': '>=18.0.0'
@@ -639,18 +639,18 @@ snapshots:
       estree-toolkit: 1.7.12
       meriyah: 6.0.6
 
-  '@moonlight-mod/mappings@2026.2.0(@moonlight-mod/lunast@1.0.1)(@moonlight-mod/moonmap@1.0.7)':
+  '@moonlight-mod/mappings@2026.3.2(@moonlight-mod/lunast@1.0.1)(@moonlight-mod/moonmap@1.0.7)':
     dependencies:
       '@moonlight-mod/lunast': 1.0.1
       '@moonlight-mod/moonmap': 1.0.7
-      '@types/chroma-js': 3.1.1
-      '@types/flux': 3.1.14
+      '@types/chroma-js': 3.1.2
+      '@types/flux': 3.1.15
       '@types/highlightjs': 9.12.6
-      '@types/lodash': 4.17.20
+      '@types/lodash': 4.17.24
       '@types/platform': 1.3.6
       '@types/react': 19.1.4
       csstype: 3.1.3
-      zustand: 5.0.6(@types/react@19.1.4)
+      zustand: 5.0.12(@types/react@19.1.4)
     transitivePeerDependencies:
       - immer
       - react
@@ -658,10 +658,10 @@ snapshots:
 
   '@moonlight-mod/moonmap@1.0.7': {}
 
-  '@moonlight-mod/types@2026.2.0':
+  '@moonlight-mod/types@2026.3.2':
     dependencies:
       '@moonlight-mod/lunast': 1.0.1
-      '@moonlight-mod/mappings': 2026.2.0(@moonlight-mod/lunast@1.0.1)(@moonlight-mod/moonmap@1.0.7)
+      '@moonlight-mod/mappings': 2026.3.2(@moonlight-mod/lunast@1.0.1)(@moonlight-mod/moonmap@1.0.7)
       '@moonlight-mod/moonmap': 1.0.7
       '@types/node': 22.14.0
       '@types/react': 19.1.4
@@ -733,7 +733,7 @@ snapshots:
       '@parcel/watcher-win32-x64': 2.5.1
     optional: true
 
-  '@types/chroma-js@3.1.1': {}
+  '@types/chroma-js@3.1.2': {}
 
   '@types/estree-jsx@1.0.5':
     dependencies:
@@ -743,14 +743,14 @@ snapshots:
 
   '@types/fbemitter@2.0.35': {}
 
-  '@types/flux@3.1.14':
+  '@types/flux@3.1.15':
     dependencies:
       '@types/fbemitter': 2.0.35
       '@types/react': 19.1.4
 
   '@types/highlightjs@9.12.6': {}
 
-  '@types/lodash@4.17.20': {}
+  '@types/lodash@4.17.24': {}
 
   '@types/node@18.19.86':
     dependencies:
@@ -912,6 +912,6 @@ snapshots:
 
   wrappy@1.0.2: {}
 
-  zustand@5.0.6(@types/react@19.1.4):
+  zustand@5.0.12(@types/react@19.1.4):
     optionalDependencies:
       '@types/react': 19.1.4

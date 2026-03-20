@@ -15,6 +15,7 @@ import {
   XLargeIcon
 } from "@moonlight-mod/wp/discord/components/common/index";
 import { closeModal, useModalsStore } from "@moonlight-mod/wp/discord/modules/modals/Modals";
+import OverflowTooltip from "@moonlight-mod/wp/discord/uikit/OverflowTooltip";
 import TextInput from "@moonlight-mod/wp/discord/uikit/TextInput";
 import { copy } from "@moonlight-mod/wp/discord/utils/ClipboardUtils";
 import React from "@moonlight-mod/wp/react";
@@ -27,7 +28,6 @@ const RawVideo = spacepack.findByCode(
   'MOSAIC?{width:"100%",height:"100%",' + 'maxHeight:"inherit",objectFit:"contain"}'
 )[0].exports.A;
 const Video = spacepack.findByCode(".VIDEO,", ",onVolume" + "Change:")[0].exports.A;
-const OverflowTooltip = spacepack.findByCode(/position:\i,delay:\i,\.\.\./)[0].exports.A;
 
 type SourceMetadata = {
   identifier: {

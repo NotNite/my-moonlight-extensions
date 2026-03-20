@@ -8,6 +8,7 @@ import {
 } from "@moonlight-mod/wp/contextMenu_contextMenu";
 import { Menu, PauseIcon, PlayIcon, Text } from "@moonlight-mod/wp/discord/components/common/index";
 import { useStateFromStores } from "@moonlight-mod/wp/discord/packages/flux";
+import OverflowTooltip from "@moonlight-mod/wp/discord/uikit/OverflowTooltip";
 import NativeUtils from "@moonlight-mod/wp/discord/utils/NativeUtils";
 import { MediaControlsStore } from "@moonlight-mod/wp/mediaControls_stores";
 import React from "@moonlight-mod/wp/react";
@@ -16,7 +17,6 @@ import { RepeatMode } from "../types";
 import { NextTrackIcon } from "./NextTrackIcon";
 import { PreviousTrackIcon } from "./PreviousTrackIcon";
 
-const OverflowTooltip = spacepack.findByCode(/position:\i,delay:\i,\.\.\./)[0].exports.A;
 const ContextMenuActionCreators = spacepack.require("discord/actions/ContextMenuActionCreators");
 let MediaBar: React.ComponentType<any> & { Types: { DURATION: "DURATION"; VOLUME: "VOLUME" } };
 let PanelButton: typeof import("@moonlight-mod/wp/discord/components/common/PanelButton")["default"];

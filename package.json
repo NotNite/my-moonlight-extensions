@@ -11,8 +11,8 @@
     "check:types": "tsc --noEmit"
   },
   "dependencies": {
-    "@moonlight-mod/mappings": "^2026.2.0",
-    "@moonlight-mod/types": "^2026.2.0",
+    "@moonlight-mod/mappings": "^2026.3.2",
+    "@moonlight-mod/types": "^2026.3.2",
     "chokidar": "^4.0.3",
     "sass": "^1.86.3"
   },

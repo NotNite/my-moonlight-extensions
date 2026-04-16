@@ -17,6 +17,7 @@ const DEFAULT_APP_ID = "1325969326150258708";
 
 const LASTFM_API_KEY = "cba04ed41dff8bfb9c10835ee747ba94"; // taken from MusicBee
 const lastfmBaseUrl = "https://ws.audioscrobbler.com/2.0/";
+const gramophoneBaseUrl = "https://gramophone.bignut.zip";
 
 // Mostly fixes for Windows
 // Taken from YASB
@@ -52,7 +53,11 @@ async function fetchArtworkFromLastFm(
 
   const data = await fetch(url).then((res) => res.json());
 
-  return data?.album?.image[data?.album?.image?.length - 1]?.["#text"];
+  let images = data?.album?.image;
+  if (method === "album.search") {
+    images = data?.results?.albummatches?.album?.[0]?.image;
+  }
+  return images?.[images.length - 1]?.["#text"];
 }
 
 async function getArtworkFromLastFm(
@@ -73,14 +78,13 @@ async function getArtworkFromLastFm(
 
   if (!url && albumArtist && albumArtist !== "")
     url = await fetchArtworkFromLastFm("album.getinfo", album, albumArtist);
-
   if (!url && mainArtist) url = await fetchArtworkFromLastFm("album.getinfo", album, mainArtist);
-
   if (!url && artist && artist !== "") url = await fetchArtworkFromLastFm("album.getinfo", album, artist);
-
   if (!url && artist && artist !== "" && track && track !== "")
     url = await fetchArtworkFromLastFm("album.getinfo", album, artist, track);
 
+  if (!url && albumArtist && albumArtist !== "") url = await fetchArtworkFromLastFm("album.search", album, albumArtist);
+  if (!url && mainArtist) url = await fetchArtworkFromLastFm("album.search", album, mainArtist);
   if (!url && artist && artist !== "") url = await fetchArtworkFromLastFm("album.search", album, artist);
 
   if (!url) url = await fetchArtworkFromLastFm("album.search", album);
@@ -306,29 +310,71 @@ async function updatePresence(state: MediaState) {
   const appId = moonlight.getConfigOption<string>("mediaControls", "richPresenceAppId") ?? DEFAULT_APP_ID;
 
   let artworkUrl = defaultAsset;
+  const toProxy = [];
+  let hasArtwork = false;
   if (artwork !== "unknown") {
     if (artwork.startsWith("http") && appId !== "") {
-      try {
-        const { body } = await HTTP.post({
-          url: Endpoints.APPLICATION_EXTERNAL_ASSETS(appId),
-          body: {
-            urls: [artwork]
-          },
-          oldFormErrors: true
-        });
-
-        artworkUrl = `mp:${body[0].external_asset_path}`;
-      } catch (err) {
-        logger.error("Failed to push external assets:", err);
-      }
+      hasArtwork = true;
+      toProxy.push(artwork);
     } else {
       artworkUrl = artwork;
     }
   }
 
   // no penor
-  if (state.artist === "Death Grips" && state.album && state.album === "No Love Deep Web")
+  if (state.artist === "Death Grips" && state.album && state.album === "No Love Deep Web") {
     artworkUrl = "spotify:ab67616d00001e02f552daab2bc3dc64d2c4c649";
+    hasArtwork = false;
+    toProxy.pop();
+  }
+
+  const playingAsset = moonlight.getConfigOption<string>("mediaControls", "richPresenceAssetPlaying") ?? "";
+  const pausedAsset = moonlight.getConfigOption<string>("mediaControls", "richPresenceAssetPaused") ?? "";
+  let playingUrl = "";
+  let pausedUrl = "";
+
+  if (playingAsset !== "" && appId !== "") {
+    if (playingAsset.startsWith("http")) {
+      toProxy.push(playingAsset);
+    } else {
+      playingUrl = playingAsset;
+    }
+  }
+  if (pausedAsset !== "" && appId !== "") {
+    if (pausedAsset.startsWith("http")) {
+      toProxy.push(pausedAsset);
+    } else {
+      pausedUrl = pausedAsset;
+    }
+  }
+
+  if (appId !== "" && toProxy.length > 0) {
+    try {
+      const { body } = await HTTP.post({
+        url: Endpoints.APPLICATION_EXTERNAL_ASSETS(appId),
+        body: {
+          urls: toProxy
+        },
+        oldFormErrors: true
+      });
+
+      if (hasArtwork) {
+        const artworkProxied = body.shift();
+        artworkUrl = `mp:${artworkProxied.external_asset_path}`;
+      }
+
+      if (playingAsset.startsWith("http")) {
+        const playingProxied = body.shift();
+        playingUrl = `mp:${playingProxied.external_asset_path}`;
+      }
+      if (pausedAsset.startsWith("http")) {
+        const pausedProxied = body.shift();
+        pausedUrl = `mp:${pausedProxied.external_asset_path}`;
+      }
+    } catch (err) {
+      logger.error("Failed to push external assets:", err);
+    }
+  }
 
   const artistPrefix =
     (moonlight.getConfigOption<boolean>("mediaControls", "richPresenceByPrefix") ?? false) ? "by " : "";
@@ -390,27 +436,24 @@ async function updatePresence(state: MediaState) {
 
   if (album !== "") activity.assets!.large_text = album;
 
-  const playingAsset = moonlight.getConfigOption<string>("mediaControls", "richPresenceAssetPlaying") ?? "";
-  const pausedAsset = moonlight.getConfigOption<string>("mediaControls", "richPresenceAssetPaused") ?? "";
   if (
     moonlight.getConfigOption<boolean>("mediaControls", "richPresenceStateImage") &&
-    playingAsset !== "" &&
-    pausedAsset !== ""
+    playingUrl !== "" &&
+    pausedUrl !== ""
   ) {
-    activity.assets!.small_image = playing ? playingAsset : pausedAsset;
+    activity.assets!.small_image = playing ? playingUrl : pausedUrl;
     activity.assets!.small_text = playing ? "Playing" : "Paused";
   }
 
   if (moonlight.getConfigOption<boolean>("mediaControls", "richPresenceLastFmLinks") ?? true) {
     if (moonlight.getConfigOption<boolean>("mediaControls", "richPresenceGramophone") ?? false) {
-      const baseUrl = "https://gramophone.bignut.zip";
       if (state.artist || state.album_artist) {
-        activity.state_url = `${baseUrl}/artists/${encodeURIComponent(state.album_artist ?? state.artist)}`;
+        activity.state_url = `${gramophoneBaseUrl}/artists/${encodeURIComponent(state.album_artist ?? state.artist)}`;
         if (state.album && state.album !== "") {
-          activity.assets!.large_url = `${baseUrl}/albums/${encodeURIComponent(state.album_artist ?? state.artist)}/${encodeURIComponent(state.album)}`;
-          activity.details_url = `${baseUrl}/tracks/${encodeURIComponent(state.album_artist ?? state.artist)}/${encodeURIComponent(state.album)}/${encodeURIComponent(state.title)}`;
+          activity.assets!.large_url = `${gramophoneBaseUrl}/albums/${encodeURIComponent(state.album_artist ?? state.artist)}/${encodeURIComponent(state.album)}`;
+          activity.details_url = `${gramophoneBaseUrl}/tracks/${encodeURIComponent(state.album_artist ?? state.artist)}/${encodeURIComponent(state.album)}/${encodeURIComponent(state.title)}`;
         } else {
-          activity.details_url = `${baseUrl}/tracks/${encodeURIComponent(state.album_artist ?? state.artist)}/${encodeURIComponent(state.title)}`;
+          activity.details_url = `${gramophoneBaseUrl}/tracks/${encodeURIComponent(state.album_artist ?? state.artist)}/${encodeURIComponent(state.title)}`;
         }
       }
     } else {

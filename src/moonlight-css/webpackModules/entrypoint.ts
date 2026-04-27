@@ -1,7 +1,9 @@
-import { ThemeStore } from "@moonlight-mod/wp/common_stores";
 import Dispatcher from "@moonlight-mod/wp/discord/Dispatcher";
+import spacepack from "@moonlight-mod/wp/spacepack_spacepack";
 import createNatives from "../natives";
 import type { CSSEvent, CSSFileType, CSSNativesInit, CSSTheme } from "../natives/types";
+
+const ThemeStore = spacepack.require("discord/modules/user_settings/ThemeStore");
 
 const logger = moonlight.getLogger("moonlight-css");
 
@@ -45,7 +47,7 @@ async function callback(event: CSSEvent) {
         existing.parent = undefined;
       }
 
-      const currentTheme = ThemeStore.theme === "light" ? "light" : "dark";
+      const currentTheme = ThemeStore?.theme === "light" ? "light" : "dark";
 
       // lmao this is jank
       const safePath = event.file.path.replaceAll("\n", "").replaceAll("*", "");

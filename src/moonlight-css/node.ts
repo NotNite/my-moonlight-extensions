@@ -39,7 +39,7 @@ async function cancelWatcher(path: string, callback: CSSEventCallback) {
 }
 
 async function watch(root: string, callback: CSSEventCallback) {
-  let theme = "none" as CSSTheme;
+  let theme: CSSTheme = "none";
   const themePrefixMatch = root.match(THEME_PREFIX);
   if (themePrefixMatch?.[1]) {
     theme = themePrefixMatch[1] as CSSTheme;

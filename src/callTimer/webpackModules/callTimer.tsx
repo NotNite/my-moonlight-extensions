@@ -1,13 +1,6 @@
-import { Text } from "@moonlight-mod/wp/discord/components/common/index";
-import Dispatcher from "@moonlight-mod/wp/discord/Dispatcher";
+import { AuthenticationStore, VoiceChannelStartTimeStore, VoiceStateStore } from "@moonlight-mod/wp/common_stores";
+import Text from "@moonlight-mod/wp/discord/design/components/Text/Text";
 import React from "@moonlight-mod/wp/react";
-
-let startTime: number | null = null;
-
-Dispatcher.subscribe("RTC_CONNECTION_STATE", (data) => {
-  if (data.context !== "default") return;
-  startTime = data.state === "RTC_CONNECTED" ? Date.now() : null;
-});
 
 function formatTime(elapsed: number) {
   const hours = Math.floor(elapsed / 3600);
@@ -18,25 +11,25 @@ function formatTime(elapsed: number) {
   return items.map((item) => item.toString().padStart(2, "0")).join(":");
 }
 
-export default function CallTimer(): React.ReactNode {
-  const [time, setTime] = React.useState(formatTime(0));
-
+export default function CallTimer({ channel, guild }: { channel: any; guild: any }): React.ReactNode {
+  const [time, setTime] = React.useState("00:00");
+  const [startTime, setStartTime] = React.useState<string | undefined>();
   React.useEffect(() => {
-    const interval = setInterval(() => {
-      if (startTime != null) {
-        const elapsed = Math.round((Date.now() - startTime) / 1000);
-        setTime(formatTime(elapsed));
-      } else {
-        setTime("");
-      }
-    }, 500);
+    const timer = setInterval(() => {
+      const now = Math.floor(Date.now() / 1000);
+      const connectedAt = VoiceStateStore.getVoiceState(guild.id, AuthenticationStore.getId())?.connectedAt ?? now;
+      const startTime = VoiceChannelStartTimeStore.getStartTime(channel);
 
-    return () => clearInterval(interval);
+      setTime(formatTime(now - connectedAt));
+      if (startTime != null) setStartTime(formatTime(now - Math.floor(startTime / 1000)));
+    }, 1000);
+
+    return () => clearInterval(timer);
   });
 
   return (
     <Text variant="text-xs/normal" className="callTimer-text">
-      {time}
+      {`${time}${startTime != null ? ` • ${startTime}` : ""}`}
     </Text>
   );
 }

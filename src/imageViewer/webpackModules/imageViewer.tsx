@@ -1,29 +1,26 @@
-import {
-  ArrowAngleLeftUpIcon,
-  ArrowAngleRightUpIcon,
-  CopyIcon,
-  createToast,
-  FullscreenEnterIcon,
-  Image,
-  LinkIcon,
-  MinusIcon,
-  PlusLargeIcon,
-  showToast,
-  Text,
-  ToastType,
-  WindowLaunchIcon,
-  XLargeIcon
-} from "@moonlight-mod/wp/discord/components/common/index";
+import HeaderBar from "@moonlight-mod/wp/discord/components/common/BaseHeaderBar";
+import { Image } from "@moonlight-mod/wp/discord/components/common/Image";
+import Text from "@moonlight-mod/wp/discord/design/components/Text/Text";
+import { createToast } from "@moonlight-mod/wp/discord/design/components/Toast/web/Toast";
+import { showToast } from "@moonlight-mod/wp/discord/design/components/Toast/web/ToastAPI";
+import { ToastType } from "@moonlight-mod/wp/discord/design/components/Toast/web/ToastConstants";
+import i18n from "@moonlight-mod/wp/discord/intl";
+import ArrowAngleLeftUpIcon from "@moonlight-mod/wp/discord/modules/icons/web/ArrowAngleLeftUpIcon";
+import ArrowAngleRightUpIcon from "@moonlight-mod/wp/discord/modules/icons/web/ArrowAngleRightUpIcon";
+import CopyIcon from "@moonlight-mod/wp/discord/modules/icons/web/CopyIcon";
+import FullscreenEnterIcon from "@moonlight-mod/wp/discord/modules/icons/web/FullscreenEnterIcon";
+import LinkIcon from "@moonlight-mod/wp/discord/modules/icons/web/LinkIcon";
+import MinusIcon from "@moonlight-mod/wp/discord/modules/icons/web/MinusIcon";
+import PlusLargeIcon from "@moonlight-mod/wp/discord/modules/icons/web/PlusLargeIcon";
+import WindowLaunchIcon from "@moonlight-mod/wp/discord/modules/icons/web/WindowLaunchIcon";
+import XLargeIcon from "@moonlight-mod/wp/discord/modules/icons/web/XLargeIcon";
 import { closeModal, useModalsStore } from "@moonlight-mod/wp/discord/modules/modals/Modals";
 import OverflowTooltip from "@moonlight-mod/wp/discord/uikit/OverflowTooltip";
-import TextInput from "@moonlight-mod/wp/discord/uikit/TextInput";
 import { copy } from "@moonlight-mod/wp/discord/utils/ClipboardUtils";
+import NativeUtils from "@moonlight-mod/wp/discord/utils/NativeUtils";
 import React from "@moonlight-mod/wp/react";
 import spacepack from "@moonlight-mod/wp/spacepack_spacepack";
 
-const i18n = spacepack.require("discord/intl");
-const HeaderBar = spacepack.require("discord/components/common/BaseHeaderBar");
-const NativeUtils = spacepack.findByCode("Data fetch" + " unsuccessful")[0].exports.Ay;
 const RawVideo = spacepack.findByCode(
   'MOSAIC?{width:"100%",height:"100%",' + 'maxHeight:"inherit",objectFit:"contain"}'
 )[0].exports.A;
@@ -337,7 +334,7 @@ export default function ImageViewer({
             onClick={() => {
               try {
                 copy(original);
-                showToast(createToast(i18n.intl.string(i18n.t["L/PwZW"]), ToastType.SUCCESS));
+                showToast(createToast(i18n.intl.string(i18n.t["L/PwZf"]), ToastType.SUCCESS));
               } catch (err) {
                 logger.error("Failed to copy link:", err);
                 showToast(createToast("Failed to copy link", ToastType.FAILURE));
@@ -354,10 +351,10 @@ export default function ImageViewer({
               onClick={() => {
                 try {
                   NativeUtils.copyImage(src);
-                  showToast(createToast(i18n.intl.string(i18n.t.bhUpvL), ToastType.SUCCESS));
+                  showToast(createToast(i18n.intl.string(i18n.t.bhUpvC), ToastType.SUCCESS));
                 } catch (err) {
-                  logger.error("Failed to copy link:", err);
-                  showToast(createToast(i18n.intl.string(i18n.t.PTPbj4), ToastType.FAILURE));
+                  logger.error("Failed to copy image:", err);
+                  showToast(createToast(i18n.intl.string(i18n.t.PTPbjx), ToastType.FAILURE));
                 }
               }}
             />
@@ -454,13 +451,14 @@ export default function ImageViewer({
           <HeaderBar.Divider />
 
           {editingZoom ? (
-            <TextInput
+            <input
               className="imageViewer-edit-zoom"
               type="number"
               autoFocus={true}
               value={zoomEdit.toString()}
               placeholder="100"
-              onChange={(value: string) => {
+              onChange={(event) => {
+                const { value } = event.currentTarget;
                 if (!Number.isNaN(value)) setZoomEdit(Number(value));
               }}
               onFocus={() => {

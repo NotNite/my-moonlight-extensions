@@ -6,7 +6,10 @@ import {
   MenuRadioItem,
   MenuSeparator
 } from "@moonlight-mod/wp/contextMenu_contextMenu";
-import { Menu, PauseIcon, PlayIcon, Text } from "@moonlight-mod/wp/discord/components/common/index";
+import Text from "@moonlight-mod/wp/discord/design/components/Text/Text";
+import PauseIcon from "@moonlight-mod/wp/discord/modules/icons/web/PauseIcon";
+import PlayIcon from "@moonlight-mod/wp/discord/modules/icons/web/PlayIcon";
+import { Menu } from "@moonlight-mod/wp/discord/modules/menus/web/Menu";
 import { useStateFromStores } from "@moonlight-mod/wp/discord/packages/flux";
 import OverflowTooltip from "@moonlight-mod/wp/discord/uikit/OverflowTooltip";
 import NativeUtils from "@moonlight-mod/wp/discord/utils/NativeUtils";

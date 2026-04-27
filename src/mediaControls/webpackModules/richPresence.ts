@@ -10,8 +10,8 @@ const { HTTP } = spacepack.require("discord/utils/HTTPUtils");
 
 const logger = moonlight.getLogger("Media Controls: Rich Presence");
 
-const artworkCache = new Map();
-const spotifyCache = new Map();
+const artworkCache = new Map<string, string>();
+const spotifyCache = new Map<string, string>();
 
 const DEFAULT_APP_ID = "1325969326150258708";
 
@@ -32,6 +32,20 @@ const NAME_FIXES: Record<string, string> = {
   "com.badmanners.murglar": "Murglar",
   "com.squirrel.TIDAL.TIDAL": "Tidal",
   "com.squirrel.Qobuz.Qobuz": "Qobuz"
+};
+
+type LastfmImage = {
+  "#text": string;
+  size: "small" | "medium" | "large" | "extralarge";
+};
+
+type LastfmAlbum = {
+  name: string;
+  artist: string;
+  url: string;
+  image: LastfmImage[];
+  streamable: string;
+  mbid: string;
 };
 
 async function fetchArtworkFromLastFm(
@@ -55,7 +69,9 @@ async function fetchArtworkFromLastFm(
 
   let images = data?.album?.image;
   if (method === "album.search") {
-    images = data?.results?.albummatches?.album?.[0]?.image;
+    const albums = data?.results?.albummatches?.album;
+    if (albums != null && albums.length > 0)
+      images = albums.filter((a: LastfmAlbum) => a.image.some((i: LastfmImage) => i["#text"] !== ""))[0].image;
   }
   return images?.[images.length - 1]?.["#text"];
 }
@@ -321,6 +337,55 @@ async function updatePresence(state: MediaState) {
     }
   }
 
+  const uploadEnabled = moonlight.getConfigOption<boolean>("mediaControls", "richPresenceArtworkUpload") ?? false;
+  const uploadFallback =
+    moonlight.getConfigOption<boolean>("mediaControls", "richPresenceArtworkUploadFallback") ?? false;
+
+  let doUpload = uploadEnabled;
+  if (uploadFallback && hasArtwork === false) {
+    doUpload = true;
+  }
+
+  if (doUpload && state.cover != null) {
+    // cache stale check since they only last 24h
+    if (artworkCache.has(state.cover)) {
+      const res = await fetch(artworkCache.get(state.cover)!.replace("mp:", "https://cdn.discordapp.com/"), {
+        method: "HEAD"
+      });
+      if (!res.ok) artworkCache.delete(state.cover);
+    }
+
+    if (artworkCache.has(state.cover)) {
+      artworkUrl = artworkCache.get(state.cover);
+      hasArtwork = false;
+      toProxy.pop();
+    } else {
+      try {
+        const { body } = await HTTP.post({
+          // requires application with activities enabled, most user provided ones wont
+          // so its enabled on the moonlight one
+          url: Endpoints.APPLICATION_UPLOAD_ATTACHMENT(DEFAULT_APP_ID),
+          attachments: [
+            {
+              name: "file",
+              file: await fetch(state.cover).then((r) => r.blob()),
+              filename: "artwork.png"
+            }
+          ],
+          rejectWithError: true
+        });
+        if (body?.attachment?.url) {
+          artworkUrl = body.attachment.url.replace("https://cdn.discordapp.com/", "mp:");
+          artworkCache.set(state.cover, artworkUrl!);
+          hasArtwork = false;
+          toProxy.pop();
+        }
+      } catch (err) {
+        logger.error("Failed to upload artwork:", err);
+      }
+    }
+  }
+
   // no penor
   if (state.artist === "Death Grips" && state.album && state.album === "No Love Deep Web") {
     artworkUrl = "spotify:ab67616d00001e02f552daab2bc3dc64d2c4c649";
@@ -453,6 +518,7 @@ async function updatePresence(state: MediaState) {
           activity.assets!.large_url = `${gramophoneBaseUrl}/albums/${encodeURIComponent(state.album_artist ?? state.artist)}/${encodeURIComponent(state.album)}`;
           activity.details_url = `${gramophoneBaseUrl}/tracks/${encodeURIComponent(state.album_artist ?? state.artist)}/${encodeURIComponent(state.album)}/${encodeURIComponent(state.title)}`;
         } else {
+          activity.assets!.large_url = `${gramophoneBaseUrl}/tracks/${encodeURIComponent(state.album_artist ?? state.artist)}/${encodeURIComponent(state.title)}`;
           activity.details_url = `${gramophoneBaseUrl}/tracks/${encodeURIComponent(state.album_artist ?? state.artist)}/${encodeURIComponent(state.title)}`;
         }
       }
@@ -506,6 +572,9 @@ let running = false;
 let lastState: MediaState | undefined;
 async function onChange() {
   const enabled = moonlight.getConfigOption<boolean>("mediaControls", "richPresence") ?? false;
+  const uploadEnabled = moonlight.getConfigOption<boolean>("mediaControls", "richPresenceArtworkUpload") ?? false;
+  const uploadFallback =
+    moonlight.getConfigOption<boolean>("mediaControls", "richPresenceArtworkUploadFallback") ?? false;
 
   const playerReStr = moonlight.getConfigOption<string>("mediaControls", "richPresencePlayerRegex");
   const playerRe = playerReStr ? new RegExp(playerReStr, "g") : null;
@@ -529,6 +598,7 @@ async function onChange() {
       lastState.artist !== state.artist ||
       lastState.title !== state.title ||
       lastState.playing !== state.playing ||
+      ((uploadEnabled || uploadFallback) && lastState.cover == null && state.cover != null) ||
       state.elapsed < lastState.elapsed // looping track
     ) {
       lastState = state;

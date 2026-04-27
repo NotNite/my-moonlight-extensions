@@ -5,7 +5,7 @@ export const patches: Patch[] = [
     find: /startIndex:\i=0,/,
     replace: {
       match:
-        /(\(0,\i\.jsx\)\(\i\.\i,{items:\i,currentIndex:(\i),children:\(\i,\i\)=>)(\(0,\i\.jsx\))(\(\i,{isObscured:.+?media:(\i).+?onContextMenu:\i}\)}\)}\),)/,
+        /(\(0,\i\.jsx\)\(\i,{items:\i,currentIndex:(\i),children:\(\i,\i\)=>)(\(0,\i\.jsx\))(\(\i,{isObscured:.+?media:(\i).+?onContextMenu:\i}\)}\)}\),)/,
       replacement: (_, beginning, currentIndex, createElement, body, media) =>
         `require("imageViewer_imageViewer")?.default!=null?${createElement}(require("imageViewer_imageViewer").default,{...${media},currentIndex:${currentIndex}}):${beginning}${createElement}${body}`
     }
@@ -44,7 +44,6 @@ export const webpackModules: Record<string, ExtensionWebpackModule> = {
     dependencies: [
       { ext: "spacepack", id: "spacepack" },
       { id: "react" },
-      { id: "discord/components/common/index" },
       { id: "discord/components/common/BaseHeaderBar" },
       { id: "discord/uikit/TextInput" },
       { id: "discord/utils/ClipboardUtils" },

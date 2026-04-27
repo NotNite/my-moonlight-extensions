@@ -9,7 +9,7 @@ export const patches: ExtensionWebExports["patches"] = [
         replacement: "true"
       },
       {
-        match: /\i\.\i\.format\(.+?,{buildNumber:(.+?)}\)/,
+        match: /\i\.intl\.format\(\i\.t\.uyrfYF,{buildNumber:("\d+")}\)/,
         replacement: (_, buildNumber) => `require("devBanner_devBanner").transform(${buildNumber})`
       }
     ]

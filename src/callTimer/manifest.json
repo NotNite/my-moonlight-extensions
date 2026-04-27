@@ -1,14 +1,15 @@
 {
   "$schema": "https://moonlight-mod.github.io/manifest.schema.json",
   "id": "callTimer",
-  "version": "1.0.6",
+  "version": "1.1.0",
   "apiLevel": 2,
   "meta": {
     "name": "Call Timer",
     "tagline": "Shows how long you've been in a voice call",
-    "authors": ["NotNite"],
-    "tags": ["voice"],
+    "authors": ["NotNite", "Cynosphere"],
+    "tags": ["voice", "qol"],
     "source": "https://github.com/NotNite/my-moonlight-extensions",
-    "donate": "https://notnite.com/givememoney"
+    "donate": "https://notnite.com/givememoney",
+    "changelog": "- Fixes for latest Discord\n- Use voice state connect time instead of tracking manually\n- Show total voice channel time when available"
   }
 }

@@ -1,7 +1,7 @@
 {
   "$schema": "https://moonlight-mod.github.io/manifest.schema.json",
   "id": "mediaControls",
-  "version": "1.0.22",
+  "version": "1.0.23",
   "apiLevel": 2,
   "meta": {
     "name": "Media Controls",
@@ -10,7 +10,7 @@
     "authors": ["NotNite", "Cynosphere"],
     "source": "https://github.com/NotNite/my-moonlight-extensions",
     "donate": "https://notnite.com/givememoney",
-    "changelog": "Rich presence improvements:\n- Actually parse URLs for playing/paused assets\n- Fix `album.search` last.fm method's results being ignored due to assumptions"
+    "changelog": "- Fixes for latest Discord\n- Rich Presence: Added an option to upload local artwork (always or as fallback)"
   },
   "dependencies": ["spacepack", "appPanels", "common", "contextMenu"],
   "settings": {
@@ -149,6 +149,18 @@
       "description": "Requires Spotify to be linked to Discord",
       "type": "boolean",
       "default": true,
+      "advice": "none"
+    },
+    "richPresenceArtworkUpload": {
+      "displayName": "Rich Presence -> Upload artwork as ephemeral attachment",
+      "type": "boolean",
+      "default": false,
+      "advice": "none"
+    },
+    "richPresenceArtworkUploadFallback": {
+      "displayName": "Rich Presence -> Only upload artwork as fallback",
+      "type": "boolean",
+      "default": false,
       "advice": "none"
     }
   }

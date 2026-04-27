@@ -25,7 +25,11 @@ export const webpackModules: Record<string, ExtensionWebpackModule> = {
       { ext: "mediaControls", id: "stores" },
       { ext: "appPanels", id: "appPanels" },
       { id: "react" },
-      { id: "discord/components/common/index" },
+      { id: "discord/modules/menus/web/Menu" },
+      { id: "discord/design/components/Text/Text" },
+      { id: "discord/modules/icons/web/PauseIcon" },
+      { id: "discord/modules/icons/web/PlayIcon" },
+      { id: "discord/uikit/OverflowTooltip" },
       { id: "discord/uikit/Flex" },
       { id: "discord/components/common/PanelButton" },
       {

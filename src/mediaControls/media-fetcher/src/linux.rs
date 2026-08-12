@@ -1,5 +1,5 @@
 use crate::{
-    base::{send_response, MediaFetcher},
+    base::{MediaFetcher, send_response},
     proto::{PlaybackStatus, Request},
 };
 use async_trait::async_trait;
@@ -180,11 +180,19 @@ impl MediaFetcher for LinuxMediaFetcher {
             }
 
             Request::Seek { position } => {
-                let track_list = player.get_track_list()?;
-                let track = track_list
-                    .get(0)
-                    .ok_or_else(|| anyhow::anyhow!("No track is currently playing"))?;
-                player.set_position(track.clone(), &Duration::from_secs_f64(position))?;
+                let track = if let Ok(track_list) = player.get_track_list()
+                    && let Some(track) = track_list.get(0)
+                {
+                    track.clone()
+                } else if let Ok(metadata) = player.get_metadata()
+                    && let Some(track_id) = metadata.track_id()
+                {
+                    track_id
+                } else {
+                    anyhow::bail!("No track is currently playing")
+                };
+
+                player.set_position(track, &Duration::from_secs_f64(position))?;
             }
         }
 

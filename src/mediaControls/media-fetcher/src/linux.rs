@@ -152,6 +152,8 @@ impl MediaFetcher for LinuxMediaFetcher {
                     let base64 = base64::prelude::BASE64_STANDARD.encode(&bytes);
                     let base64 = format!("data:image/png;base64,{}", base64);
                     send_response(crate::proto::Response::AlbumArt { data: base64 })?;
+                } else if str.starts_with("https://") || str.starts_with("http://") {
+                    send_response(crate::proto::Response::AlbumArt { data: str })?;
                 }
             }
 

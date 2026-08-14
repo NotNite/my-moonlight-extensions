@@ -2,11 +2,11 @@ import type { ExtensionWebpackModule, Patch } from "@moonlight-mod/types";
 
 export const patches: Patch[] = [
   {
-    find: "renderConnectionStatus(){",
+    find: "RTC_CONNECTED,rtcConnectionLastPing:0",
     replace: {
       match: /(?<=childrenAsSubtitle:!0,)children:((\(0,(\i)\.jsx\))\(\i\.\i,{children:.+?children:\i}\)}\)}\)}\))/,
       replacement: (_, children, createElement, ReactJSX) =>
-        `children:[${children},${createElement}(require("callTimer_callTimer")?.default??${ReactJSX}.Fragment,{key:"callTimer",...this.props})]`
+        `children:[${children},${createElement}(require("callTimer_callTimer")?.default??${ReactJSX}.Fragment,{key:"callTimer",...arguments[0]})]`
     }
   }
 ];

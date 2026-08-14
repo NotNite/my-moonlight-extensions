@@ -11,13 +11,16 @@ function formatTime(elapsed: number) {
   return items.map((item) => item.toString().padStart(2, "0")).join(":");
 }
 
-export default function CallTimer({ channel, guild }: { channel: any; guild: any }): React.ReactNode {
+export default function CallTimer({ channel }: { channel: any }): React.ReactNode {
+  const guildId = channel.getGuildId();
+
   const [time, setTime] = React.useState("00:00");
   const [startTime, setStartTime] = React.useState<string | undefined>();
   React.useEffect(() => {
     const timer = setInterval(() => {
       const now = Math.floor(Date.now() / 1000);
-      const connectedAt = VoiceStateStore.getVoiceState(guild.id, AuthenticationStore.getId())?.connectedAt ?? now;
+      const connectedAt =
+        VoiceStateStore.getVoiceState(guildId ?? "@me", AuthenticationStore.getId())?.connectedAt ?? now;
       const startTime = VoiceChannelStartTimeStore.getStartTime(channel);
 
       setTime(formatTime(now - connectedAt));

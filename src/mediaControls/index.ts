@@ -2,7 +2,7 @@ import type { ExtensionWebpackModule, Patch } from "@moonlight-mod/types";
 
 export const patches: Patch[] = [
   {
-    find: '"displayName","SpotifyStore"',
+    find: 'displayName="SpotifyStore"',
     replace: {
       match: /hasConnectedAccount\(\){return Object.keys\((\i)\)/,
       replacement: (orig, accounts) => `__getAccounts(){return ${accounts}}${orig}`
